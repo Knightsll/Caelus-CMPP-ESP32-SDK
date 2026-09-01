@@ -54,7 +54,8 @@ MCP Binding：
 - Bearer Token 鉴权：强制启用
 
 完整协议见 [CMPP MCP Binding](docs/CMPP_MCP_BINDING.md)，SDK 架构见
-[CMPP SDK 文档](docs/CMPP_SDK.md)。
+[CMPP SDK 文档](docs/CMPP_SDK.md)，实板部署和配网故障排查见
+[测试板部署指南](docs/TEST_BOARD_DEPLOYMENT.md)。
 
 ## 构建和测试
 

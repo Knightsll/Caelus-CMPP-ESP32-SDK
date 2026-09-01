@@ -5,6 +5,9 @@ components remain product-independent. The test-board application demonstrates
 their integration through a separate Device Function Module and board assembly
 layer.
 
+For flashing, first-time provisioning, persistence behavior and hardware
+bring-up checks, see the [test-board deployment guide](TEST_BOARD_DEPLOYMENT.md).
+
 ## Components
 
 | Component | Responsibility | Public dependencies |

@@ -1,0 +1,22 @@
+menu "Caelus CMPP Test Board"
+
+    config CMPP_BOARD_PROVISIONING_SSID_PREFIX
+        string "First-time setup hotspot prefix"
+        default "Caelus-Board"
+        help
+            The captive portal appends the last three MAC bytes. Keep this
+            short enough that the resulting Wi-Fi SSID is at most 32 bytes.
+
+    config CMPP_BOARD_HOSTNAME_PREFIX
+        string "Default mDNS hostname prefix"
+        default "caelus-board"
+        help
+            Used for the first-time setup suggestion and as a fallback when no
+            hostname is stored. Users can edit the hostname in the setup page.
+
+    config CMPP_BOARD_HTTP_PORT
+        int "MCP HTTP port"
+        range 1 65535
+        default 8080
+
+endmenu

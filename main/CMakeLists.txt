@@ -1,0 +1,33 @@
+idf_component_register(
+    SRCS
+        "main.c"
+        "board_config.c"
+        "cmpp_device_server.c"
+        "device_identity.c"
+        "network.c"
+    INCLUDE_DIRS "."
+    EMBED_FILES
+        "portal.html"
+    REQUIRES
+        cjson
+        dns_server
+        esp_app_format
+        esp_driver_gpio
+        esp_event
+        esp_http_server
+        esp_netif
+        esp_timer
+        esp_wifi
+        lwip
+        mbedtls
+        nvs_flash
+        mdns
+        mcp-c-sdk
+    PRIV_REQUIRES
+        caelus_cmpp_adapter_mcp
+        caelus_cmpp_backend_pwm
+        caelus_cmpp_backend_relay
+        caelus_cmpp_codec_json
+        caelus_cmpp_platform_esp32
+        caelus_device_function
+)

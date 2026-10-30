@@ -3,4 +3,6 @@ dependencies:
     path: ${IDF_PATH}/examples/protocols/http_server/captive_portal/components/dns_server
   espressif/cjson: "1.*"
   espressif/mcp-c-sdk: "2.0.1"
+  espressif/mqtt: "1.1.0"
   espressif/mdns: "^1.11.3"
+  espressif/network_provisioning: "1.4.0"

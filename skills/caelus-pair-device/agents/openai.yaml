@@ -1,0 +1,4 @@
+interface:
+  display_name: "配对 Caelus CMPP 硬件"
+  short_description: "通过 BLE 发现配网、断点恢复并安全验证 CMPP 设备"
+  default_prompt: "使用 $caelus-pair-device 通过 BLE 发现并配置 Caelus 硬件；安全保存 MCP 凭证、完成断点恢复和只读 CMPP 配置验证，必要时使用 SoftAP 恢复路径。"

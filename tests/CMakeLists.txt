@@ -12,12 +12,14 @@ add_executable(test_cmpp_core
     ../components/caelus_cmpp_core/src/cmpp.c
     ../components/caelus_cmpp_codec_json/src/cmpp_codec_json.c
     ../components/caelus_cmpp_adapter_mcp/src/cmpp_mcp_binding.c
+    ../components/caelus_cmpp_adapter_mqtt/src/cmpp_mqtt_binding.c
     ../managed_components/espressif__cjson/cJSON/cJSON.c
 )
 target_include_directories(test_cmpp_core PRIVATE
     ../components/caelus_cmpp_core/include
     ../components/caelus_cmpp_codec_json/include
     ../components/caelus_cmpp_adapter_mcp/include
+    ../components/caelus_cmpp_adapter_mqtt/include
     ../managed_components/espressif__cjson/cJSON
 )
 target_compile_definitions(test_cmpp_core PRIVATE _POSIX_C_SOURCE=200809L)

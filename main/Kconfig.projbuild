@@ -19,4 +19,31 @@ menu "Caelus CMPP Test Board"
         range 1 65535
         default 8080
 
+    config CMPP_BOARD_BLE_PROVISIONING
+        bool "Enable Bluetooth LE provisioning"
+        default y
+        select BT_ENABLED
+        select ESP_PROTOCOMM_SUPPORT_SECURITY_VERSION_1
+        help
+            Advertise a secure Espressif protocomm provisioning service while
+            pairing is incomplete. The SoftAP portal remains available as a
+            recovery path.
+
+    config CMPP_BOARD_BLE_POP
+        string "Bluetooth LE provisioning proof of possession"
+        depends on CMPP_BOARD_BLE_PROVISIONING
+        default "caelus1234"
+        help
+            Development proof of possession used by Security 1. Production
+            hardware must provision a unique per-device value and put it on
+            the enclosure or QR label instead of using this default.
+
+    config CMPP_BOARD_MQTT_ENABLE
+        bool "Enable optional CMPP over MQTT client"
+        default n
+        help
+            Keep the MCP Streamable HTTP server and also connect to a broker
+            provisioned over BLE. This dual-stack image needs a larger app
+            partition than the default 2 MB test-board profile provides.
+
 endmenu

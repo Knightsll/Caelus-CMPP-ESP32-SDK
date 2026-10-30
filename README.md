@@ -69,17 +69,36 @@ bash scripts/flash_monitor.sh
 
 ## 首次配网
 
-未配对设备会开放 `Caelus-Board-XXXXXX` 临时热点。连接后访问
-`http://192.168.4.1`，设置设备名、hostname 和 2.4 GHz Wi-Fi。设备验证 Wi-Fi
-后显示并下载 `caelus.mcp.connection.v1` 连接信息，其中包含稳定 `device_uid`、
-endpoint 和设备独有的 256-bit Bearer Token。确认保存凭证后设备才关闭热点并
-启动 MCP 服务。
+未配对设备会同时广播 `Caelus-Board-XXXXXX` BLE 配网服务和同名临时热点。
+推荐安装仓库中的 [`caelus-pair-device`](skills/caelus-pair-device/SKILL.md)
+Skill，通过 BLE 完成发现、2.4 GHz Wi-Fi 配置、MCP 凭证持久化和只读验证，
+主机不需要切换 Wi-Fi。Codex 和 Hermes 使用同一个 Skill 目录。
+
+热点 `http://192.168.4.1` 保留为恢复入口。无论走 BLE 还是热点，客户端都必须
+先安全保存 `caelus.mcp.connection.v1`（稳定 `device_uid`、endpoint 和设备独有
+的 256-bit Bearer Token），然后发送“完成配对”。完成后设备才停止 BLE/热点
+广播并启动 MCP 服务。
+
+BLE 首次使用：
+
+```bash
+python3 skills/caelus-pair-device/scripts/setup_ble.py --yes
+python3 skills/caelus-pair-device/scripts/caelus_ble.py discover
+python3 skills/caelus-pair-device/scripts/caelus_ble.py provision --dry-run
+python3 skills/caelus-pair-device/scripts/caelus_ble.py provision --yes
+```
+
+当前测试固件使用开发 PoP `caelus1234`；量产必须改为每台设备唯一的制造凭证，
+不能沿用这个默认值。
 
 配置完成后可通过以下命令发现设备：
 
 ```bash
 avahi-browse -rt _cmpp._tcp
 ```
+
+加入 BLE 后应用镜像约 1.44 MiB，在当前 1.5 MiB app 分区中只剩约 60 KiB。
+继续加入 OTA、较大的任务队列或 Stream 功能前，应先调整分区表或 Flash 规格。
 
 ## 命令示例
 

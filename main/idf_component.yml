@@ -4,3 +4,4 @@ dependencies:
   espressif/cjson: "1.*"
   espressif/mcp-c-sdk: "2.0.1"
   espressif/mdns: "^1.11.3"
+  espressif/network_provisioning: "1.4.0"

@@ -19,6 +19,10 @@
 #include "freertos/event_groups.h"
 #include "freertos/task.h"
 #include "nvs.h"
+#if CONFIG_CMPP_BOARD_BLE_PROVISIONING
+#include "network_provisioning/manager.h"
+#include "network_provisioning/scheme_ble.h"
+#endif
 
 #define WIFI_CONNECTED_BIT        BIT0
 #define WIFI_CONNECT_FAILED_BIT   BIT1
@@ -29,6 +33,7 @@
 #define PORTAL_RESPONSE_GRACE_MS  1000
 #define WIFI_IDENTITY_NAMESPACE   "cmpp_wifi"
 #define WIFI_IDENTITY_KEY         "sta_config"
+#define BLE_CUSTOM_ENDPOINT       "custom-data"
 
 extern const char portal_html_start[] asm("_binary_portal_html_start");
 extern const char portal_html_end[] asm("_binary_portal_html_end");
@@ -47,6 +52,9 @@ static bool s_portal_active;
 static bool s_resume_pairing;
 static bool s_connect_requested;
 static int s_retry_count;
+#if CONFIG_CMPP_BOARD_BLE_PROVISIONING
+static bool s_ble_provisioning_active;
+#endif
 
 static esp_err_t make_portal_ssid(void)
 {
@@ -442,6 +450,230 @@ static char *build_configured_response(const device_identity_t *identity)
     cJSON_Delete(root);
     return json;
 }
+
+#if CONFIG_CMPP_BOARD_BLE_PROVISIONING
+static esp_err_t ble_set_response(const char *json, uint8_t **outbuf,
+                                  ssize_t *outlen)
+{
+    if (!json || !outbuf || !outlen) {
+        return ESP_ERR_INVALID_ARG;
+    }
+    const size_t length = strlen(json);
+    *outbuf = malloc(length);
+    if (!*outbuf) {
+        return ESP_ERR_NO_MEM;
+    }
+    memcpy(*outbuf, json, length);
+    *outlen = (ssize_t)length;
+    return ESP_OK;
+}
+
+static esp_err_t ble_pairing_handler(uint32_t session_id,
+                                     const uint8_t *inbuf, ssize_t inlen,
+                                     uint8_t **outbuf, ssize_t *outlen,
+                                     void *priv_data)
+{
+    (void)session_id;
+    (void)priv_data;
+
+    if (!inbuf || inlen <= 0 || inlen > PORTAL_REQUEST_MAX_BYTES) {
+        return ble_set_response(
+            "{\"ok\":false,\"error\":\"invalid_request\"}",
+            outbuf, outlen);
+    }
+
+    cJSON *root = cJSON_ParseWithLength((const char *)inbuf, (size_t)inlen);
+    const cJSON *action = cJSON_GetObjectItemCaseSensitive(root, "action");
+    if (!cJSON_IsObject(root) || !cJSON_IsString(action) ||
+        !action->valuestring) {
+        cJSON_Delete(root);
+        return ble_set_response(
+            "{\"ok\":false,\"error\":\"invalid_request\"}",
+            outbuf, outlen);
+    }
+
+    if (strcmp(action->valuestring, "pair") == 0) {
+        if (!(xEventGroupGetBits(s_wifi_events) & WIFI_CONNECTED_BIT) &&
+            !s_resume_pairing) {
+            cJSON_Delete(root);
+            return ble_set_response(
+                "{\"ok\":false,\"error\":\"wifi_not_connected\"}",
+                outbuf, outlen);
+        }
+
+        const cJSON *display_name =
+            cJSON_GetObjectItemCaseSensitive(root, "display_name");
+        const cJSON *hostname =
+            cJSON_GetObjectItemCaseSensitive(root, "hostname");
+        const char *selected_name = cJSON_IsString(display_name)
+                                        ? display_name->valuestring
+                                        : s_suggested_display_name;
+        const char *selected_hostname = cJSON_IsString(hostname)
+                                            ? hostname->valuestring
+                                            : s_suggested_hostname;
+        if (!display_name_valid(selected_name) ||
+            !hostname_valid(selected_hostname)) {
+            cJSON_Delete(root);
+            return ble_set_response(
+                "{\"ok\":false,\"error\":\"invalid_identity\"}",
+                outbuf, outlen);
+        }
+
+        esp_err_t err = device_identity_set_setup(selected_name,
+                                                  selected_hostname);
+        cJSON_Delete(root);
+        if (err != ESP_OK) {
+            return ble_set_response(
+                "{\"ok\":false,\"error\":\"identity_failed\"}",
+                outbuf, outlen);
+        }
+
+        device_identity_t identity = {0};
+        err = device_identity_load(&identity);
+        if (err != ESP_OK) {
+            return ble_set_response(
+                "{\"ok\":false,\"error\":\"identity_failed\"}",
+                outbuf, outlen);
+        }
+        cJSON *response_root = cJSON_CreateObject();
+        if (response_root) {
+            cJSON_AddBoolToObject(response_root, "ok", true);
+            cJSON_AddStringToObject(response_root, "device_uid",
+                                    identity.device_uid);
+            cJSON_AddStringToObject(response_root, "auth_token",
+                                    identity.auth_token);
+        }
+        char *response = response_root
+                             ? cJSON_PrintUnformatted(response_root)
+                             : NULL;
+        cJSON_Delete(response_root);
+        memset(identity.auth_token, 0, sizeof(identity.auth_token));
+        if (!response) {
+            return ESP_ERR_NO_MEM;
+        }
+        s_resume_pairing = true;
+        err = ble_set_response(response, outbuf, outlen);
+        cJSON_free(response);
+        return err;
+    }
+
+    if (strcmp(action->valuestring, "complete") == 0) {
+        cJSON_Delete(root);
+        if (!s_resume_pairing) {
+            return ble_set_response(
+                "{\"ok\":false,\"error\":\"no_pending_pairing\"}",
+                outbuf, outlen);
+        }
+        const esp_err_t err = device_identity_complete_pairing();
+        if (err != ESP_OK) {
+            return ble_set_response(
+                "{\"ok\":false,\"error\":\"pairing_save_failed\"}",
+                outbuf, outlen);
+        }
+        s_resume_pairing = false;
+        xEventGroupSetBits(s_wifi_events, PORTAL_CONFIGURED_BIT);
+        return ble_set_response(
+            "{\"ok\":true,\"message\":\"pairing_complete\"}",
+            outbuf, outlen);
+    }
+
+    cJSON_Delete(root);
+    return ble_set_response(
+        "{\"ok\":false,\"error\":\"unsupported_action\"}",
+        outbuf, outlen);
+}
+
+static void ble_provisioning_event_handler(void *arg,
+                                           esp_event_base_t event_base,
+                                           int32_t event_id,
+                                           void *event_data)
+{
+    (void)arg;
+    (void)event_data;
+    if (event_base != NETWORK_PROV_EVENT) {
+        return;
+    }
+    if (event_id == NETWORK_PROV_START) {
+        const esp_err_t err = network_prov_mgr_endpoint_register(
+            BLE_CUSTOM_ENDPOINT, ble_pairing_handler, NULL);
+        if (err != ESP_OK) {
+            ESP_LOGE(TAG, "Could not register BLE pairing endpoint: %s",
+                     esp_err_to_name(err));
+        }
+    } else if (event_id == NETWORK_PROV_WIFI_CRED_SUCCESS) {
+        wifi_config_t saved = {0};
+        if (esp_wifi_get_config(WIFI_IF_STA, &saved) == ESP_OK) {
+            ESP_ERROR_CHECK_WITHOUT_ABORT(save_persistent_wifi_config(&saved));
+        }
+        ESP_LOGI(TAG, "BLE Wi-Fi provisioning succeeded");
+    } else if (event_id == NETWORK_PROV_WIFI_CRED_FAIL) {
+        ESP_LOGW(TAG, "BLE Wi-Fi provisioning failed; setup hotspot remains available");
+    }
+}
+
+static esp_err_t start_ble_provisioning(bool enable_wifi_provisioning)
+{
+    network_prov_scheme_t ble_scheme = network_prov_scheme_ble;
+    /* Keep the SoftAP recovery portal alive while BLE tests credentials. */
+    ble_scheme.wifi_mode = WIFI_MODE_APSTA;
+    const network_prov_mgr_config_t config = {
+        .scheme = ble_scheme,
+        .scheme_event_handler =
+            NETWORK_PROV_SCHEME_BLE_EVENT_HANDLER_FREE_BLE,
+        .app_event_handler = NETWORK_PROV_EVENT_HANDLER_NONE,
+        .network_prov_wifi_conn_cfg = {.wifi_conn_attempts =
+                                           WIFI_CONNECT_RETRIES},
+        .mode = NETWORK_PROV_MODE_SESSION_ONLY,
+    };
+    esp_err_t err = network_prov_mgr_init(config);
+    if (err != ESP_OK) {
+        return err;
+    }
+
+    err = network_prov_mgr_endpoint_create(BLE_CUSTOM_ENDPOINT);
+    static const char *capabilities[] = {"caelus_pairing_v1"};
+    if (err == ESP_OK) {
+        err = network_prov_mgr_set_app_info(
+            "caelus", "1.0", capabilities,
+            sizeof(capabilities) / sizeof(capabilities[0]));
+    }
+    if (err == ESP_OK && enable_wifi_provisioning) {
+        err = network_prov_mgr_enable_provisioning();
+    }
+    static uint8_t service_uuid[16] = {
+        0xb4, 0xdf, 0x5a, 0x1c, 0x3f, 0x6b, 0xf4, 0xbf,
+        0xea, 0x4a, 0x82, 0x03, 0x04, 0x90, 0x1a, 0x02,
+    };
+    if (err == ESP_OK) {
+        err = network_prov_scheme_ble_set_service_uuid(service_uuid);
+    }
+    if (err == ESP_OK) {
+        const network_prov_security1_params_t *security_params =
+            CONFIG_CMPP_BOARD_BLE_POP;
+        err = network_prov_mgr_start_provisioning(
+            NETWORK_PROV_SECURITY_1, security_params, s_portal_ssid, NULL);
+    }
+    if (err != ESP_OK) {
+        network_prov_mgr_deinit();
+        return err;
+    }
+
+    s_ble_provisioning_active = true;
+    ESP_LOGW(TAG, "BLE setup service: %s (Caelus pairing v1)",
+             s_portal_ssid);
+    return ESP_OK;
+}
+
+static esp_err_t stop_ble_provisioning(void)
+{
+    if (!s_ble_provisioning_active) {
+        return ESP_OK;
+    }
+    s_ble_provisioning_active = false;
+    ESP_LOGI(TAG, "Stopping BLE setup service and releasing BLE memory");
+    return network_prov_mgr_deinit();
+}
+#endif
 
 static esp_err_t portal_pairing_handler(httpd_req_t *req)
 {
@@ -847,13 +1079,38 @@ esp_err_t network_connect(void)
         }
         ESP_RETURN_ON_ERROR(start_setup_hotspot(), TAG,
                             "Could not start first-time setup");
+#if CONFIG_CMPP_BOARD_BLE_PROVISIONING
+        ESP_RETURN_ON_ERROR(esp_event_handler_register(
+            NETWORK_PROV_EVENT, ESP_EVENT_ANY_ID,
+            ble_provisioning_event_handler, NULL),
+            TAG, "Could not register BLE provisioning events");
+        err = start_ble_provisioning(!has_saved_wifi);
+        if (err != ESP_OK) {
+            ESP_LOGE(TAG,
+                     "BLE setup unavailable (%s); continuing with SoftAP recovery",
+                     esp_err_to_name(err));
+        }
+#endif
         xEventGroupWaitBits(s_wifi_events, PORTAL_CONFIGURED_BIT,
                             pdFALSE, pdTRUE, portMAX_DELAY);
-        /* Give the browser time to receive the success response before its
-         * setup Wi-Fi connection is intentionally removed. */
+        /* Give the HTTP or BLE client time to receive the success response
+         * before the setup transports are intentionally removed. */
         vTaskDelay(pdMS_TO_TICKS(PORTAL_RESPONSE_GRACE_MS));
+#if CONFIG_CMPP_BOARD_BLE_PROVISIONING
+        ESP_RETURN_ON_ERROR(stop_ble_provisioning(), TAG,
+                            "Could not stop BLE setup service");
+        ESP_ERROR_CHECK_WITHOUT_ABORT(esp_event_handler_unregister(
+            NETWORK_PROV_EVENT, ESP_EVENT_ANY_ID,
+            ble_provisioning_event_handler));
+#endif
         ESP_RETURN_ON_ERROR(stop_setup_hotspot(), TAG,
                             "Could not close first-time setup hotspot");
+        if (!(xEventGroupGetBits(s_wifi_events) & WIFI_CONNECTED_BIT)) {
+            ESP_RETURN_ON_ERROR(esp_wifi_connect(), TAG,
+                                "Could not connect saved Wi-Fi after setup");
+            xEventGroupWaitBits(s_wifi_events, WIFI_CONNECTED_BIT,
+                                pdFALSE, pdTRUE, portMAX_DELAY);
+        }
     }
 
     ESP_LOGI(TAG, "Connected to Wi-Fi, IP=%s", s_ip_address);

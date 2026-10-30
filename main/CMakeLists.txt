@@ -23,6 +23,7 @@ idf_component_register(
         nvs_flash
         mdns
         mcp-c-sdk
+        network_provisioning
     PRIV_REQUIRES
         caelus_cmpp_adapter_mcp
         caelus_cmpp_backend_pwm

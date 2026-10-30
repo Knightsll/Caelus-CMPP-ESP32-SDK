@@ -16,6 +16,7 @@ bring-up checks, see the [test-board deployment guide](TEST_BOARD_DEPLOYMENT.md)
 | `caelus_cmpp_platform_esp32` | FreeRTOS locks, monotonic clock, NVS, random, logging and configurable allocation | Core + ESP-IDF |
 | `caelus_cmpp_codec_json` | CMPP value/request/result/manifest JSON conversion | Core + cJSON |
 | `caelus_cmpp_adapter_mcp` | Official MCP tool/resource/notification mapping | Core + codec + `mcp-c-sdk` |
+| `caelus_cmpp_adapter_mqtt` | Optional MQTT topics and JSON command/result mapping | Core + codec |
 | `caelus_cmpp_backend_pwm` | Generic normalized LEDC output and ramping | Core + LEDC |
 | `caelus_cmpp_backend_relay` | Generic binary GPIO output and switch interval enforcement | Core + GPIO |
 | `caelus_device_function` | Test-board capability semantics for six indicators and four relays | Core + generic backend APIs |
@@ -32,7 +33,7 @@ register descriptors and callbacks.
 4. Initialize hardware backends in the board assembly layer.
 5. Register every Function Module through
    `cmpp_runtime_register_capability()`.
-6. Dispatch in-process commands directly or attach an adapter.
+6. Dispatch in-process commands directly or attach MCP and/or MQTT adapters.
 7. On shutdown, call `cmpp_runtime_safe_stop()`, destroy adapters and Function
    Modules, destroy hardware backends, destroy the runtime, then destroy the
    platform object.
@@ -83,8 +84,11 @@ bash scripts/test_cmpp_host.sh
 It covers validation, target rejection, deadline expiry while waiting,
 concurrent serialization, exact retries, ID/key collisions, failure effects,
 monotonic and persistent state versions, event/receipt consistency, JSON
-mapping, equivalent MCP/in-process semantics, and the test-board Function
+mapping, equivalent MCP/MQTT/in-process semantics, and the test-board Function
 Module's command, dry-run, observation and safe-stop contracts.
+
+The MQTT wire contract, security boundary, capacity limits, and 4 MB build
+profile are documented in [CMPP MQTT Binding](CMPP_MQTT_BINDING.md).
 
 Compile all ESP32 components with:
 

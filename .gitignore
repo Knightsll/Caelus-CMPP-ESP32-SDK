@@ -1,4 +1,5 @@
 build/
+build-*/
 build-host-tests/
 sdkconfig
 sdkconfig.old

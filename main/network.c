@@ -5,6 +5,10 @@
 #include <string.h>
 
 #include "cJSON.h"
+#if CONFIG_CMPP_BOARD_MQTT_ENABLE
+#include "cmpp/cmpp_mqtt_binding.h"
+#include "mqtt_settings.h"
+#endif
 #include "device_identity.h"
 #include "esp_netif.h"
 #include "lwip/inet.h"
@@ -29,7 +33,7 @@
 #define PORTAL_CONFIGURED_BIT     BIT2
 #define WIFI_CONNECT_RETRIES      5
 #define PORTAL_SCAN_RESULTS       16
-#define PORTAL_REQUEST_MAX_BYTES  512
+#define PORTAL_REQUEST_MAX_BYTES  768
 #define PORTAL_RESPONSE_GRACE_MS  1000
 #define WIFI_IDENTITY_NAMESPACE   "cmpp_wifi"
 #define WIFI_IDENTITY_KEY         "sta_config"
@@ -452,6 +456,62 @@ static char *build_configured_response(const device_identity_t *identity)
 }
 
 #if CONFIG_CMPP_BOARD_BLE_PROVISIONING
+static esp_err_t save_optional_mqtt_settings(const cJSON *root,
+                                             bool *configured)
+{
+    *configured = false;
+    const cJSON *mqtt = cJSON_GetObjectItemCaseSensitive(root, "mqtt");
+    if (!mqtt) {
+        return ESP_OK;
+    }
+#if !CONFIG_CMPP_BOARD_MQTT_ENABLE
+    return ESP_ERR_NOT_SUPPORTED;
+#else
+    if (!cJSON_IsObject(mqtt)) {
+        return ESP_ERR_INVALID_ARG;
+    }
+
+    const cJSON *uri = cJSON_GetObjectItemCaseSensitive(mqtt, "uri");
+    const cJSON *username =
+        cJSON_GetObjectItemCaseSensitive(mqtt, "username");
+    const cJSON *password =
+        cJSON_GetObjectItemCaseSensitive(mqtt, "password");
+    const cJSON *prefix =
+        cJSON_GetObjectItemCaseSensitive(mqtt, "topic_prefix");
+    if (!cJSON_IsString(uri) || !uri->valuestring ||
+        (username && (!cJSON_IsString(username) || !username->valuestring)) ||
+        (password && (!cJSON_IsString(password) || !password->valuestring)) ||
+        (prefix && (!cJSON_IsString(prefix) || !prefix->valuestring)) ||
+        strlen(uri->valuestring) >= MQTT_BROKER_URI_MAX_LEN ||
+        (username && strlen(username->valuestring) >= MQTT_USERNAME_MAX_LEN) ||
+        (password && strlen(password->valuestring) >= MQTT_PASSWORD_MAX_LEN) ||
+        (prefix && strlen(prefix->valuestring) >= MQTT_TOPIC_PREFIX_MAX_LEN)) {
+        return ESP_ERR_INVALID_ARG;
+    }
+
+    mqtt_settings_t settings = {0};
+    strlcpy(settings.broker_uri, uri->valuestring,
+            sizeof(settings.broker_uri));
+    strlcpy(settings.topic_prefix,
+            prefix ? prefix->valuestring : CMPP_MQTT_DEFAULT_PREFIX,
+            sizeof(settings.topic_prefix));
+    if (username) {
+        strlcpy(settings.username, username->valuestring,
+                sizeof(settings.username));
+    }
+    if (password) {
+        strlcpy(settings.password, password->valuestring,
+                sizeof(settings.password));
+    }
+    const esp_err_t err = mqtt_settings_save(&settings);
+    memset(&settings, 0, sizeof(settings));
+    if (err == ESP_OK) {
+        *configured = true;
+    }
+    return err;
+#endif
+}
+
 static esp_err_t ble_set_response(const char *json, uint8_t **outbuf,
                                   ssize_t *outlen)
 {
@@ -519,12 +579,16 @@ static esp_err_t ble_pairing_handler(uint32_t session_id,
                 outbuf, outlen);
         }
 
-        esp_err_t err = device_identity_set_setup(selected_name,
-                                                  selected_hostname);
+        bool mqtt_configured = false;
+        esp_err_t err = save_optional_mqtt_settings(root, &mqtt_configured);
+        if (err == ESP_OK) {
+            err = device_identity_set_setup(selected_name,
+                                            selected_hostname);
+        }
         cJSON_Delete(root);
         if (err != ESP_OK) {
             return ble_set_response(
-                "{\"ok\":false,\"error\":\"identity_failed\"}",
+                "{\"ok\":false,\"error\":\"configuration_failed\"}",
                 outbuf, outlen);
         }
 
@@ -542,6 +606,8 @@ static esp_err_t ble_pairing_handler(uint32_t session_id,
                                     identity.device_uid);
             cJSON_AddStringToObject(response_root, "auth_token",
                                     identity.auth_token);
+            cJSON_AddBoolToObject(response_root, "mqtt_configured",
+                                  mqtt_configured);
         }
         char *response = response_root
                              ? cJSON_PrintUnformatted(response_root)

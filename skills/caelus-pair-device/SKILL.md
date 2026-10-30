@@ -87,10 +87,12 @@ This flow keeps the host on its existing LAN and performs:
    credentials; an interrupted device with saved Wi-Fi skips that step.
 4. A secure `custom-data` `pair` request that returns the device UID and MCP
    bearer credential.
-5. Validation, atomic persistence, reload, and byte-for-byte comparison of the
+5. If the user explicitly supplies MQTT broker settings, store them through
+   the same encrypted request; never infer or enable a broker silently.
+6. Validation, atomic persistence, reload, and byte-for-byte comparison of the
    MCP connection record.
-6. A secure `custom-data` `complete` request only after step 5 succeeds.
-7. BLE/SoftAP shutdown on the device, followed by read-only LAN MCP manifest
+7. A secure `custom-data` `complete` request only after step 6 succeeds.
+8. BLE/SoftAP shutdown on the device, followed by read-only LAN MCP manifest
    verification.
 
 Use explicit selectors when necessary:
@@ -113,6 +115,20 @@ python3 <skill-dir>/scripts/caelus_ble.py provision --yes \
 
 Never infer shared credentials from an SSID suffix.
 
+For an optional MQTT dual-stack firmware, keep the broker password out of
+command arguments and load it from the environment:
+
+```bash
+export CAELUS_MQTT_PASSWORD='broker-secret'
+python3 <skill-dir>/scripts/caelus_ble.py provision --yes \
+  --mqtt-uri mqtts://broker.example:8883 \
+  --mqtt-username caelus-device
+```
+
+Prefer `mqtts://` or `wss://`. Plain MQTT is acceptable only when the user has
+explicitly chosen a trusted local broker. MQTT provisioning is independent of
+the saved MCP credential and never grants actuator permission.
+
 ## Fall back to SoftAP recovery
 
 Use SoftAP only when BLE is unavailable or the user explicitly chooses it. Warn
@@ -130,7 +146,7 @@ recovery paths.
 
 ## Protect credentials
 
-- Never expose a real MCP Token, Wi-Fi PSK, or production BLE proof of
+- Never expose a real MCP Token, Wi-Fi PSK, MQTT password, or production BLE proof of
   possession in source control, task summaries, chat, process arguments,
   screenshots, logs, or normal output.
 - Keep the credential directory mode `0700` and registry mode `0600`; use
@@ -170,7 +186,8 @@ publisher attestation.
 Always report: discovery transport, Pairing Task state, Wi-Fi provisioning
 state, credential stored state, device pairing completion, authenticated
 profile verification or pending reason, vendor attestation, plugin state
-(`disabled` here), and capability grant (`not_granted` here).
+(`disabled` here), capability grant (`not_granted` here), and MQTT broker state
+(`configured` or `not_requested`) without printing its password.
 
 For no BLE result, ask the user to power on/factory-reset the target and check
 adapter access. For `401`, Authorization was missing; for `403`, the saved Token

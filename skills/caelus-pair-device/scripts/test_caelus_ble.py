@@ -57,6 +57,7 @@ class CaelusBleTest(unittest.IsolatedAsyncioTestCase):
         self.addCleanup(temporary.cleanup)
         store = Path(temporary.name) / "private" / "devices.json"
         calls: list[str] = []
+        pair_requests: list[dict] = []
 
         class FakeTransport:
             def __init__(self, **_kwargs):
@@ -73,11 +74,13 @@ class CaelusBleTest(unittest.IsolatedAsyncioTestCase):
                 value = json.loads(payload)
                 calls.append(value["action"])
                 if value["action"] == "pair":
+                    pair_requests.append(value)
                     return json.dumps(
                         {
                             "ok": True,
                             "device_uid": "hw_0123456789abcdef",
                             "auth_token": "a" * 64,
+                            "mqtt_configured": True,
                         }
                     )
                 self_outer.assertTrue(store.exists())
@@ -106,6 +109,10 @@ class CaelusBleTest(unittest.IsolatedAsyncioTestCase):
             store=str(store),
             display_name=None,
             hostname=None,
+            mqtt_uri="mqtts://broker.example:8883",
+            mqtt_username="device-user",
+            mqtt_password_env="CAELUS_MQTT_PASSWORD",
+            mqtt_topic_prefix=MODULE.DEFAULT_MQTT_TOPIC_PREFIX,
             replace=False,
             skip_verify=True,
             scan_timeout=1.0,
@@ -148,6 +155,7 @@ class CaelusBleTest(unittest.IsolatedAsyncioTestCase):
                 return_value={"caelus_pairing_v1"},
             ),
             mock.patch.object(MODULE, "_establish_session"),
+            mock.patch.dict("os.environ", {"CAELUS_MQTT_PASSWORD": "broker-secret"}),
             contextlib.redirect_stdout(output),
         ):
             await MODULE.provision(args)
@@ -157,6 +165,8 @@ class CaelusBleTest(unittest.IsolatedAsyncioTestCase):
             ["connect:Caelus-Board-A1B2C3", "pair", "complete", "disconnect"],
         )
         self.assertNotIn("not-in-output", output.getvalue())
+        self.assertNotIn("broker-secret", output.getvalue())
+        self.assertEqual(pair_requests[0]["mqtt"]["password"], "broker-secret")
         result = json.loads(output.getvalue())
         self.assertEqual(result["credential"], "stored")
         self.assertEqual(result["device_pairing"], "completed")

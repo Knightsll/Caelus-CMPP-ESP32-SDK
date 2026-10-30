@@ -12,6 +12,7 @@ import sys
 import time
 from types import ModuleType
 from typing import Any
+from urllib.parse import urlsplit
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -27,6 +28,7 @@ import caelus_devices as registry  # noqa: E402
 BLE_SERVICE_UUID = "021a9004-0382-4aea-bff4-6b3f1c5adfb4"
 BLE_NAME_PREFIX = "Caelus-"
 DEFAULT_POP = "caelus1234"
+DEFAULT_MQTT_TOPIC_PREFIX = "caelus/v1"
 
 
 def _ble_venv_python() -> Path:
@@ -231,6 +233,46 @@ async def provision(args: argparse.Namespace) -> None:
     suffix = device["name"].rsplit("-", 1)[-1]
     display_name = args.display_name or f"Caelus Board {suffix}"
     hostname = args.hostname or f"caelus-board-{suffix.casefold()}"
+    mqtt_config = None
+    if args.mqtt_username and not args.mqtt_uri:
+        raise registry.UserError("--mqtt-username requires --mqtt-uri")
+    if args.mqtt_uri:
+        parsed = urlsplit(args.mqtt_uri)
+        if (
+            parsed.scheme not in {"mqtt", "mqtts", "ws", "wss"}
+            or not parsed.hostname
+            or parsed.username
+            or parsed.password
+        ):
+            raise registry.UserError(
+                "--mqtt-uri must use mqtt, mqtts, ws, or wss, include a host, "
+                "and keep credentials in separate options"
+            )
+        if (
+            not args.mqtt_topic_prefix
+            or args.mqtt_topic_prefix.startswith("/")
+            or args.mqtt_topic_prefix.endswith("/")
+            or any(value in args.mqtt_topic_prefix for value in "+#")
+            or any(ord(value) <= 0x20 or ord(value) == 0x7F
+                   for value in args.mqtt_topic_prefix)
+        ):
+            raise registry.UserError("--mqtt-topic-prefix is invalid")
+        mqtt_password = os.environ.get(args.mqtt_password_env, "")
+        limits = {
+            "--mqtt-uri": (args.mqtt_uri, 192),
+            "--mqtt-username": (args.mqtt_username or "", 64),
+            "MQTT password": (mqtt_password, 128),
+            "--mqtt-topic-prefix": (args.mqtt_topic_prefix, 64),
+        }
+        for label, (value, limit) in limits.items():
+            if len(value.encode("utf-8")) >= limit:
+                raise registry.UserError(f"{label} is too long")
+        mqtt_config = {
+            "uri": args.mqtt_uri,
+            "username": args.mqtt_username or "",
+            "password": mqtt_password,
+            "topic_prefix": args.mqtt_topic_prefix,
+        }
     if args.dry_run:
         print(
             json.dumps(
@@ -243,6 +285,12 @@ async def provision(args: argparse.Namespace) -> None:
                     "wifi_ssid": target_ssid,
                     "display_name": display_name,
                     "hostname": hostname,
+                    "mqtt": None if mqtt_config is None else {
+                        "uri": mqtt_config["uri"],
+                        "username": mqtt_config["username"],
+                        "password_configured": bool(mqtt_config["password"]),
+                        "topic_prefix": mqtt_config["topic_prefix"],
+                    },
                     "credential_store": str(registry.resolve_store(args.store)),
                 },
                 ensure_ascii=False,
@@ -293,14 +341,15 @@ async def provision(args: argparse.Namespace) -> None:
             )
 
         registry.update_pairing_task(store, task_id, "credential_receiving")
+        pairing_request = {
+            "action": "pair",
+            "display_name": display_name,
+            "hostname": hostname,
+        }
+        if mqtt_config is not None:
+            pairing_request["mqtt"] = mqtt_config
         response = await _send_custom(
-            transport_object,
-            security_context,
-            {
-                "action": "pair",
-                "display_name": display_name,
-                "hostname": hostname,
-            },
+            transport_object, security_context, pairing_request
         )
         connection = _connection_from_ble(response, display_name, hostname)
         registry.update_pairing_task(
@@ -376,6 +425,7 @@ async def provision(args: argparse.Namespace) -> None:
                 "device_uid": connection["device_uid"],
                 "credential": "stored",
                 "device_pairing": "completed",
+                "mqtt_configured": bool(response.get("mqtt_configured")),
                 "verification": verification,
                 "vendor_attestation": "unavailable",
                 "plugin": "disabled",
@@ -414,6 +464,17 @@ def build_parser() -> argparse.ArgumentParser:
     provision_parser.add_argument("--wifi-ssid")
     provision_parser.add_argument("--display-name")
     provision_parser.add_argument("--hostname")
+    provision_parser.add_argument(
+        "--mqtt-uri", help="optional broker URI (prefer mqtts:// or wss://)"
+    )
+    provision_parser.add_argument("--mqtt-username")
+    provision_parser.add_argument(
+        "--mqtt-password-env", default="CAELUS_MQTT_PASSWORD",
+        help="environment variable containing the broker password",
+    )
+    provision_parser.add_argument(
+        "--mqtt-topic-prefix", default=DEFAULT_MQTT_TOPIC_PREFIX
+    )
     provision_parser.add_argument("--store")
     provision_parser.add_argument("--replace", action="store_true")
     provision_parser.add_argument("--yes", action="store_true")

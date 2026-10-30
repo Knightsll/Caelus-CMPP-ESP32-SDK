@@ -32,14 +32,14 @@ Messages are UTF-8 JSON inside the established protocomm security session.
 Pair request:
 
 ```json
-{"action":"pair","display_name":"Desk lamp","hostname":"desk-lamp"}
+{"action":"pair","display_name":"Desk lamp","hostname":"desk-lamp","mqtt":{"uri":"mqtts://broker.example:8883","username":"device","password":"secret","topic_prefix":"caelus/v1"}}
 ```
 
 Pair response is deliberately compact to stay below the BLE characteristic
 payload limit:
 
 ```json
-{"ok":true,"device_uid":"hw_...","auth_token":"64 hex characters"}
+{"ok":true,"device_uid":"hw_...","auth_token":"64 hex characters","mqtt_configured":true}
 ```
 
 The client constructs and validates the standard
@@ -58,6 +58,9 @@ Success response:
 
 After that response grace period, firmware deinitializes the provisioning
 manager, stops BLE and the recovery SoftAP, and releases BLE runtime memory.
+MQTT fields are optional. When present they are stored only inside the secure
+session and the client should source the broker password from a protected
+environment variable rather than a process argument.
 
 ## Recovery
 

@@ -57,6 +57,31 @@ MCP Binding：
 [CMPP SDK 文档](docs/CMPP_SDK.md)，实板部署和配网故障排查见
 [测试板部署指南](docs/TEST_BOARD_DEPLOYMENT.md)。
 
+## 可选 MQTT 双栈
+
+4 MB 及以上 Flash 的产品可以同时保留 MCP，并启用标准
+[CMPP MQTT Binding](docs/CMPP_MQTT_BINDING.md)。MQTT 和 MCP 都只负责将
+`cmpp.command.v1` 送入同一个 CMPP Runtime；硬件能力、授权后的安全检查、
+幂等和执行回执不会分叉。
+
+```text
+Agent -> MCP Adapter  --+
+                       +-> CMPP Core -> Function Module -> Hardware
+Broker -> MQTT Adapter -+
+```
+
+双栈构建：
+
+```bash
+idf.py -B build-mqtt \
+  -DSDKCONFIG="$PWD/build-mqtt/sdkconfig" \
+  -DSDKCONFIG_DEFAULTS=sdkconfig.mqtt.defaults build
+```
+
+生成的 `build-mqtt/cmpp_test_board.bin` 只能刷入已确认至少 4 MB Flash 的
+板子。当前双栈镜像约 1.59 MiB，在 3 MiB app 分区中约剩 47%；该开发分区
+没有 OTA 槽位。
+
 ## 构建和测试
 
 ```bash
@@ -97,7 +122,7 @@ python3 skills/caelus-pair-device/scripts/caelus_ble.py provision --yes
 avahi-browse -rt _cmpp._tcp
 ```
 
-加入 BLE 后应用镜像约 1.44 MiB，在当前 1.5 MiB app 分区中只剩约 60 KiB。
+默认 MCP+BLE 应用镜像约 1.41 MiB，在当前 1.5 MiB app 分区中只剩约 60 KiB。
 继续加入 OTA、较大的任务队列或 Stream 功能前，应先调整分区表或 Flash 规格。
 
 ## 命令示例

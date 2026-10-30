@@ -6,6 +6,7 @@
 #include "cmpp/cmpp.h"
 #include "cmpp/cmpp_platform_esp32.h"
 #include "cmpp_device_server.h"
+#include "cmpp_mqtt_client.h"
 #include "device_identity.h"
 #include "network.h"
 
@@ -60,6 +61,11 @@ void app_main(void)
     ESP_LOGI(TAG, "mDNS hostname: %s.local", identity.hostname);
 
     ESP_ERROR_CHECK(cmpp_device_server_start(&identity, runtime));
+    const esp_err_t mqtt_err = cmpp_mqtt_client_start(&identity, runtime);
+    if (mqtt_err != ESP_OK) {
+        ESP_LOGW(TAG, "Optional MQTT transport did not start: %s",
+                 esp_err_to_name(mqtt_err));
+    }
 
     ESP_LOGI(TAG, "Ready: http://%s.local:%d/mcp",
              identity.hostname, CONFIG_CMPP_BOARD_HTTP_PORT);

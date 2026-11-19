@@ -3,7 +3,7 @@
 
 #include "sdkconfig.h"
 
-#if CONFIG_CMPP_BOARD_MQTT_ENABLE
+#if CONFIG_CMPP_SDK_MQTT_ENABLE
 
 #include <stdlib.h>
 #include <string.h>

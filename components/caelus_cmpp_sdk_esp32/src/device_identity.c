@@ -10,7 +10,7 @@
 
 /* Keep the original namespace so reflashing does not rotate an already paired
  * board's stable UID or Bearer credential. */
-#define IDENTITY_NAMESPACE "mcp_light"
+#define IDENTITY_NAMESPACE CONFIG_CMPP_SDK_IDENTITY_NAMESPACE
 #define SALT_KEY "uid_salt"
 #define DISPLAY_NAME_KEY "display_name"
 #define HOSTNAME_KEY "hostname"
@@ -104,8 +104,8 @@ static esp_err_t load_display_name(char *display_name, size_t display_name_size,
     }
 
     const int written = snprintf(
-        display_name, display_name_size, "Caelus Board %02X%02X%02X",
-        mac[3], mac[4], mac[5]);
+        display_name, display_name_size, "%s %02X%02X%02X",
+        CONFIG_CMPP_SDK_DISPLAY_NAME_PREFIX, mac[3], mac[4], mac[5]);
     return written >= 0 && (size_t)written < display_name_size
                ? ESP_OK
                : ESP_ERR_INVALID_SIZE;
@@ -133,7 +133,7 @@ static esp_err_t load_hostname(char *hostname, size_t hostname_size,
     }
 
     const int written = snprintf(hostname, hostname_size, "%s-%02x%02x%02x",
-                                 CONFIG_CMPP_BOARD_HOSTNAME_PREFIX,
+                                 CONFIG_CMPP_SDK_HOSTNAME_PREFIX,
                                  mac[3], mac[4], mac[5]);
     return written >= 0 && (size_t)written < hostname_size
                ? ESP_OK

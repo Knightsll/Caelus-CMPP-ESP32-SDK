@@ -277,13 +277,13 @@
     <form id="setup-form">
       <label for="device-name">设备名称</label>
       <input id="device-name" maxlength="20" autocomplete="off"
-             value="Caelus Board" placeholder="例如：实验室测试板">
+             value="Caelus Device" placeholder="例如：客厅灯">
       <p class="hint">这是 Agent 和局域网设备列表中看到的名称，用于区分多台设备。</p>
 
       <label for="hostname">MCP 地址名称</label>
       <input id="hostname" maxlength="63" autocomplete="off"
-             value="caelus-board" placeholder="例如：caelus-board-123">
-      <p class="hint">访问地址：<span id="endpoint-preview">http://caelus-board.local:8080/mcp</span></p>
+             value="caelus-device" placeholder="例如：living-room-light">
+      <p class="hint">访问地址：<span id="endpoint-preview">http://caelus-device.local:8080/mcp</span></p>
 
       <div class="row">
         <label for="network">Wi‑Fi 网络</label>
@@ -390,7 +390,7 @@
     const finishPairing = document.getElementById("finish-pairing");
     let nameEdited = false;
     let hostnameEdited = false;
-    let suggestedHostname = "caelus-board";
+    let suggestedHostname = "caelus-device";
     let connectionBundle = null;
 
     function setMessage(text, kind) {
@@ -597,7 +597,7 @@
                             {type: "application/json"});
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = (connectionBundle.name || "caelus-board") + ".mcp.json";
+      link.download = (connectionBundle.name || "caelus-device") + ".mcp.json";
       link.click();
       URL.revokeObjectURL(link.href);
       setModalMessage("JSON 配置已下载。请妥善保存后完成配对。", "info");

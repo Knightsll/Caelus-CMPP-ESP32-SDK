@@ -15,6 +15,7 @@
 
 static const char *TAG = "cmpp_device_server";
 static device_identity_t s_identity;
+static cmpp_device_server_config_t s_config;
 static esp_mcp_t *s_mcp;
 static cmpp_mcp_adapter_t *s_adapter;
 static esp_mcp_mgr_handle_t s_manager;
@@ -64,11 +65,11 @@ static esp_err_t start_mdns(void)
     (void)device_identity_pairing_complete(&paired);
     char port_text[8];
     (void)snprintf(port_text, sizeof(port_text), "%d",
-                   CONFIG_CMPP_BOARD_HTTP_PORT);
+                   CONFIG_CMPP_SDK_HTTP_PORT);
     mdns_txt_item_t records[] = {
         {"path", "/mcp"},
         {"transport", "streamable-http"},
-        {"device_type", "cmpp-test-board"},
+        {"device_type", s_config.device_type},
         {"cmpp_version", CMPP_PROTOCOL_VERSION},
         {"mcp_version", cmpp_mcp_protocol_version()},
         {"device_uid", s_identity.device_uid},
@@ -79,7 +80,7 @@ static esp_err_t start_mdns(void)
         {"firmware", esp_app_get_description()->version},
     };
     return mdns_service_add(s_identity.display_name, "_cmpp", "_tcp",
-                            CONFIG_CMPP_BOARD_HTTP_PORT, records,
+                            CONFIG_CMPP_SDK_HTTP_PORT, records,
                             sizeof(records) / sizeof(records[0]));
 }
 
@@ -92,10 +93,13 @@ static esp_err_t esp_error_from_cmpp(cmpp_status_t status)
 }
 
 esp_err_t cmpp_device_server_start(const device_identity_t *identity,
-                                   cmpp_runtime_t *runtime)
+                                   cmpp_runtime_t *runtime,
+                                   const cmpp_device_server_config_t *config)
 {
-    ESP_RETURN_ON_FALSE(identity && runtime, ESP_ERR_INVALID_ARG, TAG,
-                        "Identity and runtime are required");
+    ESP_RETURN_ON_FALSE(identity && runtime && config && config->server_name &&
+                            config->server_description && config->device_type,
+                        ESP_ERR_INVALID_ARG, TAG,
+                        "Identity, runtime, and metadata are required");
 #if !CONFIG_MCP_HTTP_AUTH_ENABLE
     ESP_LOGE(TAG, "Authenticated MCP transport is required");
     return ESP_ERR_INVALID_STATE;
@@ -105,12 +109,12 @@ esp_err_t cmpp_device_server_start(const device_identity_t *identity,
                         ESP_ERR_INVALID_STATE, TAG,
                         "Device Bearer token is missing or invalid");
     s_identity = *identity;
+    s_config = *config;
     ESP_RETURN_ON_ERROR(esp_mcp_create(&s_mcp), TAG,
                         "MCP engine creation failed");
     ESP_RETURN_ON_ERROR(esp_mcp_set_server_info(
-                            s_mcp, "Caelus CMPP Test Board",
-                            "Six PWM indicators and four relay outputs", NULL,
-                            NULL),
+                            s_mcp, config->server_name,
+                            config->server_description, NULL, NULL),
                         TAG, "MCP server metadata failed");
     const cmpp_mcp_adapter_config_t adapter_config = {
         .authenticated_transport = true,
@@ -120,7 +124,7 @@ esp_err_t cmpp_device_server_start(const device_identity_t *identity,
                         TAG, "CMPP MCP adapter failed");
 
     httpd_config_t http_config = HTTPD_DEFAULT_CONFIG();
-    http_config.server_port = CONFIG_CMPP_BOARD_HTTP_PORT;
+    http_config.server_port = CONFIG_CMPP_SDK_HTTP_PORT;
     http_config.stack_size = 8192;
     const esp_mcp_mgr_config_t manager_config = {
         .transport = esp_mcp_transport_http_server,
@@ -138,7 +142,7 @@ esp_err_t cmpp_device_server_start(const device_identity_t *identity,
                         TAG, "MCP endpoint registration failed");
     ESP_RETURN_ON_ERROR(start_mdns(), TAG, "mDNS advertisement failed");
     ESP_LOGI(TAG, "CMPP MCP endpoint: http://%s.local:%d/mcp",
-             s_identity.hostname, CONFIG_CMPP_BOARD_HTTP_PORT);
+             s_identity.hostname, CONFIG_CMPP_SDK_HTTP_PORT);
     ESP_LOGI(TAG, "DNS-SD service: _cmpp._tcp.local");
     return ESP_OK;
 }

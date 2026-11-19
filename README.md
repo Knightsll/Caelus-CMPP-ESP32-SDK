@@ -1,7 +1,14 @@
-# Caelus CMPP ESP32-C3 Test Board
+# Caelus CMPP ESP32 SDK 与测试板
 
-ESP32-C3 测试板固件，使用通用 CMPP SDK 暴露 6 路板载 PWM 指示灯和 4 路继电器。
-旧版 WS2812 灯带驱动与 Legacy Light MCP 命令路径已经移除。
+本仓库提供可复用的 `caelus_cmpp_sdk_esp32` 通用 SDK 组件，以及一个独立的
+ESP32-C3 测试板示例。SDK 负责稳定身份、BLE/SoftAP 配网、MCP 服务、mDNS、
+Bearer 鉴权和可选 MQTT；产品工程只负责注册自己的 Device Function Module 与
+硬件驱动。
+
+通用 SDK 不包含开关、灯控、继电器等最终产品能力。当前测试板示例通过单独的
+Function Module 暴露 6 路板载 PWM 指示灯和 4 路继电器；旧版 WS2812 灯带驱动
+与 Legacy Light MCP 命令路径已经移除。新产品接入请先阅读
+[ESP32 SDK 快速接入](docs/CMPP_ESP32_SDK.md)。
 
 ## 原理图对应关系
 

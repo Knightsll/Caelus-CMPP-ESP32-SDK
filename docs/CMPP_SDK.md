@@ -1,4 +1,4 @@
-# CMPP ESP32 SDK 0.1
+# CMPP SDK 1.0
 
 This directory contains the first transport-neutral CMPP SDK release. The SDK
 components remain product-independent. The test-board application demonstrates
@@ -17,6 +17,7 @@ bring-up checks, see the [test-board deployment guide](TEST_BOARD_DEPLOYMENT.md)
 | `caelus_cmpp_codec_json` | CMPP value/request/result/manifest JSON conversion | Core + cJSON |
 | `caelus_cmpp_adapter_mcp` | Official MCP tool/resource/notification mapping | Core + codec + `mcp-c-sdk` |
 | `caelus_cmpp_adapter_mqtt` | Optional MQTT topics and JSON command/result mapping | Core + codec |
+| `caelus_cmpp_sdk_esp32` | Stable identity, BLE/SoftAP provisioning, authenticated MCP/mDNS service and optional MQTT lifecycle | Core + adapters + ESP-IDF |
 | `caelus_cmpp_backend_pwm` | Generic normalized LEDC output and ramping | Core + LEDC |
 | `caelus_cmpp_backend_relay` | Generic binary GPIO output and switch interval enforcement | Core + GPIO |
 | `caelus_device_function` | Test-board capability semantics for six indicators and four relays | Core + generic backend APIs |
@@ -27,16 +28,20 @@ register descriptors and callbacks.
 
 ## Runtime lifecycle
 
-1. Initialize NVS in the application.
-2. Create `cmpp_esp32_platform_t` and obtain its operations table.
-3. Create `cmpp_runtime_t` with a stable `device_id` and `profile_id`.
-4. Initialize hardware backends in the board assembly layer.
-5. Register every Function Module through
+For normal ESP32 products, `caelus_cmpp_sdk_esp32` owns NVS, platform,
+identity, provisioning and transport startup:
+
+1. Call `cmpp_esp32_sdk_create()` with product metadata and capacity limits.
+2. Obtain the shared runtime with `cmpp_esp32_sdk_runtime()`.
+3. Initialize hardware backends in the product assembly layer.
+4. Register every Function Module through
    `cmpp_runtime_register_capability()`.
-6. Dispatch in-process commands directly or attach MCP and/or MQTT adapters.
-7. On shutdown, call `cmpp_runtime_safe_stop()`, destroy adapters and Function
-   Modules, destroy hardware backends, destroy the runtime, then destroy the
-   platform object.
+5. Call `cmpp_esp32_sdk_start()` to provision or connect Wi-Fi, publish mDNS,
+   and start authenticated MCP plus optional MQTT.
+
+The SDK is designed to live until reboot after it starts. Products needing a
+custom lifecycle can continue assembling the lower-level components directly.
+See [ESP32 SDK quick start](CMPP_ESP32_SDK.md) for code and configuration.
 
 Descriptors and callback tables are borrowed for the lifetime of the runtime.
 Request values are borrowed for one dispatch. Response values are owned by the
@@ -90,7 +95,7 @@ Module's command, dry-run, observation and safe-stop contracts.
 The MQTT wire contract, security boundary, capacity limits, and 4 MB build
 profile are documented in [CMPP MQTT Binding](CMPP_MQTT_BINDING.md).
 
-Compile all ESP32 components with:
+Compile the ESP32 SDK and test-board example with:
 
 ```bash
 bash scripts/build.sh

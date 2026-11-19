@@ -5,7 +5,7 @@
 #include <string.h>
 
 #include "cJSON.h"
-#if CONFIG_CMPP_BOARD_MQTT_ENABLE
+#if CONFIG_CMPP_SDK_MQTT_ENABLE
 #include "cmpp/cmpp_mqtt_binding.h"
 #include "mqtt_settings.h"
 #endif
@@ -23,7 +23,7 @@
 #include "freertos/event_groups.h"
 #include "freertos/task.h"
 #include "nvs.h"
-#if CONFIG_CMPP_BOARD_BLE_PROVISIONING
+#if CONFIG_CMPP_SDK_BLE_PROVISIONING
 #include "network_provisioning/manager.h"
 #include "network_provisioning/scheme_ble.h"
 #endif
@@ -56,7 +56,7 @@ static bool s_portal_active;
 static bool s_resume_pairing;
 static bool s_connect_requested;
 static int s_retry_count;
-#if CONFIG_CMPP_BOARD_BLE_PROVISIONING
+#if CONFIG_CMPP_SDK_BLE_PROVISIONING
 static bool s_ble_provisioning_active;
 #endif
 
@@ -70,7 +70,7 @@ static esp_err_t make_portal_ssid(void)
 
     const int written = snprintf(
         s_portal_ssid, sizeof(s_portal_ssid), "%s-%02X%02X%02X",
-        CONFIG_CMPP_BOARD_PROVISIONING_SSID_PREFIX,
+        CONFIG_CMPP_SDK_PROVISIONING_SSID_PREFIX,
         mac[3], mac[4], mac[5]);
     if (written < 0 || (size_t)written >= sizeof(s_portal_ssid)) {
         return ESP_ERR_INVALID_SIZE;
@@ -78,7 +78,8 @@ static esp_err_t make_portal_ssid(void)
 
     const int name_written = snprintf(
         s_suggested_display_name, sizeof(s_suggested_display_name),
-        "Caelus Board %02X%02X%02X", mac[3], mac[4], mac[5]);
+        "%s %02X%02X%02X", CONFIG_CMPP_SDK_DISPLAY_NAME_PREFIX,
+        mac[3], mac[4], mac[5]);
     if (name_written < 0 ||
         (size_t)name_written >= sizeof(s_suggested_display_name)) {
         return ESP_ERR_INVALID_SIZE;
@@ -86,7 +87,7 @@ static esp_err_t make_portal_ssid(void)
 
     const int hostname_written = snprintf(
         s_suggested_hostname, sizeof(s_suggested_hostname),
-        "%s-%02x%02x%02x", CONFIG_CMPP_BOARD_HOSTNAME_PREFIX,
+        "%s-%02x%02x%02x", CONFIG_CMPP_SDK_HOSTNAME_PREFIX,
         mac[3], mac[4], mac[5]);
     if (hostname_written < 0 ||
         (size_t)hostname_written >= sizeof(s_suggested_hostname)) {
@@ -411,7 +412,7 @@ static char *build_configured_response(const device_identity_t *identity)
     char authorization[sizeof("Bearer ") + DEVICE_AUTH_TOKEN_MAX_LEN];
     const int written = snprintf(
         endpoint, sizeof(endpoint), "http://%s.local:%d/mcp",
-        identity->hostname, CONFIG_CMPP_BOARD_HTTP_PORT);
+        identity->hostname, CONFIG_CMPP_SDK_HTTP_PORT);
     if (written < 0 || (size_t)written >= sizeof(endpoint)) {
         return NULL;
     }
@@ -455,7 +456,7 @@ static char *build_configured_response(const device_identity_t *identity)
     return json;
 }
 
-#if CONFIG_CMPP_BOARD_BLE_PROVISIONING
+#if CONFIG_CMPP_SDK_BLE_PROVISIONING
 static esp_err_t save_optional_mqtt_settings(const cJSON *root,
                                              bool *configured)
 {
@@ -464,7 +465,7 @@ static esp_err_t save_optional_mqtt_settings(const cJSON *root,
     if (!mqtt) {
         return ESP_OK;
     }
-#if !CONFIG_CMPP_BOARD_MQTT_ENABLE
+#if !CONFIG_CMPP_SDK_MQTT_ENABLE
     return ESP_ERR_NOT_SUPPORTED;
 #else
     if (!cJSON_IsObject(mqtt)) {
@@ -715,7 +716,7 @@ static esp_err_t start_ble_provisioning(bool enable_wifi_provisioning)
     }
     if (err == ESP_OK) {
         const network_prov_security1_params_t *security_params =
-            CONFIG_CMPP_BOARD_BLE_POP;
+            CONFIG_CMPP_SDK_BLE_POP;
         err = network_prov_mgr_start_provisioning(
             NETWORK_PROV_SECURITY_1, security_params, s_portal_ssid, NULL);
     }
@@ -930,7 +931,7 @@ static esp_err_t portal_configure_handler(httpd_req_t *req)
 
     ESP_LOGI(TAG, "Wi-Fi verified and saved in NVS, IP=%s", s_ip_address);
     ESP_LOGI(TAG, "MCP endpoint after setup: http://%s.local:%d/mcp",
-             identity.hostname, CONFIG_CMPP_BOARD_HTTP_PORT);
+             identity.hostname, CONFIG_CMPP_SDK_HTTP_PORT);
     s_resume_pairing = true;
     const esp_err_t response_err = send_json(req, "200 OK", response_json);
     cJSON_free(response_json);
@@ -1145,7 +1146,7 @@ esp_err_t network_connect(void)
         }
         ESP_RETURN_ON_ERROR(start_setup_hotspot(), TAG,
                             "Could not start first-time setup");
-#if CONFIG_CMPP_BOARD_BLE_PROVISIONING
+#if CONFIG_CMPP_SDK_BLE_PROVISIONING
         ESP_RETURN_ON_ERROR(esp_event_handler_register(
             NETWORK_PROV_EVENT, ESP_EVENT_ANY_ID,
             ble_provisioning_event_handler, NULL),
@@ -1162,7 +1163,7 @@ esp_err_t network_connect(void)
         /* Give the HTTP or BLE client time to receive the success response
          * before the setup transports are intentionally removed. */
         vTaskDelay(pdMS_TO_TICKS(PORTAL_RESPONSE_GRACE_MS));
-#if CONFIG_CMPP_BOARD_BLE_PROVISIONING
+#if CONFIG_CMPP_SDK_BLE_PROVISIONING
         ESP_RETURN_ON_ERROR(stop_ble_provisioning(), TAG,
                             "Could not stop BLE setup service");
         ESP_ERROR_CHECK_WITHOUT_ABORT(esp_event_handler_unregister(

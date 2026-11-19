@@ -1,0 +1,58 @@
+menu "Caelus CMPP ESP32 SDK"
+
+    config CMPP_SDK_PROVISIONING_SSID_PREFIX
+        string "First-time setup hotspot/BLE name prefix"
+        default "Caelus"
+        help
+            The SDK appends the last three MAC bytes. Keep this short enough
+            that the resulting Wi-Fi SSID is at most 32 bytes.
+
+    config CMPP_SDK_DISPLAY_NAME_PREFIX
+        string "Default display name prefix"
+        default "Caelus Device"
+
+    config CMPP_SDK_HOSTNAME_PREFIX
+        string "Default mDNS hostname prefix"
+        default "caelus-device"
+        help
+            Used for the first-time setup suggestion and as a fallback when no
+            hostname is stored. Users can edit it during setup.
+
+    config CMPP_SDK_IDENTITY_NAMESPACE
+        string "NVS namespace for identity and pairing"
+        default "cmpp_identity"
+        help
+            Must be at most 15 characters. Keep it stable across firmware
+            updates so device identity and credentials do not rotate.
+
+    config CMPP_SDK_HTTP_PORT
+        int "MCP HTTP port"
+        range 1 65535
+        default 8080
+
+    config CMPP_SDK_BLE_PROVISIONING
+        bool "Enable Bluetooth LE provisioning"
+        default y
+        select BT_ENABLED
+        select ESP_PROTOCOMM_SUPPORT_SECURITY_VERSION_1
+        help
+            Advertise a secure Espressif protocomm provisioning service while
+            pairing is incomplete. The SoftAP portal remains a recovery path.
+
+    config CMPP_SDK_BLE_POP
+        string "Bluetooth LE provisioning proof of possession"
+        depends on CMPP_SDK_BLE_PROVISIONING
+        default "caelus1234"
+        help
+            Development proof of possession. Production hardware must inject
+            a unique per-device value and put it on the enclosure or QR label.
+
+    config CMPP_SDK_MQTT_ENABLE
+        bool "Enable optional CMPP over MQTT client"
+        default n
+        help
+            Keep MCP Streamable HTTP and also connect to a broker provisioned
+            over BLE. The application must provide a sufficiently large app
+            partition; the included test-board dual-stack profile uses 4 MB.
+
+endmenu

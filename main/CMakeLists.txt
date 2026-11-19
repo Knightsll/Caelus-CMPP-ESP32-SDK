@@ -1,6 +1,5 @@
 set(cmpp_board_sources
         "main.c"
-        "board_config.c"
         "cmpp_device_server.c"
         "device_identity.c"
         "cmpp_mqtt_client.c"
@@ -32,6 +31,19 @@ set(cmpp_board_private_requires
         caelus_cmpp_codec_json
         caelus_cmpp_platform_esp32
         caelus_device_function)
+
+if(CONFIG_CMPP_VOICE_BOARD)
+    list(APPEND cmpp_board_sources "voice_board.c" "voice_media.c" "voice_audio.c" "voice_wire.c")
+    list(APPEND cmpp_board_sources "voice_recovery.c" "voice_recovery_logic.c")
+    list(APPEND cmpp_board_sources "voice_status.c" "voice_lifecycle.c" "voice_volume.c" "voice_upload_queue.c")
+else()
+    list(APPEND cmpp_board_sources "board_config.c")
+endif()
+
+# Dependency discovery runs before sdkconfig is loaded.
+if(IDF_TARGET STREQUAL "esp32s3")
+    list(APPEND cmpp_board_requires esp_driver_i2s esp_driver_i2c esp_codec_dev)
+endif()
 
 if(CONFIG_CMPP_BOARD_MQTT_ENABLE)
     list(APPEND cmpp_board_sources "mqtt_settings.c")

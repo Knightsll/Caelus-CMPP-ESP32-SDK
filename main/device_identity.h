@@ -21,4 +21,6 @@ esp_err_t device_identity_load(device_identity_t *identity);
 esp_err_t device_identity_set_setup(const char *display_name,
                                     const char *hostname);
 esp_err_t device_identity_complete_pairing(void);
+/* Physical maintenance only: preserve identity and credentials. */
+esp_err_t device_identity_reopen_pairing(void);
 esp_err_t device_identity_pairing_complete(bool *complete);

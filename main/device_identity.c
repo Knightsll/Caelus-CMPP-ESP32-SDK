@@ -1,4 +1,5 @@
 #include "device_identity.h"
+#include "board_profile.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -104,7 +105,7 @@ static esp_err_t load_display_name(char *display_name, size_t display_name_size,
     }
 
     const int written = snprintf(
-        display_name, display_name_size, "Caelus Board %02X%02X%02X",
+        display_name, display_name_size, BOARD_DISPLAY_NAME_PREFIX " %02X%02X%02X",
         mac[3], mac[4], mac[5]);
     return written >= 0 && (size_t)written < display_name_size
                ? ESP_OK
@@ -176,19 +177,29 @@ esp_err_t device_identity_set_setup(const char *display_name,
     return err;
 }
 
-esp_err_t device_identity_complete_pairing(void)
+static esp_err_t set_pairing_complete(uint8_t value)
 {
     nvs_handle_t handle;
     esp_err_t err = nvs_open(IDENTITY_NAMESPACE, NVS_READWRITE, &handle);
     if (err != ESP_OK) {
         return err;
     }
-    err = nvs_set_u8(handle, PAIRING_COMPLETE_KEY, 1);
+    err = nvs_set_u8(handle, PAIRING_COMPLETE_KEY, value);
     if (err == ESP_OK) {
         err = nvs_commit(handle);
     }
     nvs_close(handle);
     return err;
+}
+
+esp_err_t device_identity_complete_pairing(void)
+{
+    return set_pairing_complete(1);
+}
+
+esp_err_t device_identity_reopen_pairing(void)
+{
+    return set_pairing_complete(0);
 }
 
 esp_err_t device_identity_pairing_complete(bool *complete)

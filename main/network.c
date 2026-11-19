@@ -10,6 +10,9 @@
 #include "mqtt_settings.h"
 #endif
 #include "device_identity.h"
+#if CONFIG_CMPP_VOICE_BOARD
+#include "voice_status.h"
+#endif
 #include "esp_netif.h"
 #include "lwip/inet.h"
 #include "dns_server.h"
@@ -53,6 +56,7 @@ static char s_suggested_display_name[DEVICE_DISPLAY_NAME_MAX_LEN];
 static char s_suggested_hostname[DEVICE_HOSTNAME_MAX_LEN];
 static char s_captive_portal_uri[32];
 static bool s_portal_active;
+static bool s_network_prepared;
 static bool s_resume_pairing;
 static bool s_connect_requested;
 static int s_retry_count;
@@ -76,22 +80,18 @@ static esp_err_t make_portal_ssid(void)
         return ESP_ERR_INVALID_SIZE;
     }
 
-    const int name_written = snprintf(
-        s_suggested_display_name, sizeof(s_suggested_display_name),
-        "Caelus Board %02X%02X%02X", mac[3], mac[4], mac[5]);
-    if (name_written < 0 ||
-        (size_t)name_written >= sizeof(s_suggested_display_name)) {
-        return ESP_ERR_INVALID_SIZE;
+    /* Reprovisioning keeps custom names unless the user explicitly changes
+     * them. Identity supplies the same model-specific defaults on first boot. */
+    device_identity_t identity = {0};
+    err = device_identity_load(&identity);
+    if (err == ESP_OK) {
+        strlcpy(s_suggested_display_name, identity.display_name,
+                sizeof(s_suggested_display_name));
+        strlcpy(s_suggested_hostname, identity.hostname,
+                sizeof(s_suggested_hostname));
     }
-
-    const int hostname_written = snprintf(
-        s_suggested_hostname, sizeof(s_suggested_hostname),
-        "%s-%02x%02x%02x", CONFIG_CMPP_BOARD_HOSTNAME_PREFIX,
-        mac[3], mac[4], mac[5]);
-    if (hostname_written < 0 ||
-        (size_t)hostname_written >= sizeof(s_suggested_hostname)) {
-        return ESP_ERR_INVALID_SIZE;
-    }
+    memset(&identity, 0, sizeof(identity));
+    if (err != ESP_OK) return err;
     return ESP_OK;
 }
 
@@ -197,6 +197,9 @@ static void network_event_handler(void *arg, esp_event_base_t event_base,
                 esp_wifi_connect();
             }
         } else if (event_id == WIFI_EVENT_STA_DISCONNECTED) {
+#if CONFIG_CMPP_VOICE_BOARD
+            voice_status_update(VOICE_LED_NETWORK, 0);
+#endif
             strlcpy(s_ip_address, "0.0.0.0", sizeof(s_ip_address));
             xEventGroupClearBits(s_wifi_events, WIFI_CONNECTED_BIT);
 
@@ -222,6 +225,9 @@ static void network_event_handler(void *arg, esp_event_base_t event_base,
     }
 
     if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
+#if CONFIG_CMPP_VOICE_BOARD
+        voice_status_update(VOICE_LED_NETWORK, VOICE_LED_NETWORK);
+#endif
         const ip_event_got_ip_t *event = event_data;
         snprintf(s_ip_address, sizeof(s_ip_address), IPSTR,
                  IP2STR(&event->ip_info.ip));
@@ -1076,13 +1082,17 @@ static esp_err_t start_setup_hotspot(void)
                         "Could not start captive portal DNS");
 
     ESP_LOGW(TAG, "First-time setup hotspot: %s", s_portal_ssid);
+#if CONFIG_CMPP_VOICE_BOARD
+    voice_status_update(VOICE_LED_SETUP, VOICE_LED_SETUP);
+#endif
     ESP_LOGW(TAG, "Open %s if the setup page does not appear automatically",
              s_captive_portal_uri);
     return ESP_OK;
 }
 
-esp_err_t network_connect(void)
+esp_err_t network_prepare(void)
 {
+    if (s_network_prepared) return ESP_OK;
     esp_err_t err = esp_netif_init();
     if (err != ESP_OK && err != ESP_ERR_INVALID_STATE) {
         return err;
@@ -1113,8 +1123,16 @@ esp_err_t network_connect(void)
         IP_EVENT, IP_EVENT_STA_GOT_IP, network_event_handler, NULL),
         TAG, "IP event registration failed");
 
+    s_network_prepared = true;
+    return ESP_OK;
+}
+
+esp_err_t network_connect(void)
+{
+    ESP_RETURN_ON_ERROR(network_prepare(), TAG, "Network initialization failed");
+
     wifi_config_t persistent_wifi = {0};
-    err = load_persistent_wifi_config(&persistent_wifi);
+    esp_err_t err = load_persistent_wifi_config(&persistent_wifi);
     if (err == ESP_OK) {
         ESP_RETURN_ON_ERROR(esp_wifi_set_config(WIFI_IF_STA, &persistent_wifi),
                             TAG, "Could not restore saved Wi-Fi config");
@@ -1171,6 +1189,9 @@ esp_err_t network_connect(void)
 #endif
         ESP_RETURN_ON_ERROR(stop_setup_hotspot(), TAG,
                             "Could not close first-time setup hotspot");
+#if CONFIG_CMPP_VOICE_BOARD
+        voice_status_update(VOICE_LED_SETUP, 0);
+#endif
         if (!(xEventGroupGetBits(s_wifi_events) & WIFI_CONNECTED_BIT)) {
             ESP_RETURN_ON_ERROR(esp_wifi_connect(), TAG,
                                 "Could not connect saved Wi-Fi after setup");

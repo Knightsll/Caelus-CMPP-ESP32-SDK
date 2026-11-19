@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 #include "cmpp_device_server.h"
+#include "board_profile.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -68,7 +69,7 @@ static esp_err_t start_mdns(void)
     mdns_txt_item_t records[] = {
         {"path", "/mcp"},
         {"transport", "streamable-http"},
-        {"device_type", "cmpp-test-board"},
+        {"device_type", BOARD_DEVICE_TYPE},
         {"cmpp_version", CMPP_PROTOCOL_VERSION},
         {"mcp_version", cmpp_mcp_protocol_version()},
         {"device_uid", s_identity.device_uid},
@@ -108,8 +109,8 @@ esp_err_t cmpp_device_server_start(const device_identity_t *identity,
     ESP_RETURN_ON_ERROR(esp_mcp_create(&s_mcp), TAG,
                         "MCP engine creation failed");
     ESP_RETURN_ON_ERROR(esp_mcp_set_server_info(
-                            s_mcp, "Caelus CMPP Test Board",
-                            "Six PWM indicators and four relay outputs", NULL,
+                            s_mcp, BOARD_SERVER_NAME,
+                            BOARD_SERVER_DESCRIPTION, NULL,
                             NULL),
                         TAG, "MCP server metadata failed");
     const cmpp_mcp_adapter_config_t adapter_config = {

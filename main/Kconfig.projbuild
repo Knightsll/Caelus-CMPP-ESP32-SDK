@@ -1,4 +1,33 @@
-menu "Caelus CMPP Test Board"
+menu "Caelus CMPP Board"
+
+    config CMPP_VOICE_BOARD
+        bool "AI_REC_v2 ESP32-S3 voice terminal"
+        depends on IDF_TARGET_ESP32S3
+        default n
+        select HTTPD_WS_SUPPORT
+        select HTTPD_WS_PRE_HANDSHAKE_CB_SUPPORT
+        select HTTPD_WS_POST_HANDSHAKE_CB_SUPPORT
+        help
+            Single-board PCM/PTT bring-up. Reuses BLE provisioning and CMPP.
+            Verify the schematic voltage issues and actual S3 part before flashing.
+
+    config CMPP_VOICE_HTTP_PORT
+        int "Voice WebSocket port"
+        depends on CMPP_VOICE_BOARD
+        range 1 65535
+        default 8081
+
+    config CMPP_VOICE_INPUT_GAIN
+        int "Microphone gain (dB)"
+        depends on CMPP_VOICE_BOARD
+        range 0 36
+        default 24
+
+    config CMPP_VOICE_OUTPUT_VOLUME
+        int "Initial playback volume (percent)"
+        depends on CMPP_VOICE_BOARD
+        range 0 100
+        default 35
 
     config CMPP_BOARD_PROVISIONING_SSID_PREFIX
         string "First-time setup hotspot prefix"

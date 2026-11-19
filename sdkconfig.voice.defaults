@@ -1,0 +1,12 @@
+# Layer after sdkconfig.defaults; build with a separate SDKCONFIG and build dir.
+CONFIG_CMPP_VOICE_BOARD=y
+CONFIG_CMPP_BOARD_PROVISIONING_SSID_PREFIX="Caelus-Voice"
+CONFIG_CMPP_BOARD_HOSTNAME_PREFIX="caelus-voice"
+CONFIG_HTTPD_WS_SUPPORT=y
+CONFIG_HTTPD_WS_PRE_HANDSHAKE_CB_SUPPORT=y
+CONFIG_HTTPD_WS_POST_HANDSHAKE_CB_SUPPORT=y
+CONFIG_CODEC_ES7210_SUPPORT=y
+CONFIG_CODEC_ES8311_SUPPORT=y
+# Hardware reports 8MB AP_3v3; this bounded PCM bring-up keeps PSRAM
+# disabled because it does not require external RAM.
+# CONFIG_SPIRAM is not set

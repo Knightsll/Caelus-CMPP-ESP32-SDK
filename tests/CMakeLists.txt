@@ -57,3 +57,55 @@ target_compile_definitions(test_device_function PRIVATE _POSIX_C_SOURCE=200809L)
 target_compile_options(test_device_function PRIVATE -Wall -Wextra -Werror -pedantic)
 target_link_libraries(test_device_function PRIVATE Threads::Threads)
 add_test(NAME cmpp_device_function_contract COMMAND test_device_function)
+
+add_executable(test_voice_wire
+    test_voice_wire.c
+    ../main/voice_wire.c
+    ../managed_components/espressif__cjson/cJSON/cJSON.c
+)
+target_include_directories(test_voice_wire PRIVATE
+    ../main
+    ../managed_components/espressif__cjson/cJSON
+)
+target_compile_options(test_voice_wire PRIVATE -Wall -Wextra -Werror -pedantic)
+add_test(NAME voice_wire_contract COMMAND test_voice_wire)
+
+add_executable(test_voice_recovery test_voice_recovery.c ../main/voice_recovery_logic.c)
+target_include_directories(test_voice_recovery PRIVATE ../main)
+target_compile_options(test_voice_recovery PRIVATE -Wall -Wextra -Werror -pedantic)
+add_test(NAME voice_recovery_contract COMMAND test_voice_recovery)
+
+add_executable(test_voice_status test_voice_status.c)
+target_include_directories(test_voice_status PRIVATE ../main)
+target_compile_options(test_voice_status PRIVATE -Wall -Wextra -Werror -pedantic)
+add_test(NAME voice_status_contract COMMAND test_voice_status)
+
+add_executable(test_voice_lifecycle test_voice_lifecycle.c ../main/voice_lifecycle.c)
+target_include_directories(test_voice_lifecycle PRIVATE ../main)
+target_compile_options(test_voice_lifecycle PRIVATE -Wall -Wextra -Werror -pedantic)
+add_test(NAME voice_lifecycle_contract COMMAND test_voice_lifecycle)
+
+add_executable(test_voice_volume test_voice_volume.c ../main/voice_volume.c)
+target_include_directories(test_voice_volume PRIVATE voice_stubs ../main)
+target_compile_definitions(test_voice_volume PRIVATE CONFIG_CMPP_VOICE_OUTPUT_VOLUME=35)
+target_compile_options(test_voice_volume PRIVATE -Wall -Wextra -Werror -pedantic)
+add_test(NAME voice_volume_contract COMMAND test_voice_volume)
+
+add_executable(test_voice_board test_voice_board.c ../main/voice_board.c
+    ../main/voice_lifecycle.c ../main/voice_wire.c
+    ../managed_components/espressif__cjson/cJSON/cJSON.c)
+target_include_directories(test_voice_board PRIVATE voice_stubs ../main
+    ../components/caelus_cmpp_core/include ../managed_components/espressif__cjson/cJSON)
+target_compile_definitions(test_voice_board PRIVATE CONFIG_CMPP_VOICE_OUTPUT_VOLUME=35 CONFIG_CMPP_VOICE_HTTP_PORT=8081)
+target_compile_options(test_voice_board PRIVATE -Wall -Wextra -Werror -pedantic)
+add_test(NAME voice_board_contract COMMAND test_voice_board)
+
+add_executable(test_voice_socket test_voice_socket.c)
+target_include_directories(test_voice_socket PRIVATE ../main)
+target_compile_options(test_voice_socket PRIVATE -Wall -Wextra -Werror -pedantic)
+add_test(NAME voice_socket_contract COMMAND test_voice_socket)
+
+add_executable(test_voice_upload_queue test_voice_upload_queue.c ../main/voice_upload_queue.c ../main/voice_lifecycle.c)
+target_include_directories(test_voice_upload_queue PRIVATE ../main)
+target_compile_options(test_voice_upload_queue PRIVATE -Wall -Wextra -Werror -pedantic)
+add_test(NAME voice_upload_queue_contract COMMAND test_voice_upload_queue)

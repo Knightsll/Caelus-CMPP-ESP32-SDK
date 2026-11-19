@@ -84,6 +84,24 @@ idf.py -B build-mqtt \
 
 ## 构建和测试
 
+本项目将专门负责语音采集、传输与播放的设备定义为 **CMPP 语音终端（CMPP Voice Terminal）**：
+设备类型 `cmpp-voice-terminal`，接口 profile `caelus.voice-terminal.v1`，能力 `voice.channel`。
+AI_REC_v2 是该类别当前的硬件实现；单台设备仍由鉴权后的 CMPP UID 区分。
+
+AI_REC_v2 ESP32-S3 单板语音实验使用独立入口 `bash scripts/build_voice.sh`，
+产物在 `build-voice/cmpp_voice_terminal.bin`；复用 BLE 配网和 CMPP，按键上传
+PCM 并接收回放。完整协议、盒侧测试工具及未完成的电气/实物检查见
+[共同接口文档第 6.7 节](docs/CAELUS_ROOM_VOICE_INTERFACE.zh-CN.md#67-单板实验实现与线协议-v1)。
+当前单板已确认有 8 MB PSRAM 和 16 MB Flash；实验固件尚未完成全部实板验收，电气与声学待确认项见共同接口文档。
+SW2（GPIO1）用于按键说话。运行中按住 SW1（实际 GPIO17）满 5 秒且不足 12 秒后松开，
+可保留设备身份重新进入配网，建议按住 6–8 秒；恢复出厂使用独立的启动维护确认流程。
+手势、清除范围与断电恢复见共同接口文档第 6.8、6.24 节。
+当前固件提供 GPIO46 状态灯，并通过 `ptt_interrupt_v1` 协商支持播放中按键打断；
+盒侧须实现对应协议，未协商时保持半双工。媒体握手、PCM 播放/drained、断连清理已有自动检查，
+播放中实板按键打断及最终声学效果仍待验收，详见第 6.26 节。后续 BLE 和配网观察见第 6.27–6.28 节。
+
+下列原构建命令仍用于 C3 测试板，不能将 C3 镜像刷入 S3。
+
 ```bash
 bash scripts/test_cmpp_host.sh
 bash scripts/build.sh

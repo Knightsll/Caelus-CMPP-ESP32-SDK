@@ -1,7 +1,10 @@
 build/
+build-*/
 build-host-tests/
 sdkconfig
 sdkconfig.old
 managed_components/
 dependencies.lock
 .esp-tools/
+__pycache__/
+*.py[cod]

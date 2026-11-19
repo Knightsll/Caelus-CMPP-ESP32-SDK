@@ -64,15 +64,33 @@ idf.py erase-flash
 
 未完成配对时设备启动：
 
-1. 创建 `Caelus-Board-XXXXXX` 配网热点。
-2. 在 `http://192.168.4.1` 提交 2.4 GHz Wi-Fi、设备名称和 hostname。
-3. 页面显示 MCP endpoint、device UID 和 Bearer Token。
-4. 将连接 JSON 和 Token 安全保存。
-5. 必须点击“我已保存，完成配对”。
-6. 设备关闭配网热点并切换到家庭 Wi-Fi。
+1. 同时创建 `Caelus-Board-XXXXXX` BLE 服务和恢复热点。
+2. 推荐由 `caelus-pair-device` Skill 在 BLE 上建立 Espressif Security 1 会话。
+3. 通过标准 `prov-config` 提交 2.4 GHz Wi-Fi，再通过 `custom-data` 设置设备名
+   和 hostname，并取得 device UID 和 Bearer Token。
+4. Skill 将 MCP 连接信息原子保存到 `~/.config/caelus/mcp-devices.json`，重新
+   读取并比对。
+5. 只有保存成功后，Skill 才发送 `complete`。
+6. 设备释放 BLE 内存、关闭恢复热点并留在家庭 Wi-Fi。
 
-仅提交 Wi-Fi 表单不会完成配对。若没有执行第 5 步，设备下次启动会认为
-配对仍处于 pending 状态而重新开放热点。
+BLE 服务 UUID 是 `021a9004-0382-4aea-bff4-6b3f1c5adfb4`，能力标记是
+`caelus_pairing_v1`。首次使用 Skill 需要：
+
+```bash
+python3 skills/caelus-pair-device/scripts/setup_ble.py --yes
+python3 skills/caelus-pair-device/scripts/caelus_ble.py discover
+python3 skills/caelus-pair-device/scripts/caelus_ble.py provision --dry-run
+python3 skills/caelus-pair-device/scripts/caelus_ble.py provision --yes
+```
+
+没有 BLE 时仍可连接同名热点，在 `http://192.168.4.1` 完成原有网页流程。
+
+仅提交 Wi-Fi 不会完成配对。若客户端没有发送 `complete`，设备下次启动会认为
+配对仍处于 pending 状态，重新广播 BLE 和热点，以便恢复同一个 Token。
+
+当前测试板使用开发 PoP `caelus1234`。量产固件必须从制造分区读取每台设备
+唯一的 PoP（或升级到 Security 2 的唯一 salt/verifier），并通过机身标签或 QR
+码交付；不得继续使用测试默认值。
 
 ## 5. 持久化状态
 
@@ -104,7 +122,7 @@ wifi=missing, pairing=complete
 
 ## 6. mDNS 行为
 
-配网 AP 阶段不发布正式 MCP mDNS 服务。完成配对并连接家庭 Wi-Fi 后，设备
+BLE/配网 AP 阶段不发布正式 MCP mDNS 服务。完成配对并连接家庭 Wi-Fi后，设备
 才发布：
 
 ```text
@@ -113,17 +131,26 @@ _cmpp._tcp.local
 
 当前固件不会发布 `_caelus-hw._tcp.local`。mDNS 是本地链路发现，只能在同一
 局域网/二层网络内工作；跨 VLAN 或跨家庭网络需要 mDNS reflector、网关代理
-或其他显式连接方式。配网入口始终可以通过固定地址 `192.168.4.1` 访问。
+或其他显式连接方式。BLE 发现不依赖局域网；热点恢复入口始终可以通过固定地址
+`192.168.4.1` 访问。
 
 ## 7. 启动状态排查
 
 | 日志 | 含义 | 处理 |
 |---|---|---|
 | `wifi=saved, pairing=complete` | 持久化条件满足 | 应直接连接家庭 Wi-Fi |
-| `wifi=saved, pairing=pending` | Wi-Fi 已保存但未完成配对 | 访问配网页面恢复连接信息并点击完成配对 |
+| `wifi=saved, pairing=pending` | Wi-Fi 已保存但未完成配对 | 重新运行 BLE Skill，或访问配网页面恢复连接信息并完成配对 |
 | `wifi=missing, pairing=complete` | Wi-Fi 配置未保存 | 重新提交 Wi-Fi；不要先擦除 Flash |
 | `wifi=missing, pairing=pending` | 全新或已被清空 | 执行完整首次配网 |
 
 如果状态正确但仍无法发现设备，先确认设备和客户端在同一局域网，再检查
 UDP 5353/mDNS 是否被访客网络或 VLAN 隔离。mDNS TXT 信息只用于定位候选
 设备，不能替代 Bearer Token 鉴权。
+
+## 8. 容量边界
+
+启用 NimBLE、protocomm 和 `network_provisioning` 1.4 后，当前构建镜像约
+`0x167f60` 字节（约 1.44 MiB），`0x177000` app 分区仅剩约 `0xf0a0` 字节
+（约 60 KiB，4%）。这足以运行首版 BLE 配网，但不适合直接继续叠加 OTA 双分区、
+大型证书包或较重的 Stream/任务队列。增加这些功能前先调整分区表或使用更大
+Flash，并重新测量运行期最小堆余量。

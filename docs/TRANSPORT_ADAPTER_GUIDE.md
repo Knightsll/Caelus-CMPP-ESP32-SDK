@@ -30,3 +30,6 @@ Adapters must define their retry and authentication limitations. In particular,
 do not imply reboot-persistent idempotency when the configured runtime cache is
 volatile.
 
+The current MQTT example also keeps broker callbacks short: it reassembles a
+bounded payload, places the command on a small worker queue, and executes CMPP
+outside the MQTT network task. See [CMPP MQTT Binding](CMPP_MQTT_BINDING.md).

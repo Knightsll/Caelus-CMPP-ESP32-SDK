@@ -2,6 +2,7 @@
 #include "cmpp/cmpp.h"
 #include "cmpp/cmpp_codec_json.h"
 #include "cmpp/cmpp_mcp_binding.h"
+#include "cmpp/cmpp_mqtt_binding.h"
 
 #include <assert.h>
 #include <pthread.h>
@@ -521,6 +522,49 @@ static void test_mcp_and_in_process_mapping(cmpp_runtime_t *runtime,
            CMPP_ERR_INVALID_ARGUMENT);
 }
 
+static void test_mqtt_mapping(cmpp_runtime_t *runtime)
+{
+    char topic[CMPP_MQTT_TOPIC_MAX];
+    assert(cmpp_mqtt_build_topic(topic, sizeof(topic), NULL,
+                                 "device.test-1", CMPP_MQTT_TOPIC_COMMAND,
+                                 NULL) == CMPP_ERR_INVALID_ARGUMENT);
+    assert(cmpp_mqtt_build_topic(topic, sizeof(topic),
+                                 CMPP_MQTT_DEFAULT_PREFIX, "device.test-1",
+                                 CMPP_MQTT_TOPIC_COMMAND, NULL) == CMPP_OK);
+    assert(strcmp(topic, "caelus/v1/device.test-1/command") == 0);
+    assert(cmpp_mqtt_build_topic(topic, sizeof(topic),
+                                 CMPP_MQTT_DEFAULT_PREFIX, "device.test-1",
+                                 CMPP_MQTT_TOPIC_STATE, NULL) == CMPP_OK);
+    assert(strcmp(topic, "caelus/v1/device.test-1/state") == 0);
+    assert(cmpp_mqtt_build_topic(topic, sizeof(topic),
+                                 CMPP_MQTT_DEFAULT_PREFIX, "device.test-1",
+                                 CMPP_MQTT_TOPIC_RESULT, "cmd/malformed") ==
+           CMPP_ERR_INVALID_ARGUMENT);
+    assert(cmpp_mqtt_build_topic(topic, sizeof(topic), "caelus/#",
+                                 "device.test-1", CMPP_MQTT_TOPIC_COMMAND,
+                                 NULL) == CMPP_ERR_INVALID_ARGUMENT);
+    assert(cmpp_mqtt_build_topic(topic, sizeof(topic), "/caelus/v1",
+                                 "device.test-1", CMPP_MQTT_TOPIC_COMMAND,
+                                 NULL) == CMPP_ERR_INVALID_ARGUMENT);
+
+    const char *command =
+        "{\"schema\":\"cmpp.command.v1\",\"protocol_version\":\"1.0\","
+        "\"command_id\":\"cmd.mqtt\",\"trace_id\":\"trace.mqtt\","
+        "\"target\":{\"device_id\":\"device.test-1\","
+        "\"capability_id\":\"test.output\"},"
+        "\"command_type\":\"test.set\",\"requested_by\":\"mqtt-tests\","
+        "\"reason\":\"MQTT binding test\",\"safety_class\":\"reversible\","
+        "\"arguments\":{\"value\":81},\"ttl_ms\":500,"
+        "\"idempotency_key\":\"idem.mqtt\",\"requires_ack\":true}";
+    char *result = NULL;
+    assert(cmpp_mqtt_dispatch_json(runtime, command, &result) == CMPP_OK);
+    assert(strstr(result, "\"command_id\":\"cmd.mqtt\"") != NULL);
+    assert(strstr(result, "\"status\":\"completed\"") != NULL);
+    cmpp_mqtt_free_json(result);
+    assert(cmpp_mqtt_dispatch_json(runtime, "not-json", &result) ==
+           CMPP_ERR_INVALID_ARGUMENT);
+}
+
 static void test_heap_stability(cmpp_runtime_t *runtime,
                                 test_platform_t *platform,
                                 test_module_t *module)
@@ -577,6 +621,7 @@ int main(void)
     test_concurrency_and_deadline(runtime, &module);
     test_failure_effects(runtime, &module);
     test_mcp_and_in_process_mapping(runtime, &module);
+    test_mqtt_mapping(runtime);
     test_heap_stability(runtime, &platform, &module);
 
     cmpp_runtime_info_t info;

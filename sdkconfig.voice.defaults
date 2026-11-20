@@ -7,6 +7,14 @@ CONFIG_HTTPD_WS_PRE_HANDSHAKE_CB_SUPPORT=y
 CONFIG_HTTPD_WS_POST_HANDSHAKE_CB_SUPPORT=y
 CONFIG_CODEC_ES7210_SUPPORT=y
 CONFIG_CODEC_ES8311_SUPPORT=y
-# Hardware reports 8MB AP_3v3; this bounded PCM bring-up keeps PSRAM
-# disabled because it does not require external RAM.
-# CONFIG_SPIRAM is not set
+CONFIG_LWIP_MAX_SOCKETS=16
+# Two HTTP servers reserve six sockets; allow two MCP clients plus media.
+# Bound retained command notifications; state remains available on demand.
+CONFIG_MCP_HTTP_SSE_REPLAY_DEPTH=8
+# D6FD1C: 8MB AP_3v3 verified by boot memtest and four 7MiB pattern passes.
+# Only explicitly allocated bulk buffers use PSRAM; normal malloc stays internal.
+CONFIG_SPIRAM=y
+CONFIG_SPIRAM_MODE_OCT=y
+CONFIG_SPIRAM_SPEED_40M=y
+CONFIG_SPIRAM_USE_CAPS_ALLOC=y
+CONFIG_SPIRAM_MEMTEST=y

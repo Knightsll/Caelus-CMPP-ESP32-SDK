@@ -53,7 +53,7 @@ static cmpp_status_t admit(void *context, const cmpp_request_t *request)
     return key && cmpp_value_object_get(request->arguments, key) ? CMPP_OK : CMPP_ERR_INVALID_ARGUMENT;
 }
 
-static void snapshot(board_runtime_t *b)
+static void snapshot(board_runtime_t *b, bool detailed)
 {
     voice_media_state_t state;
     voice_media_observe(b->media, &state);
@@ -73,6 +73,17 @@ static void snapshot(board_runtime_t *b)
     b->reply_values[11] = (cmpp_value_t){.type = CMPP_VALUE_BOOL, .as.boolean = state.fault};
     b->reply_values[12] = (cmpp_value_t){.type = CMPP_VALUE_STRING, .as.string = state.last_fault_reason};
     b->reply_values[13] = (cmpp_value_t){.type = CMPP_VALUE_STRING, .as.string = state.last_stop_reason};
+    b->reply_values[15] = (cmpp_value_t){.type = CMPP_VALUE_INT, .as.integer = state.volume};
+    /* Command results are retained by the idempotency cache and SSE replay.
+     * Keep diagnostic trees in the read-only state resource only. */
+    if (!detailed) {
+        for (size_t i = 0; i < 14; ++i)
+            b->reply_entries[i] = (cmpp_object_entry_t){.key = keys[i], .value = &b->reply_values[i]};
+        b->reply_entries[14] = (cmpp_object_entry_t){.key = "volume", .value = &b->reply_values[15]};
+        b->reply = (cmpp_value_t){.type = CMPP_VALUE_OBJECT,
+            .as.object = {.entries = b->reply_entries, .count = 15}};
+        return;
+    }
     const voice_diagnostics_t *d = &state.diagnostics;
     const char *diagnostic_keys[] = {
         "upload_pcm_queued_bytes", "upload_pcm_sent_bytes", "output_pcm_received_bytes",
@@ -154,7 +165,7 @@ static cmpp_status_t execute(void *context, const cmpp_request_t *request, cmpp_
         const char *id = cmpp_value_object_get(request->arguments, "channel_id")->as.string;
         err = voice_media_close(b->media, id, request->dry_run, &changed);
     }
-    snapshot(b);
+    snapshot(b, false);
     result->data = &b->reply;
     result->outcome = err == ESP_OK ? CMPP_OUTCOME_COMPLETED :
         err == ESP_ERR_INVALID_STATE ? CMPP_OUTCOME_REJECTED : CMPP_OUTCOME_FAILED;
@@ -167,7 +178,7 @@ static cmpp_status_t execute(void *context, const cmpp_request_t *request, cmpp_
 static cmpp_status_t observe(void *context, cmpp_value_t *state)
 {
     board_runtime_t *b = context;
-    snapshot(b);
+    snapshot(b, true);
     *state = b->reply;
     return CMPP_OK;
 }

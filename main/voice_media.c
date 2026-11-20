@@ -19,6 +19,7 @@
 #include "esp_random.h"
 #include "esp_timer.h"
 #include "esp_heap_caps.h"
+#include "esp_memory_utils.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
 #include "freertos/semphr.h"
@@ -192,6 +193,7 @@ static void capture_task(void *arg)
     voice_media_t *b = arg;
     int16_t pcm[VOICE_FRAME_SAMPLES];
     int16_t previous_pcm[VOICE_FRAME_SAMPLES] = {0};
+    int64_t next_heap_log_ms = 0;
     for (;;) {
         esp_err_t err = voice_audio_read(pcm);
         bool pressed = voice_audio_pressed();
@@ -255,6 +257,14 @@ static void capture_task(void *arg)
             stop_locked(b, reason);
         }
         give(b);
+        if (now_ms() >= next_heap_log_ms) {
+            next_heap_log_ms = now_ms() + 30000;
+            ESP_LOGI(TAG, "Heap internal free=%u min=%u largest=%u psram_free=%u",
+                (unsigned)heap_caps_get_free_size(MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT),
+                (unsigned)heap_caps_get_minimum_free_size(MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT),
+                (unsigned)heap_caps_get_largest_free_block(MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT),
+                (unsigned)heap_caps_get_free_size(MALLOC_CAP_SPIRAM));
+        }
         if (err == ESP_OK) memcpy(previous_pcm, pcm, sizeof(pcm));
         else memset(previous_pcm, 0, sizeof(previous_pcm));
         if (err != ESP_OK) vTaskDelay(pdMS_TO_TICKS(20));
@@ -498,12 +508,19 @@ esp_err_t voice_media_create(voice_media_t **output)
     voice_media_t *b = calloc(1, sizeof(*b));
     if (!b) return ESP_ERR_NO_MEM;
     b->fd = -1;
+#if CONFIG_SPIRAM
+    /* This is a CPU-owned queue, not an I2S DMA buffer. */
+    b->upload = heap_caps_calloc(1, sizeof(*b->upload), MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+#else
     b->upload = calloc(1, sizeof(*b->upload));
+#endif
     b->lock = xSemaphoreCreateMutex();
     b->playback = xQueueCreate(PLAYBACK_QUEUE_FRAMES, sizeof(packet_t));
     esp_err_t err = ESP_ERR_NO_MEM;
     TaskHandle_t capture = NULL;
     if (!b->upload || !b->lock || !b->playback) goto failed;
+    ESP_LOGI(TAG, "Upload queue allocation: %u bytes in %s", (unsigned)sizeof(*b->upload),
+             esp_ptr_external_ram(b->upload) ? "PSRAM" : "internal RAM");
     err = voice_audio_init();
     if (err != ESP_OK) goto failed;
     b->stopped_confirmed = true;

@@ -17,27 +17,6 @@ menu "Caelus CMPP Board"
         range 1 65535
         default 8081
 
-    config CMPP_VOICE_WAKE_WORD
-        string "Expected single wake word in model metadata"
-        depends on CMPP_VOICE_BOARD
-        default "小白小白"
-        help
-            This is a model identity check, not text-to-model training.
-
-    config CMPP_VOICE_WAKE_MODEL
-        string "Wake model ID (xiaobai_micro_v1; empty = PTT only)"
-        depends on CMPP_VOICE_BOARD
-        default ""
-        help
-            Uses the self-trained INT8 microWakeWord model embedded from
-            main/wake_models/xiaobai.tflite. Empty keeps PTT usable without a model.
-
-    config CMPP_VOICE_WAKE_THRESHOLD
-        int "Wake detection threshold percent (0 = model default)"
-        depends on CMPP_VOICE_BOARD
-        range 0 99
-        default 0
-
     config CMPP_VOICE_WAKE_SILENCE_MS
         int "Silence after speech to end voice-triggered recording (ms)"
         depends on CMPP_VOICE_BOARD
@@ -45,7 +24,7 @@ menu "Caelus CMPP Board"
         default 1200
 
     config CMPP_VOICE_FOLLOWUP_TIMEOUT_MS
-        int "Quiet timeout for conversation after a wake (ms)"
+        int "Quiet timeout for conversation after SW2 (ms)"
         depends on CMPP_VOICE_BOARD
         range 5000 120000
         default 15000

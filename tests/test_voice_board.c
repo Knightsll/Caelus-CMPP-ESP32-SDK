@@ -10,7 +10,7 @@ static void *context;
 static const cmpp_capability_descriptor_t *descriptor, *threshold_descriptor;
 static int media_token, calls, failure;
 static voice_media_state_t current = {.volume = 35, .barge_min_rms = 1000, .last_fault_reason = "none", .last_stop_reason = "none",
-    .wake_status = "model_not_configured", .wake_word = "小白小白"};
+    .wake_status = "disabled_by_design", .wake_word = ""};
 cmpp_status_t cmpp_runtime_register_capability(cmpp_runtime_t *r, const cmpp_capability_descriptor_t *d,
                                                const cmpp_capability_ops_t *o, void *c)
 { (void)r; context = c; if (!strcmp(d->capability_id, "voice.channel")) {descriptor=d; ops=*o;} else {threshold_descriptor=d; threshold_ops=*o;} return CMPP_OK; }
@@ -85,8 +85,8 @@ int main(void)
     assert(cmpp_value_object_get(&state, "conversation_active")->as.boolean);
     assert(cmpp_value_object_get(&state, "followup_timeout_ms")->as.integer == 30000);
     assert(!cmpp_value_object_get(&state, "wake_available")->as.boolean);
-    assert(!strcmp(cmpp_value_object_get(&state, "wake_status")->as.string, "model_not_configured"));
-    assert(!strcmp(cmpp_value_object_get(&state, "wake_word")->as.string, "小白小白"));
+    assert(!strcmp(cmpp_value_object_get(&state, "wake_status")->as.string, "disabled_by_design"));
+    assert(!strcmp(cmpp_value_object_get(&state, "wake_word")->as.string, ""));
     const cmpp_value_t *diagnostics = cmpp_value_object_get(&state, "diagnostics");
     assert(diagnostics->as.object.count == 19);
     assert(cmpp_value_object_get(diagnostics, "upload_pcm_dropped_frames")->as.integer == 7);

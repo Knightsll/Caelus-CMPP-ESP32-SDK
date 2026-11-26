@@ -65,23 +65,60 @@ int main(void)
 
     voice_ptt_t ptt = {0};
     bool wake = false;
-    assert(voice_input_step(&ptt, &wake, false, false, false, false, VOICE_WAKE_START) == VOICE_PTT_NONE);
-    assert(voice_input_step(&ptt, &wake, true, true, false, false, VOICE_WAKE_START) == VOICE_PTT_NONE);
-    assert(voice_input_step(&ptt, &wake, true, false, false, false, VOICE_WAKE_START) == VOICE_PTT_START && wake);
+    assert(voice_input_step(&ptt, &wake, false, false, false, false, false, VOICE_WAKE_START) == VOICE_PTT_NONE);
+    assert(voice_input_step(&ptt, &wake, true, true, false, false, false, VOICE_WAKE_START) == VOICE_PTT_NONE);
+    assert(voice_input_step(&ptt, &wake, true, false, false, false, false, VOICE_WAKE_START) == VOICE_PTT_START && wake);
     /* Releasing/never pressing the button must not end a voice-started turn. */
     for (int i = 0; i < 20; ++i)
-        assert(voice_input_step(&ptt, &wake, true, false, true, false, VOICE_WAKE_START) == VOICE_PTT_NONE && wake);
-    assert(voice_input_step(&ptt, &wake, true, false, true, false, VOICE_WAKE_END) == VOICE_PTT_END);
+        assert(voice_input_step(&ptt, &wake, true, false, true, false, false, VOICE_WAKE_START) == VOICE_PTT_NONE && wake);
+    assert(voice_input_step(&ptt, &wake, true, false, true, false, false, VOICE_WAKE_END) == VOICE_PTT_END);
     /* PTT takeover reuses the same turn; only release emits end. */
-    assert(voice_input_step(&ptt, &wake, true, false, true, true, VOICE_WAKE_NONE) == VOICE_PTT_NONE && wake);
-    assert(voice_input_step(&ptt, &wake, true, false, true, true, VOICE_WAKE_END) == VOICE_PTT_NONE && !wake);
-    assert(voice_input_step(&ptt, &wake, true, false, true, false, VOICE_WAKE_END) == VOICE_PTT_NONE);
-    assert(voice_input_step(&ptt, &wake, true, false, true, false, VOICE_WAKE_NONE) == VOICE_PTT_END);
+    assert(voice_input_step(&ptt, &wake, true, false, true, true, false, VOICE_WAKE_NONE) == VOICE_PTT_NONE && wake);
+    assert(voice_input_step(&ptt, &wake, true, false, true, true, false, VOICE_WAKE_END) == VOICE_PTT_NONE && !wake);
+    assert(voice_input_step(&ptt, &wake, true, false, true, false, false, VOICE_WAKE_END) == VOICE_PTT_NONE);
+    assert(voice_input_step(&ptt, &wake, true, false, true, false, false, VOICE_WAKE_NONE) == VOICE_PTT_END);
     /* PTT wins over simultaneous wake, no second start or VAD end. */
-    assert(voice_input_step(&ptt, &wake, true, false, false, true, VOICE_WAKE_START) == VOICE_PTT_NONE);
-    assert(voice_input_step(&ptt, &wake, true, false, false, true, VOICE_WAKE_START) == VOICE_PTT_START && !wake);
-    assert(voice_input_step(&ptt, &wake, true, false, true, true, VOICE_WAKE_END) == VOICE_PTT_NONE);
-    assert(voice_input_step(&ptt, &wake, false, false, false, true, VOICE_WAKE_START) == VOICE_PTT_NONE && !wake);
-    puts("voice wake: endpoint bounds, PTT precedence/takeover and offline gating passed");
+    assert(voice_input_step(&ptt, &wake, true, false, false, true, false, VOICE_WAKE_START) == VOICE_PTT_NONE);
+    assert(voice_input_step(&ptt, &wake, true, false, false, true, false, VOICE_WAKE_START) == VOICE_PTT_START && !wake);
+    assert(voice_input_step(&ptt, &wake, true, false, true, true, false, VOICE_WAKE_END) == VOICE_PTT_NONE);
+    assert(voice_input_step(&ptt, &wake, false, false, false, true, false, VOICE_WAKE_START) == VOICE_PTT_NONE && !wake);
+
+    /* Idle has noise estimation only, never keyword detection. Playback with
+     * no button has no speech-onset detector even when AEC is ready. */
+    assert(voice_listen_mode(false,false,false,false,false,false,true) == VOICE_WAKE_NOISE);
+    assert(voice_listen_mode(false,false,true,true,false,false,true) == VOICE_WAKE_OFF);
+    assert(voice_listen_mode(false,false,true,true,true,true,false) == VOICE_WAKE_OFF);
+    assert(voice_listen_mode(false,false,true,true,true,true,true) == VOICE_WAKE_BARGE);
+    assert(voice_listen_mode(false,false,true,false,false,false,true) == VOICE_WAKE_FOLLOWUP);
+    assert(voice_listen_mode(true,true,true,false,false,false,true) == VOICE_WAKE_CAPTURE);
+    ptt = (voice_ptt_t){0}; wake = false;
+    /* A bystander or stale detection without a button cannot interrupt. */
+    assert(voice_input_step(&ptt,&wake,true,false,false,false,true,VOICE_WAKE_START) == VOICE_PTT_NONE);
+    /* Silent hold does not start, including after the old reply finishes. */
+    for (int i=0; i<100; ++i)
+        assert(voice_input_step(&ptt,&wake,true,false,false,true,true,VOICE_WAKE_NONE) == VOICE_PTT_NONE);
+    assert(ptt.speech_gated);
+    for (int i=0; i<100; ++i)
+        assert(voice_input_step(&ptt,&wake,true,false,false,true,false,VOICE_WAKE_NONE) == VOICE_PTT_NONE);
+    assert(voice_input_step(&ptt,&wake,true,false,false,false,false,VOICE_WAKE_START) == VOICE_PTT_NONE);
+    assert(!ptt.speech_gated);
+    /* A fresh ordinary idle press starts a first turn; release ends it. */
+    assert(voice_input_step(&ptt,&wake,true,false,false,false,false,VOICE_WAKE_NONE) == VOICE_PTT_NONE);
+    assert(voice_input_step(&ptt,&wake,true,false,false,true,false,VOICE_WAKE_NONE) == VOICE_PTT_NONE);
+    assert(voice_input_step(&ptt,&wake,true,false,false,true,false,VOICE_WAKE_NONE) == VOICE_PTT_START);
+    assert(voice_input_step(&ptt,&wake,true,false,true,false,false,VOICE_WAKE_NONE) == VOICE_PTT_NONE);
+    assert(voice_input_step(&ptt,&wake,true,false,true,false,false,VOICE_WAKE_NONE) == VOICE_PTT_END);
+    /* Busy press + qualified speech emits exactly one start and is PTT-owned. */
+    assert(voice_input_step(&ptt,&wake,true,false,false,true,true,VOICE_WAKE_NONE) == VOICE_PTT_NONE);
+    assert(voice_input_step(&ptt,&wake,true,false,false,true,true,VOICE_WAKE_START) == VOICE_PTT_START && !wake);
+    for (int i=0; i<20; ++i)
+        assert(voice_input_step(&ptt,&wake,true,false,true,true,false,VOICE_WAKE_START) == VOICE_PTT_NONE);
+    assert(voice_input_step(&ptt,&wake,true,false,true,false,false,VOICE_WAKE_NONE) == VOICE_PTT_NONE);
+    assert(voice_input_step(&ptt,&wake,true,false,true,false,false,VOICE_WAKE_NONE) == VOICE_PTT_END);
+    /* Stop/negotiation barriers and disconnect reject even qualified speech. */
+    assert(voice_input_step(&ptt,&wake,true,true,false,true,true,VOICE_WAKE_START) == VOICE_PTT_NONE);
+    assert(voice_input_step(&ptt,&wake,false,false,false,true,true,VOICE_WAKE_START) == VOICE_PTT_NONE);
+    assert(!ptt.speech_gated);
+    puts("voice input: button+speech gating, silent hold/release, follow-up, endpoint and offline barriers passed");
     return 0;
 }

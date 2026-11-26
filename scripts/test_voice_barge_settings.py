@@ -18,7 +18,7 @@ typedef int esp_err_t;
 typedef int nvs_handle_t;
 enum {ESP_OK,ESP_ERR_INVALID_ARG,ESP_ERR_INVALID_STATE,ESP_FAIL,NVS_READWRITE};
 typedef struct {
-    bool recording,output_busy,awaiting_response,cue_busy,barge_threshold_saved;
+    bool recording,output_busy,awaiting_response,barge_threshold_saved;
     struct {bool active;} conversation;
     struct {bool awaiting_stop;} wire;
     unsigned barge_min_rms;
@@ -40,8 +40,8 @@ int main(void) {
     assert(voice_media_set_barge_threshold(&b,79,false,&changed)==ESP_ERR_INVALID_ARG && !locked);
     assert(voice_media_set_barge_threshold(&b,8001,false,&changed)==ESP_ERR_INVALID_ARG && !locked);
     assert(voice_media_set_barge_threshold(&b,1200,true,&changed)==ESP_OK && !changed && !writes);
-    bool *busy[]={&b.recording,&b.output_busy,&b.awaiting_response,&b.cue_busy,&b.conversation.active,&b.wire.awaiting_stop};
-    for(unsigned i=0;i<6;i++) {
+    bool *busy[]={&b.recording,&b.output_busy,&b.awaiting_response,&b.conversation.active,&b.wire.awaiting_stop};
+    for(unsigned i=0;i<5;i++) {
         *busy[i]=true;
         assert(voice_media_set_barge_threshold(&b,1200,false,&changed)==ESP_ERR_INVALID_STATE && !changed && !writes && !locked);
         *busy[i]=false;
@@ -65,4 +65,4 @@ with tempfile.TemporaryDirectory(prefix="caelus-barge-settings-") as tmp:
     subprocess.run(["cc", "-std=c11", "-Wall", "-Wextra", "-Werror", "-fsanitize=undefined",
                     str(p / "test.c"), "-o", str(p / "test")], check=True)
     subprocess.run([str(p / "test")], check=True)
-print("Barge settings: range, dry-run, six busy states, commit failure and idempotent save passed")
+print("Barge settings: range, dry-run, five busy states, commit failure and idempotent save passed")

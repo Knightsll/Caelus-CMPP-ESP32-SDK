@@ -5,16 +5,6 @@ dependencies:
       path: ../../../../esp/esp-idf-v6.0.2/examples/protocols/http_server/captive_portal/components/dns_server
       type: local
     version: '*'
-  esphome/esp-micro-speech-features:
-    component_hash: 2b720b4ed49fa9df14b24f35fd3ec8a012eddde1c8dd4709448e36a581eebd3e
-    dependencies:
-    - name: idf
-      require: private
-      version: '>=4.4'
-    source:
-      registry_url: https://components.espressif.com/
-      type: service
-    version: 1.2.3
   espressif/cjson:
     component_hash: e788323270d90738662d66fffa910bfe1fba019bba087f01557e70c40485b469
     dependencies:
@@ -73,16 +63,6 @@ dependencies:
     - esp32s3
     - esp32s31
     version: 3.3.15
-  espressif/esp-nn:
-    component_hash: 55d167047662a4dc5cc67981581d5e5a98bdca5be80253921dbc526130ff5317
-    dependencies:
-    - name: idf
-      require: private
-      version: '>=5.1'
-    source:
-      registry_url: https://components.espressif.com
-      type: service
-    version: 1.5.0
   espressif/esp-sr:
     component_hash: 7ba1e97d446440faa96a7d98fbda7dbaaf7ae6b960e06cc68264d38aa6eb4d14
     dependencies:
@@ -111,20 +91,6 @@ dependencies:
       registry_url: https://components.espressif.com/
       type: service
     version: 2.6.1
-  espressif/esp-tflite-micro:
-    component_hash: bdb2625ed976d5b861177cdc295abc6738724f84f4c7c60fc58c721d2b30bed6
-    dependencies:
-    - name: espressif/esp-nn
-      registry_url: https://components.espressif.com
-      require: private
-      version: '>=1.3.0'
-    - name: idf
-      require: private
-      version: '>=5.1'
-    source:
-      registry_url: https://components.espressif.com/
-      type: service
-    version: 1.4.1
   espressif/esp_codec_dev:
     component_hash: 4779f31a3ba3f9b38aee1afe6ccb9ba8f6108dc3a6e77d39d7d714e9a215371b
     dependencies:
@@ -219,15 +185,13 @@ dependencies:
     version: 6.0.2
 direct_dependencies:
 - dns_server
-- esphome/esp-micro-speech-features
 - espressif/cjson
 - espressif/esp-sr
-- espressif/esp-tflite-micro
 - espressif/esp_codec_dev
 - espressif/mcp-c-sdk
 - espressif/mdns
 - espressif/mqtt
 - espressif/network_provisioning
-manifest_hash: 9c571dd6bda12707a71434f4415fccb5c2a0200bdc3cac989bf152aebc367ec4
+manifest_hash: 456c0522d8d34b2f963da93e6b30e49b63deeaf7c748f875535cbcd04b5dc0ae
 target: esp32s3
 version: 3.0.0

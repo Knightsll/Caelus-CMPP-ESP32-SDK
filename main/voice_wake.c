@@ -4,7 +4,6 @@
 #include <string.h>
 #include "esp_heap_caps.h"
 #include "esp_log.h"
-#include "voice_micro.h"
 #include "esp_vad.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
@@ -23,7 +22,6 @@ struct voice_wake {
     StaticQueue_t frame_control;
     uint8_t *frame_storage;
     TaskHandle_t task;
-    voice_micro_t *model;
     vad_handle_t vad;
     /* These fields belong exclusively to capture_task. */
     uint32_t epoch, generation, dropped;
@@ -51,7 +49,6 @@ static void wake_task(void *arg)
             onset = (voice_onset_t){0};
             diagnostic_frames = diagnostic_vad = diagnostic_energy = 0;
             diagnostic_peak = 0;
-            voice_micro_reset(w->model);
             vad_reset_trigger(w->vad);
         }
         if (reported) continue;
@@ -84,18 +81,13 @@ static void wake_task(void *arg)
                 ESP_LOGI(TAG, "Speech onset mode=%d duration=%u power=%.0f floor=%.0f",
                     frame.mode, onset.consecutive_ms, power, noise_power);
             }
-        } else if (frame.mode == VOICE_WAKE_LISTEN) {
-            /* Learn only while waiting for the keyword. Fast decay, bounded
-             * slow rise keeps the keyword from setting the noise floor. */
+        } else if (frame.mode == VOICE_WAKE_NOISE) {
+            /* Learn only while idle, without playback or an active turn.
+             * Bound the rise so brief sounds do not dominate the noise floor. */
             double bounded = power < noise_power * 4 ? power : noise_power * 4;
             noise_power += (bounded - noise_power) * (power < noise_power ? 0.05 : 0.002);
             if (noise_power < 1) noise_power = 1;
-            int result = voice_micro_process(w->model, frame.pcm, VOICE_FRAME_SAMPLES);
-            if (result > 0) event = VOICE_WAKE_START;
-            else if (result < 0) {
-                ESP_LOGE(TAG, "Wake inference failed; skip epoch, PTT remains usable");
-                reported = true;
-            }
+
         }
         if (event != VOICE_WAKE_NONE) {
             wake_result_t result = {.epoch = epoch, .event = event};
@@ -114,7 +106,6 @@ void voice_wake_destroy(voice_wake_t *w)
     if (w->frames) vQueueDelete(w->frames);
     if (w->results) vQueueDelete(w->results);
     if (w->vad) vad_destroy(w->vad);
-    voice_micro_destroy(w->model);
     free(w->frame_storage);
     free(w);
 }
@@ -122,25 +113,20 @@ void voice_wake_destroy(voice_wake_t *w)
 const char *voice_wake_create(voice_wake_t **output)
 {
     *output = NULL;
-    /* An empty name never silently substitutes a bundled wake word. */
-    if (!CONFIG_CMPP_VOICE_WAKE_MODEL[0]) return "model_not_configured";
     voice_wake_t *w = calloc(1, sizeof(*w));
     if (!w) return "no_memory";
     w->barge_min_rms = CONFIG_CMPP_VOICE_BARGE_MIN_RMS;
-    const char *status = voice_micro_create(&w->model);
-    if (!w->model) goto failed;
-    status = "no_memory";
+    const char *status = "no_memory";
     w->frame_storage = heap_caps_malloc(WAKE_QUEUE_FRAMES * sizeof(wake_frame_t), MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
     w->vad = vad_create_with_param(VAD_MODE_3, VOICE_SAMPLE_RATE, 20, 100, 100);
     w->results = xQueueCreate(1, sizeof(wake_result_t));
     if (!w->frame_storage || !w->vad || !w->results) goto failed;
     w->frames = xQueueCreateStatic(WAKE_QUEUE_FRAMES, sizeof(wake_frame_t), w->frame_storage, &w->frame_control);
     if (!w->frames) goto failed;
-    /* Lower priority than capture/playback; never run inference under media lock. */
+    /* Lower priority than capture/playback; never run detection under media lock. */
     if (xTaskCreate(wake_task, "voice_wake", 8192, w, 4, &w->task) != pdPASS) goto failed;
     *output = w;
-    ESP_LOGI(TAG, "Local wake ready: %s (%s), silence=%d ms",
-             CONFIG_CMPP_VOICE_WAKE_WORD, CONFIG_CMPP_VOICE_WAKE_MODEL,
+    ESP_LOGI(TAG, "VAD ready; keyword detection disabled, silence=%d ms",
              CONFIG_CMPP_VOICE_WAKE_SILENCE_MS);
     return "ready";
 failed:

@@ -38,9 +38,22 @@ bool voice_endpoint_step(voice_endpoint_t *s, bool speech, unsigned silence_ms)
 
 voice_ptt_event_t voice_input_step(voice_ptt_t *ptt, bool *wake_recording,
                                  bool ready, bool blocked, bool recording,
-                                 bool pressed, voice_wake_event_t wake)
+                                 bool pressed, bool reply_busy, voice_wake_event_t wake)
 {
     if (!recording) *wake_recording = false;
+    if (!ready) ptt->speech_gated = false;
+    /* A press made during a reply remains speech-gated until release, even
+     * when playback ends meanwhile. Never turn a silent hold into a new turn. */
+    if (!recording && (reply_busy || ptt->speech_gated)) {
+        ptt->speech_gated = ready && pressed;
+        voice_ptt_step(ptt, ready, true, false, pressed);
+        if (ready && !blocked && pressed && wake == VOICE_WAKE_START) {
+            ptt->speech_gated = false;
+            return VOICE_PTT_START; /* PTT release ends this turn. */
+        }
+        return VOICE_PTT_NONE;
+    }
+
     voice_ptt_event_t event = voice_ptt_step(ptt, ready, blocked,
                                             recording && !*wake_recording, pressed);
     if (!ready || blocked) return VOICE_PTT_NONE;
@@ -55,4 +68,13 @@ voice_ptt_event_t voice_input_step(voice_ptt_t *ptt, bool *wake_recording,
     }
     if (recording && *wake_recording && wake == VOICE_WAKE_END) return VOICE_PTT_END;
     return VOICE_PTT_NONE;
+}
+
+voice_wake_mode_t voice_listen_mode(bool recording, bool automatic, bool followup,
+    bool reply_busy, bool gated, bool pressed, bool echo_ready)
+{
+    if (recording) return automatic ? VOICE_WAKE_CAPTURE : VOICE_WAKE_OFF;
+    if (gated) return pressed && (!reply_busy || echo_ready) ? VOICE_WAKE_BARGE : VOICE_WAKE_OFF;
+    if (reply_busy || pressed) return VOICE_WAKE_OFF;
+    return followup ? VOICE_WAKE_FOLLOWUP : VOICE_WAKE_NOISE;
 }

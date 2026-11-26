@@ -21,14 +21,12 @@ CONFIG_SPIRAM_MEMTEST=y
 CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
 CONFIG_PARTITION_TABLE_CUSTOM=y
 CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.voice.csv"
-# No substitute wake word is bundled. A trained 小白小白 WakeNet9 model is pending.
-CONFIG_CMPP_VOICE_WAKE_WORD="小白小白"
-CONFIG_CMPP_VOICE_WAKE_MODEL="xiaobai_micro_v1"
+# SW2 starts conversations; VAD/AEC remain, keyword models are not built.
 CONFIG_CMPP_VOICE_WAKE_SILENCE_MS=1200
 CONFIG_MODEL_IN_FLASH=y
 CONFIG_SR_VADN_WEBRTC=y
 
-# TFLite initialization and embedded PCM self-test run during board startup.
+# Keep startup stack budget for codecs and provisioning.
 CONFIG_ESP_MAIN_TASK_STACK_SIZE=8192
 
 CONFIG_CMPP_VOICE_FOLLOWUP_TIMEOUT_MS=15000

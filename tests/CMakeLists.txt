@@ -70,6 +70,12 @@ target_include_directories(test_voice_wire PRIVATE
 target_compile_options(test_voice_wire PRIVATE -Wall -Wextra -Werror -pedantic)
 add_test(NAME voice_wire_contract COMMAND test_voice_wire)
 
+add_executable(test_voice_wake test_voice_wake.c ../main/voice_wake_logic.c
+    ../main/voice_wire.c ../managed_components/espressif__cjson/cJSON/cJSON.c)
+target_include_directories(test_voice_wake PRIVATE ../main ../managed_components/espressif__cjson/cJSON)
+target_compile_options(test_voice_wake PRIVATE -Wall -Wextra -Werror -pedantic)
+add_test(NAME voice_wake_contract COMMAND test_voice_wake)
+
 add_executable(test_voice_recovery test_voice_recovery.c ../main/voice_recovery_logic.c)
 target_include_directories(test_voice_recovery PRIVATE ../main)
 target_compile_options(test_voice_recovery PRIVATE -Wall -Wextra -Werror -pedantic)

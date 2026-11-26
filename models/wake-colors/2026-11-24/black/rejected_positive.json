@@ -1,0 +1,32 @@
+[
+  {
+    "id": "black:Arthur-1-01-b9cc365eeef29bba",
+    "seconds": 2.5873125,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "black:Arthur-1-03-2b7e250972d81a85",
+    "seconds": 2.5873125,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "black:Elias-1-03-06c6fb4625209a14",
+    "seconds": 3.214625,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "black:Mochi-1-00-b9a318e317633ef7",
+    "seconds": 3.3881875,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "black:Mochi-1-03-9e3931c7d4eebf1d",
+    "seconds": 3.999625,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "black:Nini-1-03-33d5391bb1ee127b",
+    "seconds": 2.508625,
+    "reason": "target cannot fit whole in model window after augmentation"
+  }
+]

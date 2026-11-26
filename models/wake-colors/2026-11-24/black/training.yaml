@@ -1,0 +1,47 @@
+batch_size: 64
+clip_duration_ms: 6000
+eval_step_interval: 200
+features:
+- features_dir: /home/autograph/Project/Caelus_hardware_runtime/ESP32-MCP-hardware/MCP-Light/.esp-tools/wake-training/colors-run-v1/black/positive
+  penalty_weight: 1.0
+  sampling_weight: 1.0
+  truncation_strategy: truncate_start
+  truth: true
+  type: mmap
+- features_dir: /home/autograph/Project/Caelus_hardware_runtime/ESP32-MCP-hardware/MCP-Light/.esp-tools/wake-training/colors-run-v1/black/negative
+  penalty_weight: 1.0
+  sampling_weight: 1.0
+  truncation_strategy: truncate_start
+  truth: false
+  type: mmap
+freq_mask_count:
+- 1
+freq_mask_max_size:
+- 3
+freq_mix_prob:
+- 0
+learning_rates:
+- 0.001
+- 0.0003
+- 0.0001
+maximization_metric: auc
+minimization_metric: loss
+mix_up_prob:
+- 0
+negative_class_weight:
+- 0.5
+- 1
+- 2
+positive_class_weight:
+- 1
+target_minimization: 0.05
+time_mask_count:
+- 1
+time_mask_max_size:
+- 5
+train_dir: /home/autograph/Project/Caelus_hardware_runtime/ESP32-MCP-hardware/MCP-Light/.esp-tools/wake-training/colors-run-v2/black/model
+training_steps:
+- 1200
+- 1600
+- 1200
+window_step_ms: 10

@@ -1,0 +1,60 @@
+{
+  "black": {
+    "chosen": ".esp-tools/wake-training/colors-run-v2/black",
+    "candidates": [
+      {
+        "path": ".esp-tools/wake-training/colors-run-v1/black",
+        "gate": {
+          "threshold": 0.6,
+          "consecutive": 11,
+          "positive_detected": 35,
+          "clean_positive_detected": 12,
+          "false_triggers": 1
+        },
+        "floor_met": true
+      },
+      {
+        "path": ".esp-tools/wake-training/colors-run-v2/black",
+        "gate": {
+          "threshold": 0.99,
+          "consecutive": 3,
+          "positive_detected": 41,
+          "clean_positive_detected": 13,
+          "false_triggers": 0
+        },
+        "floor_met": true
+      }
+    ]
+  },
+  "red": {
+    "chosen": ".esp-tools/wake-training/colors-run-v2/red",
+    "candidates": [
+      {
+        "path": ".esp-tools/wake-training/colors-run-v1/red",
+        "gate": {
+          "threshold": 0.6,
+          "consecutive": 9,
+          "positive_detected": 40,
+          "clean_positive_detected": 12,
+          "false_triggers": 0
+        },
+        "floor_met": true
+      },
+      {
+        "path": ".esp-tools/wake-training/colors-run-v2/red",
+        "gate": {
+          "threshold": 0.8,
+          "consecutive": 5,
+          "positive_detected": 63,
+          "clean_positive_detected": 16,
+          "false_triggers": 0
+        },
+        "floor_met": true
+      }
+    ]
+  },
+  "green": {
+    "chosen": ".esp-tools/wake-training/colors-run-v1/green",
+    "reason": "Only v1 trained; gate fixed on validation before test"
+  }
+}

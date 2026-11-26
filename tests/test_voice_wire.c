@@ -113,6 +113,21 @@ int main(void)
     assert(message(&state, "{\"type\":\"output.end\",\"turn_id\":\"two\"}") == VOICE_BAD);
     assert(message(&state, "[]") == VOICE_BAD);
     assert(message(&state, "{\"type\":\"hello\",\"type\":\"hello\",\"protocol\":\"caelus.voice.v1\",\"channel_id\":\"paired_channel\"}") == VOICE_BAD);
-    puts("voice wire: session binding, boundaries, tails and malformed messages passed");
+    state = (voice_wire_t){.ready = true};
+    assert(!voice_wire_begin_stop(&state, "stop_1"));
+    assert(message(&state, "{\"type\":\"session.configure\",\"interrupt\":true,\"session_stop\":true}") == VOICE_CONFIGURED);
+    assert(voice_wire_begin_input(&state, "input_before_stop"));
+    assert(voice_wire_begin_stop(&state, "stop_1"));
+    assert(voice_wire_output_blocked(&state));
+    assert(!voice_wire_begin_input(&state, "too_early"));
+    assert(message(&state, "{\"type\":\"output.start\",\"turn_id\":\"old_reply\"}") == VOICE_IGNORED);
+    assert(message(&state, "{\"type\":\"session.state\",\"state\":\"listening\"}") == VOICE_IGNORED);
+    assert(message(&state, "{\"type\":\"session.state\",\"state\":\"listening\",\"stop_id\":\"stale\"}") == VOICE_IGNORED);
+    assert(voice_wire_output_blocked(&state));
+    assert(message(&state, "{\"type\":\"session.state\",\"state\":\"listening\",\"stop_id\":\"stop_1\"}") == VOICE_SESSION_STOPPED);
+    assert(!voice_wire_output_blocked(&state));
+    assert(message(&state, "{\"type\":\"session.state\",\"state\":\"listening\",\"stop_id\":\"stop_1\"}") == VOICE_IGNORED);
+    assert(voice_wire_begin_input(&state, "next_wake"));
+    puts("voice wire: session binding, stop barrier, boundaries, tails and malformed messages passed");
     return 0;
 }

@@ -1,0 +1,57 @@
+{
+  "id": "xiaohong_micro_v1",
+  "wake_word": "小红小红",
+  "status": "experimental_not_flashed",
+  "sha256": "704e98f7e9a99e3344899af5b0a2d0b0af2008cd66f52d853536bb7f1f740462",
+  "bytes": 50888,
+  "gate": {
+    "threshold": 0.8,
+    "consecutive": 5,
+    "startup_predictions": 34
+  },
+  "validation_recall_floor_met": true,
+  "test": {
+    "model_sha256": "704e98f7e9a99e3344899af5b0a2d0b0af2008cd66f52d853536bb7f1f740462",
+    "split": "testing",
+    "threshold": 0.8,
+    "consecutive": 5,
+    "positive_clips": 64,
+    "positive_detected": 64,
+    "clean_positive_clips": 16,
+    "clean_positive_detected": 16,
+    "negative_clips": 76,
+    "negative_seconds": 894.1611249999999,
+    "false_triggers": 5,
+    "limitation": "Held-out synthetic voices and, if supplied, public noise. No real household FAPH or human recall claim."
+  },
+  "training": {
+    "engine": "OHF-Voice/micro-wake-word",
+    "revision": "4665173cd35f1cff9a61e06fc427f124766c488e",
+    "patch": "scripts/microwakeword-class-weights.patch",
+    "tts": "qwen3-tts-flash",
+    "training_voices": 20,
+    "validation_voices": 4,
+    "testing_voices": 4,
+    "seed": 20261124
+  },
+  "input": {
+    "sample_rate": 16000,
+    "channels": 1,
+    "pcm_bits": 16,
+    "feature_window_ms": 30,
+    "feature_step_ms": 10,
+    "bins": 40,
+    "tensor_shape": [
+      1,
+      3,
+      40
+    ],
+    "input_type": "int8",
+    "output_type": "uint8"
+  },
+  "limits": [
+    "Synthetic speech only; no human/far-field/household acceptance",
+    "No ESP32 runtime/flash validation for this model",
+    "Current firmware checks white model identity and uses a fixed white gate; per-model identity and selected gate must be adapted before flashing"
+  ]
+}

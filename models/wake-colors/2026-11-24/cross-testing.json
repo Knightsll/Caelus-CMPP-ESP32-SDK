@@ -1,0 +1,2527 @@
+{
+  "split": "testing",
+  "models": {
+    "white": {
+      "path": "/home/autograph/Project/Caelus_hardware_runtime/ESP32-MCP-hardware/MCP-Light/main/wake_models/xiaobai.tflite",
+      "threshold": 0.9,
+      "consecutive": 9,
+      "sha256": "feea9bbcbf97fedd7079e9f206abf4f0b3db3ac5bf066cd8418d068df3909b08"
+    },
+    "black": {
+      "path": "/home/autograph/Project/Caelus_hardware_runtime/ESP32-MCP-hardware/MCP-Light/.esp-tools/wake-training/colors-run-v2/black/model/tflite_stream_state_internal_quant/stream_state_internal_quant.tflite",
+      "threshold": 0.99,
+      "consecutive": 3,
+      "sha256": "e92cf2f7d1288e5a7b9041115ea748b631b707c6fe22049854c42751fd34e1b2"
+    },
+    "red": {
+      "path": "/home/autograph/Project/Caelus_hardware_runtime/ESP32-MCP-hardware/MCP-Light/.esp-tools/wake-training/colors-run-v2/red/model/tflite_stream_state_internal_quant/stream_state_internal_quant.tflite",
+      "threshold": 0.8,
+      "consecutive": 5,
+      "sha256": "704e98f7e9a99e3344899af5b0a2d0b0af2008cd66f52d853536bb7f1f740462"
+    },
+    "green": {
+      "path": "/home/autograph/Project/Caelus_hardware_runtime/ESP32-MCP-hardware/MCP-Light/.esp-tools/wake-training/colors-run-v1/green/model/tflite_stream_state_internal_quant/stream_state_internal_quant.tflite",
+      "threshold": 0.7,
+      "consecutive": 7,
+      "sha256": "15ec8bf0bbcb0c673ead63a1a4ffecc0dd25412aa1c01078d9a7352b4244d6bb"
+    }
+  },
+  "matrix": {
+    "white": {
+      "white": {
+        "detected": 14,
+        "total": 16
+      },
+      "black": {
+        "detected": 0,
+        "total": 16
+      },
+      "red": {
+        "detected": 0,
+        "total": 16
+      },
+      "green": {
+        "detected": 0,
+        "total": 16
+      }
+    },
+    "black": {
+      "white": {
+        "detected": 0,
+        "total": 16
+      },
+      "black": {
+        "detected": 11,
+        "total": 16
+      },
+      "red": {
+        "detected": 0,
+        "total": 16
+      },
+      "green": {
+        "detected": 0,
+        "total": 16
+      }
+    },
+    "red": {
+      "white": {
+        "detected": 0,
+        "total": 16
+      },
+      "black": {
+        "detected": 0,
+        "total": 16
+      },
+      "red": {
+        "detected": 16,
+        "total": 16
+      },
+      "green": {
+        "detected": 0,
+        "total": 16
+      }
+    },
+    "green": {
+      "white": {
+        "detected": 0,
+        "total": 16
+      },
+      "black": {
+        "detected": 0,
+        "total": 16
+      },
+      "red": {
+        "detected": 0,
+        "total": 16
+      },
+      "green": {
+        "detected": 15,
+        "total": 16
+      }
+    }
+  },
+  "records": [
+    {
+      "target": "white",
+      "spoken_word": "white",
+      "source_id": "Andre-1-00-4d3d6246eae24abe",
+      "source_sha256": "0bae4ff104bb3ffa7116910f72b205e084422881b9b8a822e6d3c02f29045912",
+      "voice": "Andre",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.42
+      ]
+    },
+    {
+      "target": "black",
+      "spoken_word": "white",
+      "source_id": "Andre-1-00-4d3d6246eae24abe",
+      "source_sha256": "0bae4ff104bb3ffa7116910f72b205e084422881b9b8a822e6d3c02f29045912",
+      "voice": "Andre",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "white",
+      "source_id": "Andre-1-00-4d3d6246eae24abe",
+      "source_sha256": "0bae4ff104bb3ffa7116910f72b205e084422881b9b8a822e6d3c02f29045912",
+      "voice": "Andre",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "white",
+      "source_id": "Andre-1-00-4d3d6246eae24abe",
+      "source_sha256": "0bae4ff104bb3ffa7116910f72b205e084422881b9b8a822e6d3c02f29045912",
+      "voice": "Andre",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "white",
+      "source_id": "Andre-1-01-0465cb94b52c3783",
+      "source_sha256": "224b7c2e16ca3253b01551d0c56dfff9ac77fc7e1f49d4144c06a07e1a127964",
+      "voice": "Andre",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.69
+      ]
+    },
+    {
+      "target": "black",
+      "spoken_word": "white",
+      "source_id": "Andre-1-01-0465cb94b52c3783",
+      "source_sha256": "224b7c2e16ca3253b01551d0c56dfff9ac77fc7e1f49d4144c06a07e1a127964",
+      "voice": "Andre",
+      "max_probability": 0.7109375,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "white",
+      "source_id": "Andre-1-01-0465cb94b52c3783",
+      "source_sha256": "224b7c2e16ca3253b01551d0c56dfff9ac77fc7e1f49d4144c06a07e1a127964",
+      "voice": "Andre",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "white",
+      "source_id": "Andre-1-01-0465cb94b52c3783",
+      "source_sha256": "224b7c2e16ca3253b01551d0c56dfff9ac77fc7e1f49d4144c06a07e1a127964",
+      "voice": "Andre",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "white",
+      "source_id": "Andre-1-02-9ed3a91452157f7b",
+      "source_sha256": "6e578ae8c66bbd7f3238ddadfa7620d143676f02250f33bc472b89629fb7bc2d",
+      "voice": "Andre",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.6000000000000005
+      ]
+    },
+    {
+      "target": "black",
+      "spoken_word": "white",
+      "source_id": "Andre-1-02-9ed3a91452157f7b",
+      "source_sha256": "6e578ae8c66bbd7f3238ddadfa7620d143676f02250f33bc472b89629fb7bc2d",
+      "voice": "Andre",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "white",
+      "source_id": "Andre-1-02-9ed3a91452157f7b",
+      "source_sha256": "6e578ae8c66bbd7f3238ddadfa7620d143676f02250f33bc472b89629fb7bc2d",
+      "voice": "Andre",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "white",
+      "source_id": "Andre-1-02-9ed3a91452157f7b",
+      "source_sha256": "6e578ae8c66bbd7f3238ddadfa7620d143676f02250f33bc472b89629fb7bc2d",
+      "voice": "Andre",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "white",
+      "source_id": "Andre-1-03-6e32b4c7ac3e0049",
+      "source_sha256": "144eeaab9b6dda1338534f0a0a2522bac8f9814d112e62629188eba5f1e46c4f",
+      "voice": "Andre",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.21
+      ]
+    },
+    {
+      "target": "black",
+      "spoken_word": "white",
+      "source_id": "Andre-1-03-6e32b4c7ac3e0049",
+      "source_sha256": "144eeaab9b6dda1338534f0a0a2522bac8f9814d112e62629188eba5f1e46c4f",
+      "voice": "Andre",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "white",
+      "source_id": "Andre-1-03-6e32b4c7ac3e0049",
+      "source_sha256": "144eeaab9b6dda1338534f0a0a2522bac8f9814d112e62629188eba5f1e46c4f",
+      "voice": "Andre",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "white",
+      "source_id": "Andre-1-03-6e32b4c7ac3e0049",
+      "source_sha256": "144eeaab9b6dda1338534f0a0a2522bac8f9814d112e62629188eba5f1e46c4f",
+      "voice": "Andre",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "white",
+      "source_id": "Jennifer-1-00-e84c114d5db08e1b",
+      "source_sha256": "2de5011177f6155ec1b90a411a7bc2225ab108c6b0997a93ddd1854a610f710e",
+      "voice": "Jennifer",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.3
+      ]
+    },
+    {
+      "target": "black",
+      "spoken_word": "white",
+      "source_id": "Jennifer-1-00-e84c114d5db08e1b",
+      "source_sha256": "2de5011177f6155ec1b90a411a7bc2225ab108c6b0997a93ddd1854a610f710e",
+      "voice": "Jennifer",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "white",
+      "source_id": "Jennifer-1-00-e84c114d5db08e1b",
+      "source_sha256": "2de5011177f6155ec1b90a411a7bc2225ab108c6b0997a93ddd1854a610f710e",
+      "voice": "Jennifer",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "white",
+      "source_id": "Jennifer-1-00-e84c114d5db08e1b",
+      "source_sha256": "2de5011177f6155ec1b90a411a7bc2225ab108c6b0997a93ddd1854a610f710e",
+      "voice": "Jennifer",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "white",
+      "source_id": "Jennifer-1-01-4eca179e9e8c8b62",
+      "source_sha256": "6ca7667d2a9e3bb5ec15c5b62d2b1dbf30f000e01d9135acf9201090c5d8a03a",
+      "voice": "Jennifer",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.24
+      ]
+    },
+    {
+      "target": "black",
+      "spoken_word": "white",
+      "source_id": "Jennifer-1-01-4eca179e9e8c8b62",
+      "source_sha256": "6ca7667d2a9e3bb5ec15c5b62d2b1dbf30f000e01d9135acf9201090c5d8a03a",
+      "voice": "Jennifer",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "white",
+      "source_id": "Jennifer-1-01-4eca179e9e8c8b62",
+      "source_sha256": "6ca7667d2a9e3bb5ec15c5b62d2b1dbf30f000e01d9135acf9201090c5d8a03a",
+      "voice": "Jennifer",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "white",
+      "source_id": "Jennifer-1-01-4eca179e9e8c8b62",
+      "source_sha256": "6ca7667d2a9e3bb5ec15c5b62d2b1dbf30f000e01d9135acf9201090c5d8a03a",
+      "voice": "Jennifer",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "white",
+      "source_id": "Jennifer-1-02-9ae5da33f3b4342d",
+      "source_sha256": "199faa4724721abafd22474bd5d4bfa01f6d8a653a72a4ff37861983b34e68c0",
+      "voice": "Jennifer",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        6.17
+      ]
+    },
+    {
+      "target": "black",
+      "spoken_word": "white",
+      "source_id": "Jennifer-1-02-9ae5da33f3b4342d",
+      "source_sha256": "199faa4724721abafd22474bd5d4bfa01f6d8a653a72a4ff37861983b34e68c0",
+      "voice": "Jennifer",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "white",
+      "source_id": "Jennifer-1-02-9ae5da33f3b4342d",
+      "source_sha256": "199faa4724721abafd22474bd5d4bfa01f6d8a653a72a4ff37861983b34e68c0",
+      "voice": "Jennifer",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "white",
+      "source_id": "Jennifer-1-02-9ae5da33f3b4342d",
+      "source_sha256": "199faa4724721abafd22474bd5d4bfa01f6d8a653a72a4ff37861983b34e68c0",
+      "voice": "Jennifer",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "white",
+      "source_id": "Jennifer-1-03-36ed0f147e8a77fe",
+      "source_sha256": "2449110966c74a7a4f5451ae8209d2194ee203cbd2994c2878eacbcdcd56365a",
+      "voice": "Jennifer",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.66
+      ]
+    },
+    {
+      "target": "black",
+      "spoken_word": "white",
+      "source_id": "Jennifer-1-03-36ed0f147e8a77fe",
+      "source_sha256": "2449110966c74a7a4f5451ae8209d2194ee203cbd2994c2878eacbcdcd56365a",
+      "voice": "Jennifer",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "white",
+      "source_id": "Jennifer-1-03-36ed0f147e8a77fe",
+      "source_sha256": "2449110966c74a7a4f5451ae8209d2194ee203cbd2994c2878eacbcdcd56365a",
+      "voice": "Jennifer",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "white",
+      "source_id": "Jennifer-1-03-36ed0f147e8a77fe",
+      "source_sha256": "2449110966c74a7a4f5451ae8209d2194ee203cbd2994c2878eacbcdcd56365a",
+      "voice": "Jennifer",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "white",
+      "source_id": "Seren-1-00-67dcb0b54c9999fb",
+      "source_sha256": "6a9a88ae8c8c46a486faeef88cbe0186966364760b67ecc81648d1eb2b500257",
+      "voice": "Seren",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.84
+      ]
+    },
+    {
+      "target": "black",
+      "spoken_word": "white",
+      "source_id": "Seren-1-00-67dcb0b54c9999fb",
+      "source_sha256": "6a9a88ae8c8c46a486faeef88cbe0186966364760b67ecc81648d1eb2b500257",
+      "voice": "Seren",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "white",
+      "source_id": "Seren-1-00-67dcb0b54c9999fb",
+      "source_sha256": "6a9a88ae8c8c46a486faeef88cbe0186966364760b67ecc81648d1eb2b500257",
+      "voice": "Seren",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "white",
+      "source_id": "Seren-1-00-67dcb0b54c9999fb",
+      "source_sha256": "6a9a88ae8c8c46a486faeef88cbe0186966364760b67ecc81648d1eb2b500257",
+      "voice": "Seren",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "white",
+      "source_id": "Seren-1-01-cec768aa566fd497",
+      "source_sha256": "ad19cb08c1439785e70ef2e91aadc090c7716adec3a0f36094587191f1d0e007",
+      "voice": "Seren",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.87
+      ]
+    },
+    {
+      "target": "black",
+      "spoken_word": "white",
+      "source_id": "Seren-1-01-cec768aa566fd497",
+      "source_sha256": "ad19cb08c1439785e70ef2e91aadc090c7716adec3a0f36094587191f1d0e007",
+      "voice": "Seren",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "white",
+      "source_id": "Seren-1-01-cec768aa566fd497",
+      "source_sha256": "ad19cb08c1439785e70ef2e91aadc090c7716adec3a0f36094587191f1d0e007",
+      "voice": "Seren",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "white",
+      "source_id": "Seren-1-01-cec768aa566fd497",
+      "source_sha256": "ad19cb08c1439785e70ef2e91aadc090c7716adec3a0f36094587191f1d0e007",
+      "voice": "Seren",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "white",
+      "source_id": "Seren-1-02-6894bf52e9ee9193",
+      "source_sha256": "c5808ffbce27eee004717b1d9320c5f3f99067aca297c6a936df473de68257d2",
+      "voice": "Seren",
+      "max_probability": 0.98828125,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "white",
+      "source_id": "Seren-1-02-6894bf52e9ee9193",
+      "source_sha256": "c5808ffbce27eee004717b1d9320c5f3f99067aca297c6a936df473de68257d2",
+      "voice": "Seren",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "white",
+      "source_id": "Seren-1-02-6894bf52e9ee9193",
+      "source_sha256": "c5808ffbce27eee004717b1d9320c5f3f99067aca297c6a936df473de68257d2",
+      "voice": "Seren",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "white",
+      "source_id": "Seren-1-02-6894bf52e9ee9193",
+      "source_sha256": "c5808ffbce27eee004717b1d9320c5f3f99067aca297c6a936df473de68257d2",
+      "voice": "Seren",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "white",
+      "source_id": "Seren-1-03-4b3113489a2ea964",
+      "source_sha256": "c5e92ef6eaaac03c37823d5b4c854b2c6e78049080f9215143cfb992562c480d",
+      "voice": "Seren",
+      "max_probability": 0.984375,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "white",
+      "source_id": "Seren-1-03-4b3113489a2ea964",
+      "source_sha256": "c5e92ef6eaaac03c37823d5b4c854b2c6e78049080f9215143cfb992562c480d",
+      "voice": "Seren",
+      "max_probability": 0.7109375,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "white",
+      "source_id": "Seren-1-03-4b3113489a2ea964",
+      "source_sha256": "c5e92ef6eaaac03c37823d5b4c854b2c6e78049080f9215143cfb992562c480d",
+      "voice": "Seren",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "white",
+      "source_id": "Seren-1-03-4b3113489a2ea964",
+      "source_sha256": "c5e92ef6eaaac03c37823d5b4c854b2c6e78049080f9215143cfb992562c480d",
+      "voice": "Seren",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "white",
+      "source_id": "Stella-1-00-05b2ee4d000fadfa",
+      "source_sha256": "e754da6db05daa20dbf853800f7da531ff2d8d6e48f35e339eeaf282b195a291",
+      "voice": "Stella",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.51
+      ]
+    },
+    {
+      "target": "black",
+      "spoken_word": "white",
+      "source_id": "Stella-1-00-05b2ee4d000fadfa",
+      "source_sha256": "e754da6db05daa20dbf853800f7da531ff2d8d6e48f35e339eeaf282b195a291",
+      "voice": "Stella",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "white",
+      "source_id": "Stella-1-00-05b2ee4d000fadfa",
+      "source_sha256": "e754da6db05daa20dbf853800f7da531ff2d8d6e48f35e339eeaf282b195a291",
+      "voice": "Stella",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "white",
+      "source_id": "Stella-1-00-05b2ee4d000fadfa",
+      "source_sha256": "e754da6db05daa20dbf853800f7da531ff2d8d6e48f35e339eeaf282b195a291",
+      "voice": "Stella",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "white",
+      "source_id": "Stella-1-01-bc0841f0e17e3322",
+      "source_sha256": "a8ee1b2797eadb08959a0a236bc1579f788ef626c0dddb66b27d816c713248a8",
+      "voice": "Stella",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.42
+      ]
+    },
+    {
+      "target": "black",
+      "spoken_word": "white",
+      "source_id": "Stella-1-01-bc0841f0e17e3322",
+      "source_sha256": "a8ee1b2797eadb08959a0a236bc1579f788ef626c0dddb66b27d816c713248a8",
+      "voice": "Stella",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "white",
+      "source_id": "Stella-1-01-bc0841f0e17e3322",
+      "source_sha256": "a8ee1b2797eadb08959a0a236bc1579f788ef626c0dddb66b27d816c713248a8",
+      "voice": "Stella",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "white",
+      "source_id": "Stella-1-01-bc0841f0e17e3322",
+      "source_sha256": "a8ee1b2797eadb08959a0a236bc1579f788ef626c0dddb66b27d816c713248a8",
+      "voice": "Stella",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "white",
+      "source_id": "Stella-1-02-d3aed294f9d9d16a",
+      "source_sha256": "258689f0d21f0cbb2cf816f145d6c73cb48503b515f598a87a81f0c452b5e069",
+      "voice": "Stella",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.18
+      ]
+    },
+    {
+      "target": "black",
+      "spoken_word": "white",
+      "source_id": "Stella-1-02-d3aed294f9d9d16a",
+      "source_sha256": "258689f0d21f0cbb2cf816f145d6c73cb48503b515f598a87a81f0c452b5e069",
+      "voice": "Stella",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "white",
+      "source_id": "Stella-1-02-d3aed294f9d9d16a",
+      "source_sha256": "258689f0d21f0cbb2cf816f145d6c73cb48503b515f598a87a81f0c452b5e069",
+      "voice": "Stella",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "white",
+      "source_id": "Stella-1-02-d3aed294f9d9d16a",
+      "source_sha256": "258689f0d21f0cbb2cf816f145d6c73cb48503b515f598a87a81f0c452b5e069",
+      "voice": "Stella",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "white",
+      "source_id": "Stella-1-03-be33f99c19da3e8a",
+      "source_sha256": "79f3d8e0f6db3cfd9a9c861fc8af2e1b29cb4c6325ff2c1a5fac04510b95dc7e",
+      "voice": "Stella",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.51
+      ]
+    },
+    {
+      "target": "black",
+      "spoken_word": "white",
+      "source_id": "Stella-1-03-be33f99c19da3e8a",
+      "source_sha256": "79f3d8e0f6db3cfd9a9c861fc8af2e1b29cb4c6325ff2c1a5fac04510b95dc7e",
+      "voice": "Stella",
+      "max_probability": 0.7109375,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "white",
+      "source_id": "Stella-1-03-be33f99c19da3e8a",
+      "source_sha256": "79f3d8e0f6db3cfd9a9c861fc8af2e1b29cb4c6325ff2c1a5fac04510b95dc7e",
+      "voice": "Stella",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "white",
+      "source_id": "Stella-1-03-be33f99c19da3e8a",
+      "source_sha256": "79f3d8e0f6db3cfd9a9c861fc8af2e1b29cb4c6325ff2c1a5fac04510b95dc7e",
+      "voice": "Stella",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "black",
+      "source_id": "Andre-1-00-17d887bf0205b270",
+      "source_sha256": "f67cc5f89c866c80e764b86b727e474e1486de5b32fc8c513b2f7e5ca235627a",
+      "voice": "Andre",
+      "max_probability": 0.98046875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "black",
+      "source_id": "Andre-1-00-17d887bf0205b270",
+      "source_sha256": "f67cc5f89c866c80e764b86b727e474e1486de5b32fc8c513b2f7e5ca235627a",
+      "voice": "Andre",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.39
+      ]
+    },
+    {
+      "target": "red",
+      "spoken_word": "black",
+      "source_id": "Andre-1-00-17d887bf0205b270",
+      "source_sha256": "f67cc5f89c866c80e764b86b727e474e1486de5b32fc8c513b2f7e5ca235627a",
+      "voice": "Andre",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "black",
+      "source_id": "Andre-1-00-17d887bf0205b270",
+      "source_sha256": "f67cc5f89c866c80e764b86b727e474e1486de5b32fc8c513b2f7e5ca235627a",
+      "voice": "Andre",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "black",
+      "source_id": "Andre-1-01-d2bfbc1691f93297",
+      "source_sha256": "51d6f7e43425fe8c67a72e7e3962e07d4b5d7b603721538e7748baa0e5de554b",
+      "voice": "Andre",
+      "max_probability": 0.9609375,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "black",
+      "source_id": "Andre-1-01-d2bfbc1691f93297",
+      "source_sha256": "51d6f7e43425fe8c67a72e7e3962e07d4b5d7b603721538e7748baa0e5de554b",
+      "voice": "Andre",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.39
+      ]
+    },
+    {
+      "target": "red",
+      "spoken_word": "black",
+      "source_id": "Andre-1-01-d2bfbc1691f93297",
+      "source_sha256": "51d6f7e43425fe8c67a72e7e3962e07d4b5d7b603721538e7748baa0e5de554b",
+      "voice": "Andre",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "black",
+      "source_id": "Andre-1-01-d2bfbc1691f93297",
+      "source_sha256": "51d6f7e43425fe8c67a72e7e3962e07d4b5d7b603721538e7748baa0e5de554b",
+      "voice": "Andre",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "black",
+      "source_id": "Andre-1-02-59b4499e3ca89e05",
+      "source_sha256": "0d13e707e5893534b5572f9895eb9feabebe1736293e223fd566485f425832c2",
+      "voice": "Andre",
+      "max_probability": 0.96875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "black",
+      "source_id": "Andre-1-02-59b4499e3ca89e05",
+      "source_sha256": "0d13e707e5893534b5572f9895eb9feabebe1736293e223fd566485f425832c2",
+      "voice": "Andre",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.24
+      ]
+    },
+    {
+      "target": "red",
+      "spoken_word": "black",
+      "source_id": "Andre-1-02-59b4499e3ca89e05",
+      "source_sha256": "0d13e707e5893534b5572f9895eb9feabebe1736293e223fd566485f425832c2",
+      "voice": "Andre",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "black",
+      "source_id": "Andre-1-02-59b4499e3ca89e05",
+      "source_sha256": "0d13e707e5893534b5572f9895eb9feabebe1736293e223fd566485f425832c2",
+      "voice": "Andre",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "black",
+      "source_id": "Andre-1-03-01538f9b216bbf98",
+      "source_sha256": "85b46a3f8dd61a3aa8f1201929df4cd0fd0436239680542876f121a3ebb9a462",
+      "voice": "Andre",
+      "max_probability": 0.96875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "black",
+      "source_id": "Andre-1-03-01538f9b216bbf98",
+      "source_sha256": "85b46a3f8dd61a3aa8f1201929df4cd0fd0436239680542876f121a3ebb9a462",
+      "voice": "Andre",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.54
+      ]
+    },
+    {
+      "target": "red",
+      "spoken_word": "black",
+      "source_id": "Andre-1-03-01538f9b216bbf98",
+      "source_sha256": "85b46a3f8dd61a3aa8f1201929df4cd0fd0436239680542876f121a3ebb9a462",
+      "voice": "Andre",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "black",
+      "source_id": "Andre-1-03-01538f9b216bbf98",
+      "source_sha256": "85b46a3f8dd61a3aa8f1201929df4cd0fd0436239680542876f121a3ebb9a462",
+      "voice": "Andre",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "black",
+      "source_id": "Jennifer-1-00-7338f2fbcd504b18",
+      "source_sha256": "4186595a4dc4fa95283dd401945e597d812a0960d593da8426dfd38e5f5b0b85",
+      "voice": "Jennifer",
+      "max_probability": 0.9921875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "black",
+      "source_id": "Jennifer-1-00-7338f2fbcd504b18",
+      "source_sha256": "4186595a4dc4fa95283dd401945e597d812a0960d593da8426dfd38e5f5b0b85",
+      "voice": "Jennifer",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "black",
+      "source_id": "Jennifer-1-00-7338f2fbcd504b18",
+      "source_sha256": "4186595a4dc4fa95283dd401945e597d812a0960d593da8426dfd38e5f5b0b85",
+      "voice": "Jennifer",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "black",
+      "source_id": "Jennifer-1-00-7338f2fbcd504b18",
+      "source_sha256": "4186595a4dc4fa95283dd401945e597d812a0960d593da8426dfd38e5f5b0b85",
+      "voice": "Jennifer",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "black",
+      "source_id": "Jennifer-1-01-d5b881be6fa12b2a",
+      "source_sha256": "23148b5463010b7f8d787402c4d96a9d7464c1bf1905073c676684192b9f3f80",
+      "voice": "Jennifer",
+      "max_probability": 0.98828125,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "black",
+      "source_id": "Jennifer-1-01-d5b881be6fa12b2a",
+      "source_sha256": "23148b5463010b7f8d787402c4d96a9d7464c1bf1905073c676684192b9f3f80",
+      "voice": "Jennifer",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "black",
+      "source_id": "Jennifer-1-01-d5b881be6fa12b2a",
+      "source_sha256": "23148b5463010b7f8d787402c4d96a9d7464c1bf1905073c676684192b9f3f80",
+      "voice": "Jennifer",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "black",
+      "source_id": "Jennifer-1-01-d5b881be6fa12b2a",
+      "source_sha256": "23148b5463010b7f8d787402c4d96a9d7464c1bf1905073c676684192b9f3f80",
+      "voice": "Jennifer",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "black",
+      "source_id": "Jennifer-1-02-9f1aad34a6ffc272",
+      "source_sha256": "db3622dd09dc80c06b3af4af13eb7b8c1f5d574d08d79520d819893fcbbf9359",
+      "voice": "Jennifer",
+      "max_probability": 0.98046875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "black",
+      "source_id": "Jennifer-1-02-9f1aad34a6ffc272",
+      "source_sha256": "db3622dd09dc80c06b3af4af13eb7b8c1f5d574d08d79520d819893fcbbf9359",
+      "voice": "Jennifer",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "black",
+      "source_id": "Jennifer-1-02-9f1aad34a6ffc272",
+      "source_sha256": "db3622dd09dc80c06b3af4af13eb7b8c1f5d574d08d79520d819893fcbbf9359",
+      "voice": "Jennifer",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "black",
+      "source_id": "Jennifer-1-02-9f1aad34a6ffc272",
+      "source_sha256": "db3622dd09dc80c06b3af4af13eb7b8c1f5d574d08d79520d819893fcbbf9359",
+      "voice": "Jennifer",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "black",
+      "source_id": "Jennifer-1-03-4cb74791cb92f396",
+      "source_sha256": "833ed48396159642a6479251aab6b9bb55eed65d47b1ba0c2752d7a63c5f80b3",
+      "voice": "Jennifer",
+      "max_probability": 0.98828125,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "black",
+      "source_id": "Jennifer-1-03-4cb74791cb92f396",
+      "source_sha256": "833ed48396159642a6479251aab6b9bb55eed65d47b1ba0c2752d7a63c5f80b3",
+      "voice": "Jennifer",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "black",
+      "source_id": "Jennifer-1-03-4cb74791cb92f396",
+      "source_sha256": "833ed48396159642a6479251aab6b9bb55eed65d47b1ba0c2752d7a63c5f80b3",
+      "voice": "Jennifer",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "black",
+      "source_id": "Jennifer-1-03-4cb74791cb92f396",
+      "source_sha256": "833ed48396159642a6479251aab6b9bb55eed65d47b1ba0c2752d7a63c5f80b3",
+      "voice": "Jennifer",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "black",
+      "source_id": "Seren-1-00-15ccd0c403958024",
+      "source_sha256": "d353ba4804973d2463f625d8c6d5698519c7fc18398a3a8b790aa3a86f2d572c",
+      "voice": "Seren",
+      "max_probability": 0.98828125,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "black",
+      "source_id": "Seren-1-00-15ccd0c403958024",
+      "source_sha256": "d353ba4804973d2463f625d8c6d5698519c7fc18398a3a8b790aa3a86f2d572c",
+      "voice": "Seren",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.39,
+        6.38
+      ]
+    },
+    {
+      "target": "red",
+      "spoken_word": "black",
+      "source_id": "Seren-1-00-15ccd0c403958024",
+      "source_sha256": "d353ba4804973d2463f625d8c6d5698519c7fc18398a3a8b790aa3a86f2d572c",
+      "voice": "Seren",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "black",
+      "source_id": "Seren-1-00-15ccd0c403958024",
+      "source_sha256": "d353ba4804973d2463f625d8c6d5698519c7fc18398a3a8b790aa3a86f2d572c",
+      "voice": "Seren",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "black",
+      "source_id": "Seren-1-01-3ed601fde58cea3f",
+      "source_sha256": "ce39d7bbd984837231d2a8657f6b200e3d25ae5cc52ab98c5fd00935cd075eed",
+      "voice": "Seren",
+      "max_probability": 0.98828125,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "black",
+      "source_id": "Seren-1-01-3ed601fde58cea3f",
+      "source_sha256": "ce39d7bbd984837231d2a8657f6b200e3d25ae5cc52ab98c5fd00935cd075eed",
+      "voice": "Seren",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.93,
+        6.23
+      ]
+    },
+    {
+      "target": "red",
+      "spoken_word": "black",
+      "source_id": "Seren-1-01-3ed601fde58cea3f",
+      "source_sha256": "ce39d7bbd984837231d2a8657f6b200e3d25ae5cc52ab98c5fd00935cd075eed",
+      "voice": "Seren",
+      "max_probability": 0.5703125,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "black",
+      "source_id": "Seren-1-01-3ed601fde58cea3f",
+      "source_sha256": "ce39d7bbd984837231d2a8657f6b200e3d25ae5cc52ab98c5fd00935cd075eed",
+      "voice": "Seren",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "black",
+      "source_id": "Seren-1-02-5d0f98fe44bde0cf",
+      "source_sha256": "46f5135ece7ce5ad6ecd0476a704bcff002cb9aa8508fb829bd8d9e9f411bcaa",
+      "voice": "Seren",
+      "max_probability": 0.96875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "black",
+      "source_id": "Seren-1-02-5d0f98fe44bde0cf",
+      "source_sha256": "46f5135ece7ce5ad6ecd0476a704bcff002cb9aa8508fb829bd8d9e9f411bcaa",
+      "voice": "Seren",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        6.5
+      ]
+    },
+    {
+      "target": "red",
+      "spoken_word": "black",
+      "source_id": "Seren-1-02-5d0f98fe44bde0cf",
+      "source_sha256": "46f5135ece7ce5ad6ecd0476a704bcff002cb9aa8508fb829bd8d9e9f411bcaa",
+      "voice": "Seren",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "black",
+      "source_id": "Seren-1-02-5d0f98fe44bde0cf",
+      "source_sha256": "46f5135ece7ce5ad6ecd0476a704bcff002cb9aa8508fb829bd8d9e9f411bcaa",
+      "voice": "Seren",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "black",
+      "source_id": "Seren-1-03-7009bf3d4f9f81d0",
+      "source_sha256": "ba443d9e7398b52ad52a931b5d7ce0b6ffc67670ad19459b7a0e45725c3576d7",
+      "voice": "Seren",
+      "max_probability": 0.98828125,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "black",
+      "source_id": "Seren-1-03-7009bf3d4f9f81d0",
+      "source_sha256": "ba443d9e7398b52ad52a931b5d7ce0b6ffc67670ad19459b7a0e45725c3576d7",
+      "voice": "Seren",
+      "max_probability": 0.98828125,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "black",
+      "source_id": "Seren-1-03-7009bf3d4f9f81d0",
+      "source_sha256": "ba443d9e7398b52ad52a931b5d7ce0b6ffc67670ad19459b7a0e45725c3576d7",
+      "voice": "Seren",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "black",
+      "source_id": "Seren-1-03-7009bf3d4f9f81d0",
+      "source_sha256": "ba443d9e7398b52ad52a931b5d7ce0b6ffc67670ad19459b7a0e45725c3576d7",
+      "voice": "Seren",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "black",
+      "source_id": "Stella-1-00-6b352d27ef1ef00a",
+      "source_sha256": "c55fe7a07223318e7a7b7cd786d2906ba807638d5e01a494d7a1640c9f0b9ae7",
+      "voice": "Stella",
+      "max_probability": 0.98046875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "black",
+      "source_id": "Stella-1-00-6b352d27ef1ef00a",
+      "source_sha256": "c55fe7a07223318e7a7b7cd786d2906ba807638d5e01a494d7a1640c9f0b9ae7",
+      "voice": "Stella",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.45,
+        6.05
+      ]
+    },
+    {
+      "target": "red",
+      "spoken_word": "black",
+      "source_id": "Stella-1-00-6b352d27ef1ef00a",
+      "source_sha256": "c55fe7a07223318e7a7b7cd786d2906ba807638d5e01a494d7a1640c9f0b9ae7",
+      "voice": "Stella",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "black",
+      "source_id": "Stella-1-00-6b352d27ef1ef00a",
+      "source_sha256": "c55fe7a07223318e7a7b7cd786d2906ba807638d5e01a494d7a1640c9f0b9ae7",
+      "voice": "Stella",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "black",
+      "source_id": "Stella-1-01-cf2fee86f22c2e87",
+      "source_sha256": "7d24d9ee06c61208e02eb065d3f12e64c6e12340a72145620bcbfe3c02d1bb5b",
+      "voice": "Stella",
+      "max_probability": 0.984375,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "black",
+      "source_id": "Stella-1-01-cf2fee86f22c2e87",
+      "source_sha256": "7d24d9ee06c61208e02eb065d3f12e64c6e12340a72145620bcbfe3c02d1bb5b",
+      "voice": "Stella",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.36
+      ]
+    },
+    {
+      "target": "red",
+      "spoken_word": "black",
+      "source_id": "Stella-1-01-cf2fee86f22c2e87",
+      "source_sha256": "7d24d9ee06c61208e02eb065d3f12e64c6e12340a72145620bcbfe3c02d1bb5b",
+      "voice": "Stella",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "black",
+      "source_id": "Stella-1-01-cf2fee86f22c2e87",
+      "source_sha256": "7d24d9ee06c61208e02eb065d3f12e64c6e12340a72145620bcbfe3c02d1bb5b",
+      "voice": "Stella",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "black",
+      "source_id": "Stella-1-02-38aea5a571db2d1f",
+      "source_sha256": "5c9c3d8ed59cb453d42c03be93cbd663af579efeb388290cbdcea4f3d9022de2",
+      "voice": "Stella",
+      "max_probability": 0.9921875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "black",
+      "source_id": "Stella-1-02-38aea5a571db2d1f",
+      "source_sha256": "5c9c3d8ed59cb453d42c03be93cbd663af579efeb388290cbdcea4f3d9022de2",
+      "voice": "Stella",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.69
+      ]
+    },
+    {
+      "target": "red",
+      "spoken_word": "black",
+      "source_id": "Stella-1-02-38aea5a571db2d1f",
+      "source_sha256": "5c9c3d8ed59cb453d42c03be93cbd663af579efeb388290cbdcea4f3d9022de2",
+      "voice": "Stella",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "black",
+      "source_id": "Stella-1-02-38aea5a571db2d1f",
+      "source_sha256": "5c9c3d8ed59cb453d42c03be93cbd663af579efeb388290cbdcea4f3d9022de2",
+      "voice": "Stella",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "black",
+      "source_id": "Stella-1-03-08516e0606e6a24d",
+      "source_sha256": "5c0d091c1e47312afc1edfe03f56fe59a2fd6ff74241a3f35a892ca32dcc5334",
+      "voice": "Stella",
+      "max_probability": 0.98828125,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "black",
+      "source_id": "Stella-1-03-08516e0606e6a24d",
+      "source_sha256": "5c0d091c1e47312afc1edfe03f56fe59a2fd6ff74241a3f35a892ca32dcc5334",
+      "voice": "Stella",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.39
+      ]
+    },
+    {
+      "target": "red",
+      "spoken_word": "black",
+      "source_id": "Stella-1-03-08516e0606e6a24d",
+      "source_sha256": "5c0d091c1e47312afc1edfe03f56fe59a2fd6ff74241a3f35a892ca32dcc5334",
+      "voice": "Stella",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "black",
+      "source_id": "Stella-1-03-08516e0606e6a24d",
+      "source_sha256": "5c0d091c1e47312afc1edfe03f56fe59a2fd6ff74241a3f35a892ca32dcc5334",
+      "voice": "Stella",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "red",
+      "source_id": "Andre-1-00-4aecc2d572efa93e",
+      "source_sha256": "bea1df5cc109e038aa22dff9f0b5df37c1aa926481b973c64dffba19ab3c5a9f",
+      "voice": "Andre",
+      "max_probability": 0.98046875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "red",
+      "source_id": "Andre-1-00-4aecc2d572efa93e",
+      "source_sha256": "bea1df5cc109e038aa22dff9f0b5df37c1aa926481b973c64dffba19ab3c5a9f",
+      "voice": "Andre",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "red",
+      "source_id": "Andre-1-00-4aecc2d572efa93e",
+      "source_sha256": "bea1df5cc109e038aa22dff9f0b5df37c1aa926481b973c64dffba19ab3c5a9f",
+      "voice": "Andre",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.3
+      ]
+    },
+    {
+      "target": "green",
+      "spoken_word": "red",
+      "source_id": "Andre-1-00-4aecc2d572efa93e",
+      "source_sha256": "bea1df5cc109e038aa22dff9f0b5df37c1aa926481b973c64dffba19ab3c5a9f",
+      "voice": "Andre",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "red",
+      "source_id": "Andre-1-01-ccc1b4fb2cfd191f",
+      "source_sha256": "ba7fe1810ddcef162d8bfa26df8c9537a140ba58be302166b4bda168a75d6b4a",
+      "voice": "Andre",
+      "max_probability": 0.98828125,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "red",
+      "source_id": "Andre-1-01-ccc1b4fb2cfd191f",
+      "source_sha256": "ba7fe1810ddcef162d8bfa26df8c9537a140ba58be302166b4bda168a75d6b4a",
+      "voice": "Andre",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "red",
+      "source_id": "Andre-1-01-ccc1b4fb2cfd191f",
+      "source_sha256": "ba7fe1810ddcef162d8bfa26df8c9537a140ba58be302166b4bda168a75d6b4a",
+      "voice": "Andre",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.54
+      ]
+    },
+    {
+      "target": "green",
+      "spoken_word": "red",
+      "source_id": "Andre-1-01-ccc1b4fb2cfd191f",
+      "source_sha256": "ba7fe1810ddcef162d8bfa26df8c9537a140ba58be302166b4bda168a75d6b4a",
+      "voice": "Andre",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "red",
+      "source_id": "Andre-1-02-f91cc0307041b44c",
+      "source_sha256": "67427e35d847bc1a9c813d4001300b4a4fa643b51c0321e6192a7c40effb263e",
+      "voice": "Andre",
+      "max_probability": 0.96875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "red",
+      "source_id": "Andre-1-02-f91cc0307041b44c",
+      "source_sha256": "67427e35d847bc1a9c813d4001300b4a4fa643b51c0321e6192a7c40effb263e",
+      "voice": "Andre",
+      "max_probability": 0.7109375,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "red",
+      "source_id": "Andre-1-02-f91cc0307041b44c",
+      "source_sha256": "67427e35d847bc1a9c813d4001300b4a4fa643b51c0321e6192a7c40effb263e",
+      "voice": "Andre",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.51
+      ]
+    },
+    {
+      "target": "green",
+      "spoken_word": "red",
+      "source_id": "Andre-1-02-f91cc0307041b44c",
+      "source_sha256": "67427e35d847bc1a9c813d4001300b4a4fa643b51c0321e6192a7c40effb263e",
+      "voice": "Andre",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "red",
+      "source_id": "Andre-1-03-d0f002de75cb1837",
+      "source_sha256": "527ce7c6d04b9519586c79b9e154bed80730990dbc515ca5c9efbb8bee8ba55b",
+      "voice": "Andre",
+      "max_probability": 0.98046875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "red",
+      "source_id": "Andre-1-03-d0f002de75cb1837",
+      "source_sha256": "527ce7c6d04b9519586c79b9e154bed80730990dbc515ca5c9efbb8bee8ba55b",
+      "voice": "Andre",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "red",
+      "source_id": "Andre-1-03-d0f002de75cb1837",
+      "source_sha256": "527ce7c6d04b9519586c79b9e154bed80730990dbc515ca5c9efbb8bee8ba55b",
+      "voice": "Andre",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.21
+      ]
+    },
+    {
+      "target": "green",
+      "spoken_word": "red",
+      "source_id": "Andre-1-03-d0f002de75cb1837",
+      "source_sha256": "527ce7c6d04b9519586c79b9e154bed80730990dbc515ca5c9efbb8bee8ba55b",
+      "voice": "Andre",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "red",
+      "source_id": "Jennifer-1-00-961c2adc0894a71d",
+      "source_sha256": "db95a2f8c4549237e9369267df09eb1dd8bec60e24aefe1e44eceb66fbee57de",
+      "voice": "Jennifer",
+      "max_probability": 0.98046875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "red",
+      "source_id": "Jennifer-1-00-961c2adc0894a71d",
+      "source_sha256": "db95a2f8c4549237e9369267df09eb1dd8bec60e24aefe1e44eceb66fbee57de",
+      "voice": "Jennifer",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "red",
+      "source_id": "Jennifer-1-00-961c2adc0894a71d",
+      "source_sha256": "db95a2f8c4549237e9369267df09eb1dd8bec60e24aefe1e44eceb66fbee57de",
+      "voice": "Jennifer",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.6000000000000005
+      ]
+    },
+    {
+      "target": "green",
+      "spoken_word": "red",
+      "source_id": "Jennifer-1-00-961c2adc0894a71d",
+      "source_sha256": "db95a2f8c4549237e9369267df09eb1dd8bec60e24aefe1e44eceb66fbee57de",
+      "voice": "Jennifer",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "red",
+      "source_id": "Jennifer-1-01-f55ada081bce3045",
+      "source_sha256": "29e4ad7eb6c8fd839af16ee58475355f8f8155add1480dc213bf59bde2a7942f",
+      "voice": "Jennifer",
+      "max_probability": 0.99609375,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "red",
+      "source_id": "Jennifer-1-01-f55ada081bce3045",
+      "source_sha256": "29e4ad7eb6c8fd839af16ee58475355f8f8155add1480dc213bf59bde2a7942f",
+      "voice": "Jennifer",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "red",
+      "source_id": "Jennifer-1-01-f55ada081bce3045",
+      "source_sha256": "29e4ad7eb6c8fd839af16ee58475355f8f8155add1480dc213bf59bde2a7942f",
+      "voice": "Jennifer",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.9,
+        7.07
+      ]
+    },
+    {
+      "target": "green",
+      "spoken_word": "red",
+      "source_id": "Jennifer-1-01-f55ada081bce3045",
+      "source_sha256": "29e4ad7eb6c8fd839af16ee58475355f8f8155add1480dc213bf59bde2a7942f",
+      "voice": "Jennifer",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "red",
+      "source_id": "Jennifer-1-02-9d0d632121f908bf",
+      "source_sha256": "72c9b46b9d63cc0982c88eab5213a5790a0b48ce964750a09103e09019e8e7e9",
+      "voice": "Jennifer",
+      "max_probability": 0.99609375,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "red",
+      "source_id": "Jennifer-1-02-9d0d632121f908bf",
+      "source_sha256": "72c9b46b9d63cc0982c88eab5213a5790a0b48ce964750a09103e09019e8e7e9",
+      "voice": "Jennifer",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "red",
+      "source_id": "Jennifer-1-02-9d0d632121f908bf",
+      "source_sha256": "72c9b46b9d63cc0982c88eab5213a5790a0b48ce964750a09103e09019e8e7e9",
+      "voice": "Jennifer",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.72
+      ]
+    },
+    {
+      "target": "green",
+      "spoken_word": "red",
+      "source_id": "Jennifer-1-02-9d0d632121f908bf",
+      "source_sha256": "72c9b46b9d63cc0982c88eab5213a5790a0b48ce964750a09103e09019e8e7e9",
+      "voice": "Jennifer",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "red",
+      "source_id": "Jennifer-1-03-876d615c71f587bd",
+      "source_sha256": "f6dd1e523a551bb1253a742dadbb27e48055dd8b67709d6da4789086ed2a0ab3",
+      "voice": "Jennifer",
+      "max_probability": 0.98828125,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "red",
+      "source_id": "Jennifer-1-03-876d615c71f587bd",
+      "source_sha256": "f6dd1e523a551bb1253a742dadbb27e48055dd8b67709d6da4789086ed2a0ab3",
+      "voice": "Jennifer",
+      "max_probability": 0.7109375,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "red",
+      "source_id": "Jennifer-1-03-876d615c71f587bd",
+      "source_sha256": "f6dd1e523a551bb1253a742dadbb27e48055dd8b67709d6da4789086ed2a0ab3",
+      "voice": "Jennifer",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.48
+      ]
+    },
+    {
+      "target": "green",
+      "spoken_word": "red",
+      "source_id": "Jennifer-1-03-876d615c71f587bd",
+      "source_sha256": "f6dd1e523a551bb1253a742dadbb27e48055dd8b67709d6da4789086ed2a0ab3",
+      "voice": "Jennifer",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "red",
+      "source_id": "Seren-1-00-6d3223943ebf0d2d",
+      "source_sha256": "1cd0f6481e10d5fa56f143235e549ab2bfccce04686ec428c880b14cdea79f59",
+      "voice": "Seren",
+      "max_probability": 0.99609375,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "red",
+      "source_id": "Seren-1-00-6d3223943ebf0d2d",
+      "source_sha256": "1cd0f6481e10d5fa56f143235e549ab2bfccce04686ec428c880b14cdea79f59",
+      "voice": "Seren",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "red",
+      "source_id": "Seren-1-00-6d3223943ebf0d2d",
+      "source_sha256": "1cd0f6481e10d5fa56f143235e549ab2bfccce04686ec428c880b14cdea79f59",
+      "voice": "Seren",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        6.11
+      ]
+    },
+    {
+      "target": "green",
+      "spoken_word": "red",
+      "source_id": "Seren-1-00-6d3223943ebf0d2d",
+      "source_sha256": "1cd0f6481e10d5fa56f143235e549ab2bfccce04686ec428c880b14cdea79f59",
+      "voice": "Seren",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "red",
+      "source_id": "Seren-1-01-bb14b68a613b793f",
+      "source_sha256": "22747160ba11cbdba6baf972acb9d0114e832320c51b93a83bd0050c7c15ee8f",
+      "voice": "Seren",
+      "max_probability": 0.9609375,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "red",
+      "source_id": "Seren-1-01-bb14b68a613b793f",
+      "source_sha256": "22747160ba11cbdba6baf972acb9d0114e832320c51b93a83bd0050c7c15ee8f",
+      "voice": "Seren",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "red",
+      "source_id": "Seren-1-01-bb14b68a613b793f",
+      "source_sha256": "22747160ba11cbdba6baf972acb9d0114e832320c51b93a83bd0050c7c15ee8f",
+      "voice": "Seren",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.63
+      ]
+    },
+    {
+      "target": "green",
+      "spoken_word": "red",
+      "source_id": "Seren-1-01-bb14b68a613b793f",
+      "source_sha256": "22747160ba11cbdba6baf972acb9d0114e832320c51b93a83bd0050c7c15ee8f",
+      "voice": "Seren",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "red",
+      "source_id": "Seren-1-02-071c5ee2d15bd102",
+      "source_sha256": "1acba9953705c6b93b2729cc5469c271b9262c1bc7dfdcbb82591ea3e3c0f581",
+      "voice": "Seren",
+      "max_probability": 0.98828125,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "red",
+      "source_id": "Seren-1-02-071c5ee2d15bd102",
+      "source_sha256": "1acba9953705c6b93b2729cc5469c271b9262c1bc7dfdcbb82591ea3e3c0f581",
+      "voice": "Seren",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "red",
+      "source_id": "Seren-1-02-071c5ee2d15bd102",
+      "source_sha256": "1acba9953705c6b93b2729cc5469c271b9262c1bc7dfdcbb82591ea3e3c0f581",
+      "voice": "Seren",
+      "max_probability": 0.9921875,
+      "detections_seconds": [
+        5.78
+      ]
+    },
+    {
+      "target": "green",
+      "spoken_word": "red",
+      "source_id": "Seren-1-02-071c5ee2d15bd102",
+      "source_sha256": "1acba9953705c6b93b2729cc5469c271b9262c1bc7dfdcbb82591ea3e3c0f581",
+      "voice": "Seren",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "red",
+      "source_id": "Seren-1-03-32e82be8761ba138",
+      "source_sha256": "5a4c0de537f88aee0dab36e55eb605b1e8a8cb5a4dcd476bfa3a032e1463f4eb",
+      "voice": "Seren",
+      "max_probability": 0.98828125,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "red",
+      "source_id": "Seren-1-03-32e82be8761ba138",
+      "source_sha256": "5a4c0de537f88aee0dab36e55eb605b1e8a8cb5a4dcd476bfa3a032e1463f4eb",
+      "voice": "Seren",
+      "max_probability": 0.7109375,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "red",
+      "source_id": "Seren-1-03-32e82be8761ba138",
+      "source_sha256": "5a4c0de537f88aee0dab36e55eb605b1e8a8cb5a4dcd476bfa3a032e1463f4eb",
+      "voice": "Seren",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.99
+      ]
+    },
+    {
+      "target": "green",
+      "spoken_word": "red",
+      "source_id": "Seren-1-03-32e82be8761ba138",
+      "source_sha256": "5a4c0de537f88aee0dab36e55eb605b1e8a8cb5a4dcd476bfa3a032e1463f4eb",
+      "voice": "Seren",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "red",
+      "source_id": "Stella-1-00-b88dc81463131bed",
+      "source_sha256": "2f8a4ab92571b3c73c19094824c8f11b27c32c02c906a5a4c9c70ad494af4c7d",
+      "voice": "Stella",
+      "max_probability": 0.9765625,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "red",
+      "source_id": "Stella-1-00-b88dc81463131bed",
+      "source_sha256": "2f8a4ab92571b3c73c19094824c8f11b27c32c02c906a5a4c9c70ad494af4c7d",
+      "voice": "Stella",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "red",
+      "source_id": "Stella-1-00-b88dc81463131bed",
+      "source_sha256": "2f8a4ab92571b3c73c19094824c8f11b27c32c02c906a5a4c9c70ad494af4c7d",
+      "voice": "Stella",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.33
+      ]
+    },
+    {
+      "target": "green",
+      "spoken_word": "red",
+      "source_id": "Stella-1-00-b88dc81463131bed",
+      "source_sha256": "2f8a4ab92571b3c73c19094824c8f11b27c32c02c906a5a4c9c70ad494af4c7d",
+      "voice": "Stella",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "red",
+      "source_id": "Stella-1-01-5c3624a53b1aac25",
+      "source_sha256": "a935aff4d6eb86b9df205086ece3338f697ecb0a69b6950d09571867b2da294e",
+      "voice": "Stella",
+      "max_probability": 0.9765625,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "red",
+      "source_id": "Stella-1-01-5c3624a53b1aac25",
+      "source_sha256": "a935aff4d6eb86b9df205086ece3338f697ecb0a69b6950d09571867b2da294e",
+      "voice": "Stella",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "red",
+      "source_id": "Stella-1-01-5c3624a53b1aac25",
+      "source_sha256": "a935aff4d6eb86b9df205086ece3338f697ecb0a69b6950d09571867b2da294e",
+      "voice": "Stella",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.72
+      ]
+    },
+    {
+      "target": "green",
+      "spoken_word": "red",
+      "source_id": "Stella-1-01-5c3624a53b1aac25",
+      "source_sha256": "a935aff4d6eb86b9df205086ece3338f697ecb0a69b6950d09571867b2da294e",
+      "voice": "Stella",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "red",
+      "source_id": "Stella-1-02-c1c72fc72b09faaf",
+      "source_sha256": "0c3d7d4729f9fed532f4f874014a1e666e1a9e1647beca192c56d2229281f50a",
+      "voice": "Stella",
+      "max_probability": 0.9765625,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "red",
+      "source_id": "Stella-1-02-c1c72fc72b09faaf",
+      "source_sha256": "0c3d7d4729f9fed532f4f874014a1e666e1a9e1647beca192c56d2229281f50a",
+      "voice": "Stella",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "red",
+      "source_id": "Stella-1-02-c1c72fc72b09faaf",
+      "source_sha256": "0c3d7d4729f9fed532f4f874014a1e666e1a9e1647beca192c56d2229281f50a",
+      "voice": "Stella",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.45
+      ]
+    },
+    {
+      "target": "green",
+      "spoken_word": "red",
+      "source_id": "Stella-1-02-c1c72fc72b09faaf",
+      "source_sha256": "0c3d7d4729f9fed532f4f874014a1e666e1a9e1647beca192c56d2229281f50a",
+      "voice": "Stella",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "red",
+      "source_id": "Stella-1-03-d97ab0036c911769",
+      "source_sha256": "60b794343d8e940db22eef9a4911de3c17e279e16fa4247fed3f3c5578ccc52f",
+      "voice": "Stella",
+      "max_probability": 0.96875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "red",
+      "source_id": "Stella-1-03-d97ab0036c911769",
+      "source_sha256": "60b794343d8e940db22eef9a4911de3c17e279e16fa4247fed3f3c5578ccc52f",
+      "voice": "Stella",
+      "max_probability": 0.7109375,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "red",
+      "source_id": "Stella-1-03-d97ab0036c911769",
+      "source_sha256": "60b794343d8e940db22eef9a4911de3c17e279e16fa4247fed3f3c5578ccc52f",
+      "voice": "Stella",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.36
+      ]
+    },
+    {
+      "target": "green",
+      "spoken_word": "red",
+      "source_id": "Stella-1-03-d97ab0036c911769",
+      "source_sha256": "60b794343d8e940db22eef9a4911de3c17e279e16fa4247fed3f3c5578ccc52f",
+      "voice": "Stella",
+      "max_probability": 0.30078125,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "green",
+      "source_id": "Andre-1-00-eb70e2371b52e56e",
+      "source_sha256": "46d26c949496c47a0ff0e317dc3a345b7fcc7732eb42839aefc455d08aa72f05",
+      "voice": "Andre",
+      "max_probability": 0.98046875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "green",
+      "source_id": "Andre-1-00-eb70e2371b52e56e",
+      "source_sha256": "46d26c949496c47a0ff0e317dc3a345b7fcc7732eb42839aefc455d08aa72f05",
+      "voice": "Andre",
+      "max_probability": 0.61328125,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "green",
+      "source_id": "Andre-1-00-eb70e2371b52e56e",
+      "source_sha256": "46d26c949496c47a0ff0e317dc3a345b7fcc7732eb42839aefc455d08aa72f05",
+      "voice": "Andre",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "green",
+      "source_id": "Andre-1-00-eb70e2371b52e56e",
+      "source_sha256": "46d26c949496c47a0ff0e317dc3a345b7fcc7732eb42839aefc455d08aa72f05",
+      "voice": "Andre",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.18
+      ]
+    },
+    {
+      "target": "white",
+      "spoken_word": "green",
+      "source_id": "Andre-1-01-5e1158a966152e66",
+      "source_sha256": "9b1a8fb17f28742497e2b854768ca4f0b7be77a9cc0a1d1b6e7418bcf888ea86",
+      "voice": "Andre",
+      "max_probability": 0.96875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "green",
+      "source_id": "Andre-1-01-5e1158a966152e66",
+      "source_sha256": "9b1a8fb17f28742497e2b854768ca4f0b7be77a9cc0a1d1b6e7418bcf888ea86",
+      "voice": "Andre",
+      "max_probability": 0.7109375,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "green",
+      "source_id": "Andre-1-01-5e1158a966152e66",
+      "source_sha256": "9b1a8fb17f28742497e2b854768ca4f0b7be77a9cc0a1d1b6e7418bcf888ea86",
+      "voice": "Andre",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "green",
+      "source_id": "Andre-1-01-5e1158a966152e66",
+      "source_sha256": "9b1a8fb17f28742497e2b854768ca4f0b7be77a9cc0a1d1b6e7418bcf888ea86",
+      "voice": "Andre",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.2700000000000005
+      ]
+    },
+    {
+      "target": "white",
+      "spoken_word": "green",
+      "source_id": "Andre-1-02-18a4f517b487e46d",
+      "source_sha256": "ff0ff93bc76a085a7ce442c10f9560bb381a2117f9fdebc5db434c8a3a6999ce",
+      "voice": "Andre",
+      "max_probability": 0.98046875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "green",
+      "source_id": "Andre-1-02-18a4f517b487e46d",
+      "source_sha256": "ff0ff93bc76a085a7ce442c10f9560bb381a2117f9fdebc5db434c8a3a6999ce",
+      "voice": "Andre",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "green",
+      "source_id": "Andre-1-02-18a4f517b487e46d",
+      "source_sha256": "ff0ff93bc76a085a7ce442c10f9560bb381a2117f9fdebc5db434c8a3a6999ce",
+      "voice": "Andre",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "green",
+      "source_id": "Andre-1-02-18a4f517b487e46d",
+      "source_sha256": "ff0ff93bc76a085a7ce442c10f9560bb381a2117f9fdebc5db434c8a3a6999ce",
+      "voice": "Andre",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.45
+      ]
+    },
+    {
+      "target": "white",
+      "spoken_word": "green",
+      "source_id": "Andre-1-03-28bf74ad4fcd4c7c",
+      "source_sha256": "296ea60bfb7acf41a5cbe6d9f097379d706b344cec970d7da85586365c592c2b",
+      "voice": "Andre",
+      "max_probability": 0.98046875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "green",
+      "source_id": "Andre-1-03-28bf74ad4fcd4c7c",
+      "source_sha256": "296ea60bfb7acf41a5cbe6d9f097379d706b344cec970d7da85586365c592c2b",
+      "voice": "Andre",
+      "max_probability": 0.7109375,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "green",
+      "source_id": "Andre-1-03-28bf74ad4fcd4c7c",
+      "source_sha256": "296ea60bfb7acf41a5cbe6d9f097379d706b344cec970d7da85586365c592c2b",
+      "voice": "Andre",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "green",
+      "source_id": "Andre-1-03-28bf74ad4fcd4c7c",
+      "source_sha256": "296ea60bfb7acf41a5cbe6d9f097379d706b344cec970d7da85586365c592c2b",
+      "voice": "Andre",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.66
+      ]
+    },
+    {
+      "target": "white",
+      "spoken_word": "green",
+      "source_id": "Jennifer-1-00-00e383fb08999faf",
+      "source_sha256": "9d041d384f3d0187734ea19f896ec8ea1092c022469f892fe243757dc600614f",
+      "voice": "Jennifer",
+      "max_probability": 0.9765625,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "green",
+      "source_id": "Jennifer-1-00-00e383fb08999faf",
+      "source_sha256": "9d041d384f3d0187734ea19f896ec8ea1092c022469f892fe243757dc600614f",
+      "voice": "Jennifer",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "green",
+      "source_id": "Jennifer-1-00-00e383fb08999faf",
+      "source_sha256": "9d041d384f3d0187734ea19f896ec8ea1092c022469f892fe243757dc600614f",
+      "voice": "Jennifer",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "green",
+      "source_id": "Jennifer-1-00-00e383fb08999faf",
+      "source_sha256": "9d041d384f3d0187734ea19f896ec8ea1092c022469f892fe243757dc600614f",
+      "voice": "Jennifer",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.09
+      ]
+    },
+    {
+      "target": "white",
+      "spoken_word": "green",
+      "source_id": "Jennifer-1-01-17d579ec81d44935",
+      "source_sha256": "bd1c510bbf14bab310da9732f1fe3055eacd6b04c1aa7012bbf29722555267a0",
+      "voice": "Jennifer",
+      "max_probability": 0.98828125,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "green",
+      "source_id": "Jennifer-1-01-17d579ec81d44935",
+      "source_sha256": "bd1c510bbf14bab310da9732f1fe3055eacd6b04c1aa7012bbf29722555267a0",
+      "voice": "Jennifer",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "green",
+      "source_id": "Jennifer-1-01-17d579ec81d44935",
+      "source_sha256": "bd1c510bbf14bab310da9732f1fe3055eacd6b04c1aa7012bbf29722555267a0",
+      "voice": "Jennifer",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "green",
+      "source_id": "Jennifer-1-01-17d579ec81d44935",
+      "source_sha256": "bd1c510bbf14bab310da9732f1fe3055eacd6b04c1aa7012bbf29722555267a0",
+      "voice": "Jennifer",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.24
+      ]
+    },
+    {
+      "target": "white",
+      "spoken_word": "green",
+      "source_id": "Jennifer-1-02-d914f9459e5edd44",
+      "source_sha256": "d3708bb6d2cc1cebd25812a46c8858210ce1b0bdbe96ef52254c56a7858e7be5",
+      "voice": "Jennifer",
+      "max_probability": 0.9921875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "green",
+      "source_id": "Jennifer-1-02-d914f9459e5edd44",
+      "source_sha256": "d3708bb6d2cc1cebd25812a46c8858210ce1b0bdbe96ef52254c56a7858e7be5",
+      "voice": "Jennifer",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "green",
+      "source_id": "Jennifer-1-02-d914f9459e5edd44",
+      "source_sha256": "d3708bb6d2cc1cebd25812a46c8858210ce1b0bdbe96ef52254c56a7858e7be5",
+      "voice": "Jennifer",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "green",
+      "source_id": "Jennifer-1-02-d914f9459e5edd44",
+      "source_sha256": "d3708bb6d2cc1cebd25812a46c8858210ce1b0bdbe96ef52254c56a7858e7be5",
+      "voice": "Jennifer",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.51
+      ]
+    },
+    {
+      "target": "white",
+      "spoken_word": "green",
+      "source_id": "Jennifer-1-03-560b0bb9e88ee8e0",
+      "source_sha256": "f1a8acc115bfd12e44f8fc2c7597a5280b0817cce2d062047c5b4ccbaa92e256",
+      "voice": "Jennifer",
+      "max_probability": 0.98828125,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "green",
+      "source_id": "Jennifer-1-03-560b0bb9e88ee8e0",
+      "source_sha256": "f1a8acc115bfd12e44f8fc2c7597a5280b0817cce2d062047c5b4ccbaa92e256",
+      "voice": "Jennifer",
+      "max_probability": 0.7109375,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "green",
+      "source_id": "Jennifer-1-03-560b0bb9e88ee8e0",
+      "source_sha256": "f1a8acc115bfd12e44f8fc2c7597a5280b0817cce2d062047c5b4ccbaa92e256",
+      "voice": "Jennifer",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "green",
+      "source_id": "Jennifer-1-03-560b0bb9e88ee8e0",
+      "source_sha256": "f1a8acc115bfd12e44f8fc2c7597a5280b0817cce2d062047c5b4ccbaa92e256",
+      "voice": "Jennifer",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.51
+      ]
+    },
+    {
+      "target": "white",
+      "spoken_word": "green",
+      "source_id": "Seren-1-00-480304eb43bb1c21",
+      "source_sha256": "7eb3abaaa32c0746ef3adf72df423d3e77767bdff7d38cda352c8f9939e1fb5f",
+      "voice": "Seren",
+      "max_probability": 0.98046875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "green",
+      "source_id": "Seren-1-00-480304eb43bb1c21",
+      "source_sha256": "7eb3abaaa32c0746ef3adf72df423d3e77767bdff7d38cda352c8f9939e1fb5f",
+      "voice": "Seren",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "green",
+      "source_id": "Seren-1-00-480304eb43bb1c21",
+      "source_sha256": "7eb3abaaa32c0746ef3adf72df423d3e77767bdff7d38cda352c8f9939e1fb5f",
+      "voice": "Seren",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "green",
+      "source_id": "Seren-1-00-480304eb43bb1c21",
+      "source_sha256": "7eb3abaaa32c0746ef3adf72df423d3e77767bdff7d38cda352c8f9939e1fb5f",
+      "voice": "Seren",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        6.3500000000000005
+      ]
+    },
+    {
+      "target": "white",
+      "spoken_word": "green",
+      "source_id": "Seren-1-01-7ab87e41f9bcb7e4",
+      "source_sha256": "133bd1b7bf325bf610e42a051d0ec144a2bbe4de204f5d7d8d8aefe07769b397",
+      "voice": "Seren",
+      "max_probability": 0.98046875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "green",
+      "source_id": "Seren-1-01-7ab87e41f9bcb7e4",
+      "source_sha256": "133bd1b7bf325bf610e42a051d0ec144a2bbe4de204f5d7d8d8aefe07769b397",
+      "voice": "Seren",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "green",
+      "source_id": "Seren-1-01-7ab87e41f9bcb7e4",
+      "source_sha256": "133bd1b7bf325bf610e42a051d0ec144a2bbe4de204f5d7d8d8aefe07769b397",
+      "voice": "Seren",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "green",
+      "source_id": "Seren-1-01-7ab87e41f9bcb7e4",
+      "source_sha256": "133bd1b7bf325bf610e42a051d0ec144a2bbe4de204f5d7d8d8aefe07769b397",
+      "voice": "Seren",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.87
+      ]
+    },
+    {
+      "target": "white",
+      "spoken_word": "green",
+      "source_id": "Seren-1-02-17f57e26e8f55103",
+      "source_sha256": "8da660bdf97a6fe2c2c65ec3c3436ce16450cb6a6701bf2bfceff34caaa82e51",
+      "voice": "Seren",
+      "max_probability": 0.98046875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "green",
+      "source_id": "Seren-1-02-17f57e26e8f55103",
+      "source_sha256": "8da660bdf97a6fe2c2c65ec3c3436ce16450cb6a6701bf2bfceff34caaa82e51",
+      "voice": "Seren",
+      "max_probability": 0.61328125,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "green",
+      "source_id": "Seren-1-02-17f57e26e8f55103",
+      "source_sha256": "8da660bdf97a6fe2c2c65ec3c3436ce16450cb6a6701bf2bfceff34caaa82e51",
+      "voice": "Seren",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "green",
+      "source_id": "Seren-1-02-17f57e26e8f55103",
+      "source_sha256": "8da660bdf97a6fe2c2c65ec3c3436ce16450cb6a6701bf2bfceff34caaa82e51",
+      "voice": "Seren",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        6.05,
+        6.74
+      ]
+    },
+    {
+      "target": "white",
+      "spoken_word": "green",
+      "source_id": "Seren-1-03-5c24ca9638092f94",
+      "source_sha256": "5455563cd9627b1804cf40ea2ebbafe59b7a7ce0167f782dcd5811267dc510dd",
+      "voice": "Seren",
+      "max_probability": 0.98828125,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "green",
+      "source_id": "Seren-1-03-5c24ca9638092f94",
+      "source_sha256": "5455563cd9627b1804cf40ea2ebbafe59b7a7ce0167f782dcd5811267dc510dd",
+      "voice": "Seren",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "green",
+      "source_id": "Seren-1-03-5c24ca9638092f94",
+      "source_sha256": "5455563cd9627b1804cf40ea2ebbafe59b7a7ce0167f782dcd5811267dc510dd",
+      "voice": "Seren",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "green",
+      "source_id": "Seren-1-03-5c24ca9638092f94",
+      "source_sha256": "5455563cd9627b1804cf40ea2ebbafe59b7a7ce0167f782dcd5811267dc510dd",
+      "voice": "Seren",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        6.05
+      ]
+    },
+    {
+      "target": "white",
+      "spoken_word": "green",
+      "source_id": "Stella-1-00-be8bd5b805c0cf12",
+      "source_sha256": "279cb66c6b84c1d05faec18f1c59eafc1bb9db8f7804e79f108b6c75e2d27ad2",
+      "voice": "Stella",
+      "max_probability": 0.9921875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "green",
+      "source_id": "Stella-1-00-be8bd5b805c0cf12",
+      "source_sha256": "279cb66c6b84c1d05faec18f1c59eafc1bb9db8f7804e79f108b6c75e2d27ad2",
+      "voice": "Stella",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "green",
+      "source_id": "Stella-1-00-be8bd5b805c0cf12",
+      "source_sha256": "279cb66c6b84c1d05faec18f1c59eafc1bb9db8f7804e79f108b6c75e2d27ad2",
+      "voice": "Stella",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "green",
+      "source_id": "Stella-1-00-be8bd5b805c0cf12",
+      "source_sha256": "279cb66c6b84c1d05faec18f1c59eafc1bb9db8f7804e79f108b6c75e2d27ad2",
+      "voice": "Stella",
+      "max_probability": 0.92578125,
+      "detections_seconds": [
+        5.66
+      ]
+    },
+    {
+      "target": "white",
+      "spoken_word": "green",
+      "source_id": "Stella-1-01-69e801f0cf5d2f79",
+      "source_sha256": "425971ecb7495fa72b23f1a6bd4f926a7bbf039c7dd9353d28f076618f7ee3ea",
+      "voice": "Stella",
+      "max_probability": 0.984375,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "green",
+      "source_id": "Stella-1-01-69e801f0cf5d2f79",
+      "source_sha256": "425971ecb7495fa72b23f1a6bd4f926a7bbf039c7dd9353d28f076618f7ee3ea",
+      "voice": "Stella",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "green",
+      "source_id": "Stella-1-01-69e801f0cf5d2f79",
+      "source_sha256": "425971ecb7495fa72b23f1a6bd4f926a7bbf039c7dd9353d28f076618f7ee3ea",
+      "voice": "Stella",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "green",
+      "source_id": "Stella-1-01-69e801f0cf5d2f79",
+      "source_sha256": "425971ecb7495fa72b23f1a6bd4f926a7bbf039c7dd9353d28f076618f7ee3ea",
+      "voice": "Stella",
+      "max_probability": 0.69921875,
+      "detections_seconds": []
+    },
+    {
+      "target": "white",
+      "spoken_word": "green",
+      "source_id": "Stella-1-02-60157710dd644024",
+      "source_sha256": "2a2244c44c99194c68f88d50032bf26c8f953e729bbc6d67a663167f8eb95633",
+      "voice": "Stella",
+      "max_probability": 0.9609375,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "green",
+      "source_id": "Stella-1-02-60157710dd644024",
+      "source_sha256": "2a2244c44c99194c68f88d50032bf26c8f953e729bbc6d67a663167f8eb95633",
+      "voice": "Stella",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "green",
+      "source_id": "Stella-1-02-60157710dd644024",
+      "source_sha256": "2a2244c44c99194c68f88d50032bf26c8f953e729bbc6d67a663167f8eb95633",
+      "voice": "Stella",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "green",
+      "source_id": "Stella-1-02-60157710dd644024",
+      "source_sha256": "2a2244c44c99194c68f88d50032bf26c8f953e729bbc6d67a663167f8eb95633",
+      "voice": "Stella",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.2700000000000005
+      ]
+    },
+    {
+      "target": "white",
+      "spoken_word": "green",
+      "source_id": "Stella-1-03-3adfe7d7f7759fe3",
+      "source_sha256": "590c439c043870cb7c181bec45b130d2b5c0e9646ccf768c33c04108e3d5a261",
+      "voice": "Stella",
+      "max_probability": 0.9921875,
+      "detections_seconds": []
+    },
+    {
+      "target": "black",
+      "spoken_word": "green",
+      "source_id": "Stella-1-03-3adfe7d7f7759fe3",
+      "source_sha256": "590c439c043870cb7c181bec45b130d2b5c0e9646ccf768c33c04108e3d5a261",
+      "voice": "Stella",
+      "max_probability": 0.6640625,
+      "detections_seconds": []
+    },
+    {
+      "target": "red",
+      "spoken_word": "green",
+      "source_id": "Stella-1-03-3adfe7d7f7759fe3",
+      "source_sha256": "590c439c043870cb7c181bec45b130d2b5c0e9646ccf768c33c04108e3d5a261",
+      "voice": "Stella",
+      "max_probability": 0.4296875,
+      "detections_seconds": []
+    },
+    {
+      "target": "green",
+      "spoken_word": "green",
+      "source_id": "Stella-1-03-3adfe7d7f7759fe3",
+      "source_sha256": "590c439c043870cb7c181bec45b130d2b5c0e9646ccf768c33c04108e3d5a261",
+      "voice": "Stella",
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.45
+      ]
+    }
+  ],
+  "limitation": "16 held-out synthesized clips per spoken word; identical waveform for every model. Not human or household acceptance."
+}

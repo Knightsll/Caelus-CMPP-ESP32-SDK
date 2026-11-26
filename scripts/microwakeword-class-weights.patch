@@ -1,0 +1,13 @@
+diff --git a/microwakeword/train.py b/microwakeword/train.py
+index 9eb88e7..32a3e1a 100644
+--- a/microwakeword/train.py
++++ b/microwakeword/train.py
+@@ -289,7 +289,7 @@ def train(model, config, data_processor):
+ 
+         class_weights = {0: negative_class_weight, 1: positive_class_weight}
+         combined_weights = train_sample_weights * np.vectorize(class_weights.get)(
+-            train_ground_truth
++            train_ground_truth.reshape(-1)
+         )
+ 
+         result = model.train_on_batch(

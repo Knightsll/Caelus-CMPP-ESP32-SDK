@@ -1,0 +1,49 @@
+{
+  "seed": 20261124,
+  "counts": {
+    "training_True": 1800,
+    "training_False": 8640,
+    "validation_True": 90,
+    "validation_False": 144,
+    "testing_True": 96,
+    "testing_False": 144
+  },
+  "speakers": {
+    "training": [
+      "Arthur",
+      "Bella",
+      "Bellona",
+      "Bunny",
+      "Chelsie",
+      "Cherry",
+      "Elias",
+      "Ethan",
+      "Kai",
+      "Katerina",
+      "Maia",
+      "Mia",
+      "Mochi",
+      "Momo",
+      "Moon",
+      "Neil",
+      "Nofish",
+      "Ryan",
+      "Vincent",
+      "Vivian"
+    ],
+    "validation": [
+      "Aiden",
+      "Nini",
+      "Pip",
+      "Serena"
+    ],
+    "testing": [
+      "Andre",
+      "Jennifer",
+      "Seren",
+      "Stella"
+    ]
+  },
+  "noise_sources": "/home/autograph/Project/Caelus_hardware_runtime/ESP32-MCP-hardware/MCP-Light/.esp-tools/wake-training/noise/sources.json",
+  "limitation": "Mandarin speech is synthesized; requires independent real speech and household acceptance."
+}

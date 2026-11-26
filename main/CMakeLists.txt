@@ -36,13 +36,15 @@ if(CONFIG_CMPP_VOICE_BOARD)
     list(APPEND cmpp_board_sources "voice_board.c" "voice_media.c" "voice_audio.c" "voice_wire.c")
     list(APPEND cmpp_board_sources "voice_recovery.c" "voice_recovery_logic.c")
     list(APPEND cmpp_board_sources "voice_status.c" "voice_lifecycle.c" "voice_volume.c" "voice_upload_queue.c")
+    list(APPEND cmpp_board_sources "voice_wake.c" "voice_wake_logic.c" "voice_micro.cpp")
+    list(APPEND cmpp_board_sources "voice_echo.c")
 else()
     list(APPEND cmpp_board_sources "board_config.c")
 endif()
 
 # Dependency discovery runs before sdkconfig is loaded.
 if(IDF_TARGET STREQUAL "esp32s3")
-    list(APPEND cmpp_board_requires esp_driver_i2s esp_driver_i2c esp_codec_dev)
+    list(APPEND cmpp_board_requires esp_driver_i2s esp_driver_i2c esp_codec_dev esp-sr esp-tflite-micro esp-micro-speech-features)
 endif()
 
 if(CONFIG_CMPP_BOARD_MQTT_ENABLE)
@@ -57,3 +59,15 @@ idf_component_register(
     REQUIRES ${cmpp_board_requires}
     PRIV_REQUIRES ${cmpp_board_private_requires}
 )
+
+set(CMPP_MICRO_MODEL_FILE "${CMAKE_CURRENT_SOURCE_DIR}/wake_models/xiaobai.tflite" CACHE FILEPATH "INT8 streaming wake model")
+if(CONFIG_CMPP_VOICE_BOARD AND EXISTS "${CMPP_MICRO_MODEL_FILE}")
+    target_add_binary_data(${COMPONENT_LIB} "${CMPP_MICRO_MODEL_FILE}" BINARY RENAME_TO xiaobai_tflite)
+    target_compile_definitions(${COMPONENT_LIB} PRIVATE CMPP_MICRO_MODEL_EMBEDDED=1)
+    get_filename_component(wake_model_dir "${CMPP_MICRO_MODEL_FILE}" DIRECTORY)
+    if(EXISTS "${wake_model_dir}/positive.pcm" AND EXISTS "${wake_model_dir}/negative.pcm")
+        target_add_binary_data(${COMPONENT_LIB} "${wake_model_dir}/positive.pcm" BINARY RENAME_TO wake_positive)
+        target_add_binary_data(${COMPONENT_LIB} "${wake_model_dir}/negative.pcm" BINARY RENAME_TO wake_negative)
+        target_compile_definitions(${COMPONENT_LIB} PRIVATE CMPP_MICRO_SELF_TEST=1)
+    endif()
+endif()

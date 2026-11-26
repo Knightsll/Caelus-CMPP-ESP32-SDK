@@ -1,0 +1,52 @@
+[
+  {
+    "id": "red:Arthur-1-00-ee86b1ab6afc679d",
+    "seconds": 3.4671875,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "red:Arthur-1-01-550e4b66a75f38c3",
+    "seconds": 3.3081875,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "red:Arthur-1-03-ae0e4568e861f6fb",
+    "seconds": 5.5475,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "red:Elias-1-01-242b53a7e7082b66",
+    "seconds": 3.788625,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "red:Elias-1-02-c894684f45fb7229",
+    "seconds": 2.5876875,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "red:Katerina-1-03-854c9f7826f8c639",
+    "seconds": 2.66775,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "red:Momo-1-02-d020781794aa1b2a",
+    "seconds": 3.0671875,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "red:Moon-1-00-651f9e631768ab00",
+    "seconds": 2.8280625,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "red:Moon-1-01-9124447cba881677",
+    "seconds": 2.7155,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "red:Seren-1-02-071c5ee2d15bd102",
+    "seconds": 4.0025,
+    "reason": "target cannot fit whole in model window after augmentation"
+  }
+]

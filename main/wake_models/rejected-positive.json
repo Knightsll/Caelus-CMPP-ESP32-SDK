@@ -1,0 +1,37 @@
+[
+  {
+    "id": "Arthur-1-02-e5386bc090ba4c20",
+    "seconds": 2.6531875,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "Arthur-1-03-a661e514ee624421",
+    "seconds": 2.8900625,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "Elias-1-00-db15949226793500",
+    "seconds": 2.796125,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "Kai-1-03-f6e91ed51c248b9e",
+    "seconds": 2.7300625,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "Ryan-1-02-afaafd500f6aa507",
+    "seconds": 4.5745625,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "Seren-1-02-6894bf52e9ee9193",
+    "seconds": 3.448875,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "Seren-1-03-4b3113489a2ea964",
+    "seconds": 2.7245625,
+    "reason": "target cannot fit whole in model window after augmentation"
+  }
+]

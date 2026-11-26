@@ -21,12 +21,21 @@ static const char *string_field(cJSON *root, const char *key)
 
 bool voice_wire_output_blocked(const voice_wire_t *s)
 {
-    return s->interrupt_enabled && (s->awaiting_accept || s->input_active);
+    return s->awaiting_stop || (s->interrupt_enabled && (s->awaiting_accept || s->input_active));
+}
+
+bool voice_wire_begin_stop(voice_wire_t *s, const char *id)
+{
+    if (!s || !s->ready || !s->stop_enabled || !voice_id_valid(id)) return false;
+    strcpy(s->stop_id, id);
+    s->awaiting_stop = true;
+    s->input_active = s->awaiting_accept = s->output = s->tail = false;
+    return true;
 }
 
 bool voice_wire_begin_input(voice_wire_t *s, const char *turn)
 {
-    if (!s || !s->ready || !voice_id_valid(turn)) return false;
+    if (!s || !s->ready || s->awaiting_stop || !voice_id_valid(turn)) return false;
     if (s->interrupt_enabled) {
         strcpy(s->input_turn, turn);
         s->input_active = s->awaiting_accept = true;
@@ -65,9 +74,13 @@ voice_message_t voice_wire_text(voice_wire_t *s, const char *channel,
     }
     if (strcmp(type, "session.configure") == 0) {
         const cJSON *enabled = cJSON_GetObjectItemCaseSensitive(root, "interrupt");
-        if (cJSON_GetArraySize(root) == 2 && cJSON_IsTrue(enabled) &&
-            !s->output && !s->input_active && !s->awaiting_accept) {
-            s->interrupt_enabled = true;
+        const cJSON *stop = cJSON_GetObjectItemCaseSensitive(root, "session_stop");
+        int fields = 1 + (enabled != NULL) + (stop != NULL);
+        if (fields >= 2 && cJSON_GetArraySize(root) == fields &&
+            (!enabled || cJSON_IsBool(enabled)) && (!stop || cJSON_IsBool(stop)) &&
+            !s->output && !s->input_active && !s->awaiting_accept && !s->awaiting_stop) {
+            s->interrupt_enabled = cJSON_IsTrue(enabled);
+            s->stop_enabled = cJSON_IsTrue(stop);
             result = VOICE_CONFIGURED;
         }
         goto done;
@@ -85,6 +98,16 @@ voice_message_t voice_wire_text(voice_wire_t *s, const char *channel,
     }
     if (strcmp(type, "session.state") == 0) {
         const char *state = string_field(root, "state");
+        const char *stop = string_field(root, "stop_id");
+        if (cJSON_GetArraySize(root) == 3 && state && !strcmp(state, "listening") &&
+            voice_id_valid(stop) && s->stop_enabled) {
+            result = VOICE_IGNORED;
+            if (s->awaiting_stop && !strcmp(stop, s->stop_id)) {
+                s->awaiting_stop = false;
+                result = VOICE_SESSION_STOPPED;
+            }
+            goto done;
+        }
         if (cJSON_GetArraySize(root) == 2 && state) {
             if (strcmp(state, "thinking") == 0) result = VOICE_SESSION_THINKING;
             else if (strcmp(state, "listening") == 0) result = VOICE_SESSION_LISTENING;

@@ -1,0 +1,66 @@
+{
+  "id": "xiaobai_micro_v1",
+  "status": "experimental_not_acoustically_accepted",
+  "wake_word": "小白小白",
+  "model_sha256": "feea9bbcbf97fedd7079e9f206abf4f0b3db3ac5bf066cd8418d068df3909b08",
+  "model_bytes": 50888,
+  "training_engine": {
+    "repository": "https://github.com/OHF-Voice/micro-wake-word",
+    "commit": "4665173cd35f1cff9a61e06fc427f124766c488e",
+    "patch": "scripts/microwakeword-class-weights.patch"
+  },
+  "tts": {
+    "provider": "DashScope",
+    "model": "qwen3-tts-flash",
+    "language": "Chinese",
+    "raw_clips": 280,
+    "voices": 28,
+    "training_voices": 20,
+    "validation_voices": 4,
+    "testing_voices": 4
+  },
+  "audio": {
+    "sample_rate": 16000,
+    "channels": 1,
+    "pcm_bits": 16,
+    "frontend_window_ms": 30,
+    "frontend_step_ms": 10,
+    "bins": 40,
+    "input_slices": 3
+  },
+  "gate": {
+    "threshold": 0.9,
+    "consecutive_predictions": 9,
+    "startup_predictions": 34
+  },
+  "evaluation": {
+    "model_sha256": "feea9bbcbf97fedd7079e9f206abf4f0b3db3ac5bf066cd8418d068df3909b08",
+    "split": "testing",
+    "threshold": 0.9,
+    "consecutive": 9,
+    "positive_clips": 64,
+    "positive_detected": 49,
+    "clean_positive_clips": 16,
+    "clean_positive_detected": 14,
+    "negative_clips": 28,
+    "negative_seconds": 580.582375,
+    "false_triggers": 1,
+    "limitation": "Held-out synthetic voices and, if supplied, public noise. No real household FAPH or human recall claim."
+  },
+  "fixtures": {
+    "positive": {
+      "source_id": "Aiden-1-00-df9074f732ce39a4",
+      "sha256": "1bb459e9a4fae2624d2a5a8dbb7f54be25604d4d397016625c889dbcb09c4154",
+      "samples": 104407,
+      "expected_detection": true,
+      "max_probability": 0.99609375
+    },
+    "negative": {
+      "source_id": "Aiden-0-01-9f721f9844554e6f",
+      "sha256": "6b3a94b0fc1ecc7f6bbe96e95d1065afa2d31f34b35834d83bc67cfe2145cbdb",
+      "samples": 101630,
+      "expected_detection": false,
+      "max_probability": 0.99609375
+    }
+  }
+}

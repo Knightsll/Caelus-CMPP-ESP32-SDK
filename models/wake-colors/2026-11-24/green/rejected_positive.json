@@ -1,0 +1,17 @@
+[
+  {
+    "id": "green:Elias-1-03-ad92d5012e91529f",
+    "seconds": 2.5085,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "green:Katerina-1-02-8b26c2743d11a83f",
+    "seconds": 2.8290625,
+    "reason": "target cannot fit whole in model window after augmentation"
+  },
+  {
+    "id": "green:Katerina-1-03-df2be94000e2c07b",
+    "seconds": 3.227875,
+    "reason": "target cannot fit whole in model window after augmentation"
+  }
+]

@@ -1,0 +1,955 @@
+{
+  "model_sha256": "feea9bbcbf97fedd7079e9f206abf4f0b3db3ac5bf066cd8418d068df3909b08",
+  "split": "validation",
+  "threshold": 0.9,
+  "positive_clips": 64,
+  "positive_detected": 50,
+  "clean_positive_clips": 16,
+  "clean_positive_detected": 14,
+  "negative_clips": 29,
+  "negative_seconds": 643.6524999999999,
+  "false_triggers": 1,
+  "limitation": "Held-out synthetic voices and, if supplied, public noise. No real household FAPH or human recall claim.",
+  "records": [
+    {
+      "id": "Aiden-0-00-cd8f88d4214ab6b4",
+      "voice": "Aiden",
+      "label": false,
+      "variant": 0,
+      "seconds": 5.426125,
+      "max_probability": 0.99609375,
+      "detections_seconds": []
+    },
+    {
+      "id": "Aiden-0-01-9f721f9844554e6f",
+      "voice": "Aiden",
+      "label": false,
+      "variant": 0,
+      "seconds": 6.351875,
+      "max_probability": 0.9765625,
+      "detections_seconds": []
+    },
+    {
+      "id": "Aiden-0-02-e1e48ee7f6564b04",
+      "voice": "Aiden",
+      "label": false,
+      "variant": 0,
+      "seconds": 20.4334375,
+      "max_probability": 0.984375,
+      "detections_seconds": []
+    },
+    {
+      "id": "Aiden-0-03-15f1906675b43b28",
+      "voice": "Aiden",
+      "label": false,
+      "variant": 0,
+      "seconds": 25.4165625,
+      "max_probability": 0.99609375,
+      "detections_seconds": []
+    },
+    {
+      "id": "Aiden-0-04-4f0a1800db08a922",
+      "voice": "Aiden",
+      "label": false,
+      "variant": 0,
+      "seconds": 6.3046875,
+      "max_probability": 0.98046875,
+      "detections_seconds": []
+    },
+    {
+      "id": "Aiden-0-05-90db1baa36d40cd8",
+      "voice": "Aiden",
+      "label": false,
+      "variant": 0,
+      "seconds": 6.1479375,
+      "max_probability": 0.98828125,
+      "detections_seconds": []
+    },
+    {
+      "id": "Aiden-1-00-df9074f732ce39a4",
+      "voice": "Aiden",
+      "label": true,
+      "variant": 0,
+      "seconds": 6.5254375,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.51
+      ]
+    },
+    {
+      "id": "Aiden-1-00-df9074f732ce39a4",
+      "voice": "Aiden",
+      "label": true,
+      "variant": 1,
+      "seconds": 9.0,
+      "max_probability": 0.9921875,
+      "detections_seconds": [
+        8.18
+      ]
+    },
+    {
+      "id": "Aiden-1-00-df9074f732ce39a4",
+      "voice": "Aiden",
+      "label": true,
+      "variant": 2,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.73
+      ]
+    },
+    {
+      "id": "Aiden-1-00-df9074f732ce39a4",
+      "voice": "Aiden",
+      "label": true,
+      "variant": 3,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.79
+      ]
+    },
+    {
+      "id": "Aiden-1-01-bda95529be113ae1",
+      "voice": "Aiden",
+      "label": true,
+      "variant": 0,
+      "seconds": 6.624625,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.6000000000000005
+      ]
+    },
+    {
+      "id": "Aiden-1-01-bda95529be113ae1",
+      "voice": "Aiden",
+      "label": true,
+      "variant": 1,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.76
+      ]
+    },
+    {
+      "id": "Aiden-1-01-bda95529be113ae1",
+      "voice": "Aiden",
+      "label": true,
+      "variant": 2,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        8.0
+      ]
+    },
+    {
+      "id": "Aiden-1-01-bda95529be113ae1",
+      "voice": "Aiden",
+      "label": true,
+      "variant": 3,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.91
+      ]
+    },
+    {
+      "id": "Aiden-1-02-3b091cf7c33e7d2b",
+      "voice": "Aiden",
+      "label": true,
+      "variant": 0,
+      "seconds": 6.4671875,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.54
+      ]
+    },
+    {
+      "id": "Aiden-1-02-3b091cf7c33e7d2b",
+      "voice": "Aiden",
+      "label": true,
+      "variant": 1,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.94
+      ]
+    },
+    {
+      "id": "Aiden-1-02-3b091cf7c33e7d2b",
+      "voice": "Aiden",
+      "label": true,
+      "variant": 2,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.88
+      ]
+    },
+    {
+      "id": "Aiden-1-02-3b091cf7c33e7d2b",
+      "voice": "Aiden",
+      "label": true,
+      "variant": 3,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.73
+      ]
+    },
+    {
+      "id": "Aiden-1-03-8af009ff8a8729d1",
+      "voice": "Aiden",
+      "label": true,
+      "variant": 0,
+      "seconds": 7.0233125,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.99
+      ]
+    },
+    {
+      "id": "Aiden-1-03-8af009ff8a8729d1",
+      "voice": "Aiden",
+      "label": true,
+      "variant": 1,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.67
+      ]
+    },
+    {
+      "id": "Aiden-1-03-8af009ff8a8729d1",
+      "voice": "Aiden",
+      "label": true,
+      "variant": 2,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.58
+      ]
+    },
+    {
+      "id": "Aiden-1-03-8af009ff8a8729d1",
+      "voice": "Aiden",
+      "label": true,
+      "variant": 3,
+      "seconds": 9.0,
+      "max_probability": 0.984375,
+      "detections_seconds": [
+        8.36
+      ]
+    },
+    {
+      "id": "Nini-0-00-ade5ca7542c82771",
+      "voice": "Nini",
+      "label": false,
+      "variant": 0,
+      "seconds": 5.6671875,
+      "max_probability": 0.98046875,
+      "detections_seconds": []
+    },
+    {
+      "id": "Nini-0-01-1410d34bd2b66b60",
+      "voice": "Nini",
+      "label": false,
+      "variant": 0,
+      "seconds": 6.1459375,
+      "max_probability": 0.98046875,
+      "detections_seconds": []
+    },
+    {
+      "id": "Nini-0-02-db0fbeca458f489a",
+      "voice": "Nini",
+      "label": false,
+      "variant": 0,
+      "seconds": 25.3176875,
+      "max_probability": 0.99609375,
+      "detections_seconds": []
+    },
+    {
+      "id": "Nini-0-03-532fafd246b45926",
+      "voice": "Nini",
+      "label": false,
+      "variant": 0,
+      "seconds": 26.7869375,
+      "max_probability": 0.98046875,
+      "detections_seconds": []
+    },
+    {
+      "id": "Nini-0-04-955491db3e5af86d",
+      "voice": "Nini",
+      "label": false,
+      "variant": 0,
+      "seconds": 6.121625,
+      "max_probability": 0.9921875,
+      "detections_seconds": []
+    },
+    {
+      "id": "Nini-0-05-c6f8cff99ce20eff",
+      "voice": "Nini",
+      "label": false,
+      "variant": 0,
+      "seconds": 6.0669375,
+      "max_probability": 0.98046875,
+      "detections_seconds": []
+    },
+    {
+      "id": "Nini-1-00-20ceb95d811406ee",
+      "voice": "Nini",
+      "label": true,
+      "variant": 0,
+      "seconds": 6.5455,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.72
+      ]
+    },
+    {
+      "id": "Nini-1-00-20ceb95d811406ee",
+      "voice": "Nini",
+      "label": true,
+      "variant": 1,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        8.18
+      ]
+    },
+    {
+      "id": "Nini-1-00-20ceb95d811406ee",
+      "voice": "Nini",
+      "label": true,
+      "variant": 2,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.88
+      ]
+    },
+    {
+      "id": "Nini-1-00-20ceb95d811406ee",
+      "voice": "Nini",
+      "label": true,
+      "variant": 3,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.8500000000000005
+      ]
+    },
+    {
+      "id": "Nini-1-01-cafee40f2029f5c7",
+      "voice": "Nini",
+      "label": true,
+      "variant": 0,
+      "seconds": 6.30475,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.51
+      ]
+    },
+    {
+      "id": "Nini-1-01-cafee40f2029f5c7",
+      "voice": "Nini",
+      "label": true,
+      "variant": 1,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        8.24
+      ]
+    },
+    {
+      "id": "Nini-1-01-cafee40f2029f5c7",
+      "voice": "Nini",
+      "label": true,
+      "variant": 2,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        8.0
+      ]
+    },
+    {
+      "id": "Nini-1-01-cafee40f2029f5c7",
+      "voice": "Nini",
+      "label": true,
+      "variant": 3,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.8500000000000005
+      ]
+    },
+    {
+      "id": "Nini-1-02-602e4c7392ff281f",
+      "voice": "Nini",
+      "label": true,
+      "variant": 0,
+      "seconds": 6.7581875,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.8100000000000005
+      ]
+    },
+    {
+      "id": "Nini-1-02-602e4c7392ff281f",
+      "voice": "Nini",
+      "label": true,
+      "variant": 1,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.76
+      ]
+    },
+    {
+      "id": "Nini-1-02-602e4c7392ff281f",
+      "voice": "Nini",
+      "label": true,
+      "variant": 2,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        8.03
+      ]
+    },
+    {
+      "id": "Nini-1-02-602e4c7392ff281f",
+      "voice": "Nini",
+      "label": true,
+      "variant": 3,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.76
+      ]
+    },
+    {
+      "id": "Nini-1-03-ba344a2a1652b1a7",
+      "voice": "Nini",
+      "label": true,
+      "variant": 0,
+      "seconds": 6.4644375,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.51
+      ]
+    },
+    {
+      "id": "Nini-1-03-ba344a2a1652b1a7",
+      "voice": "Nini",
+      "label": true,
+      "variant": 1,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.82
+      ]
+    },
+    {
+      "id": "Nini-1-03-ba344a2a1652b1a7",
+      "voice": "Nini",
+      "label": true,
+      "variant": 2,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.7
+      ]
+    },
+    {
+      "id": "Nini-1-03-ba344a2a1652b1a7",
+      "voice": "Nini",
+      "label": true,
+      "variant": 3,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.7
+      ]
+    },
+    {
+      "id": "Pip-0-00-32fc6c6e704ad257",
+      "voice": "Pip",
+      "label": false,
+      "variant": 0,
+      "seconds": 6.5481875,
+      "max_probability": 0.96875,
+      "detections_seconds": []
+    },
+    {
+      "id": "Pip-0-01-fe261add8c4ea729",
+      "voice": "Pip",
+      "label": false,
+      "variant": 0,
+      "seconds": 5.9865,
+      "max_probability": 0.9609375,
+      "detections_seconds": []
+    },
+    {
+      "id": "Pip-0-02-06ece709805f70f2",
+      "voice": "Pip",
+      "label": false,
+      "variant": 0,
+      "seconds": 23.3384375,
+      "max_probability": 0.9921875,
+      "detections_seconds": []
+    },
+    {
+      "id": "Pip-0-03-9c9cb6be91539f27",
+      "voice": "Pip",
+      "label": false,
+      "variant": 0,
+      "seconds": 26.2168125,
+      "max_probability": 0.98046875,
+      "detections_seconds": []
+    },
+    {
+      "id": "Pip-0-04-8b01db4ec2cfc645",
+      "voice": "Pip",
+      "label": false,
+      "variant": 0,
+      "seconds": 6.7869375,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.75
+      ]
+    },
+    {
+      "id": "Pip-0-05-416cf5f0e2429894",
+      "voice": "Pip",
+      "label": false,
+      "variant": 0,
+      "seconds": 5.7408125,
+      "max_probability": 0.96875,
+      "detections_seconds": []
+    },
+    {
+      "id": "Pip-1-00-08d11f75894cb540",
+      "voice": "Pip",
+      "label": true,
+      "variant": 0,
+      "seconds": 6.1235,
+      "max_probability": 0.9921875,
+      "detections_seconds": []
+    },
+    {
+      "id": "Pip-1-00-08d11f75894cb540",
+      "voice": "Pip",
+      "label": true,
+      "variant": 1,
+      "seconds": 9.0,
+      "max_probability": 0.9921875,
+      "detections_seconds": []
+    },
+    {
+      "id": "Pip-1-00-08d11f75894cb540",
+      "voice": "Pip",
+      "label": true,
+      "variant": 2,
+      "seconds": 9.0,
+      "max_probability": 0.98828125,
+      "detections_seconds": []
+    },
+    {
+      "id": "Pip-1-00-08d11f75894cb540",
+      "voice": "Pip",
+      "label": true,
+      "variant": 3,
+      "seconds": 9.0,
+      "max_probability": 0.984375,
+      "detections_seconds": []
+    },
+    {
+      "id": "Pip-1-01-4dac8bb33b331785",
+      "voice": "Pip",
+      "label": true,
+      "variant": 0,
+      "seconds": 6.467,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.57
+      ]
+    },
+    {
+      "id": "Pip-1-01-4dac8bb33b331785",
+      "voice": "Pip",
+      "label": true,
+      "variant": 1,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        8.06
+      ]
+    },
+    {
+      "id": "Pip-1-01-4dac8bb33b331785",
+      "voice": "Pip",
+      "label": true,
+      "variant": 2,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": []
+    },
+    {
+      "id": "Pip-1-01-4dac8bb33b331785",
+      "voice": "Pip",
+      "label": true,
+      "variant": 3,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.94
+      ]
+    },
+    {
+      "id": "Pip-1-02-d3cc87b931b81317",
+      "voice": "Pip",
+      "label": true,
+      "variant": 0,
+      "seconds": 6.1893125,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.39
+      ]
+    },
+    {
+      "id": "Pip-1-02-d3cc87b931b81317",
+      "voice": "Pip",
+      "label": true,
+      "variant": 1,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": []
+    },
+    {
+      "id": "Pip-1-02-d3cc87b931b81317",
+      "voice": "Pip",
+      "label": true,
+      "variant": 2,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": []
+    },
+    {
+      "id": "Pip-1-02-d3cc87b931b81317",
+      "voice": "Pip",
+      "label": true,
+      "variant": 3,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        8.03
+      ]
+    },
+    {
+      "id": "Pip-1-03-b05ab5c1fa5181d9",
+      "voice": "Pip",
+      "label": true,
+      "variant": 0,
+      "seconds": 6.06775,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.18
+      ]
+    },
+    {
+      "id": "Pip-1-03-b05ab5c1fa5181d9",
+      "voice": "Pip",
+      "label": true,
+      "variant": 1,
+      "seconds": 9.0,
+      "max_probability": 0.9921875,
+      "detections_seconds": []
+    },
+    {
+      "id": "Pip-1-03-b05ab5c1fa5181d9",
+      "voice": "Pip",
+      "label": true,
+      "variant": 2,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.82
+      ]
+    },
+    {
+      "id": "Pip-1-03-b05ab5c1fa5181d9",
+      "voice": "Pip",
+      "label": true,
+      "variant": 3,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        8.120000000000001
+      ]
+    },
+    {
+      "id": "Serena-0-00-e680d4e5d9833648",
+      "voice": "Serena",
+      "label": false,
+      "variant": 0,
+      "seconds": 5.9036875,
+      "max_probability": 0.9921875,
+      "detections_seconds": []
+    },
+    {
+      "id": "Serena-0-01-514d9d1416b3ba41",
+      "voice": "Serena",
+      "label": false,
+      "variant": 0,
+      "seconds": 6.466375,
+      "max_probability": 0.98828125,
+      "detections_seconds": []
+    },
+    {
+      "id": "Serena-0-02-e4b5e99a53983a66",
+      "voice": "Serena",
+      "label": false,
+      "variant": 0,
+      "seconds": 20.9358125,
+      "max_probability": 0.96875,
+      "detections_seconds": []
+    },
+    {
+      "id": "Serena-0-03-0bce07388035a6c3",
+      "voice": "Serena",
+      "label": false,
+      "variant": 0,
+      "seconds": 22.2859375,
+      "max_probability": 0.984375,
+      "detections_seconds": []
+    },
+    {
+      "id": "Serena-0-04-6971231880f3f9b6",
+      "voice": "Serena",
+      "label": false,
+      "variant": 0,
+      "seconds": 6.8178125,
+      "max_probability": 0.9921875,
+      "detections_seconds": []
+    },
+    {
+      "id": "Serena-0-05-95ce030d55ce58b0",
+      "voice": "Serena",
+      "label": false,
+      "variant": 0,
+      "seconds": 5.82775,
+      "max_probability": 0.98046875,
+      "detections_seconds": []
+    },
+    {
+      "id": "Serena-1-00-59f899962dd7c929",
+      "voice": "Serena",
+      "label": true,
+      "variant": 0,
+      "seconds": 5.9085,
+      "max_probability": 0.98046875,
+      "detections_seconds": []
+    },
+    {
+      "id": "Serena-1-00-59f899962dd7c929",
+      "voice": "Serena",
+      "label": true,
+      "variant": 1,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": []
+    },
+    {
+      "id": "Serena-1-00-59f899962dd7c929",
+      "voice": "Serena",
+      "label": true,
+      "variant": 2,
+      "seconds": 9.0,
+      "max_probability": 0.9765625,
+      "detections_seconds": []
+    },
+    {
+      "id": "Serena-1-00-59f899962dd7c929",
+      "voice": "Serena",
+      "label": true,
+      "variant": 3,
+      "seconds": 9.0,
+      "max_probability": 0.984375,
+      "detections_seconds": []
+    },
+    {
+      "id": "Serena-1-01-4d731fff0d267703",
+      "voice": "Serena",
+      "label": true,
+      "variant": 0,
+      "seconds": 6.30925,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.39
+      ]
+    },
+    {
+      "id": "Serena-1-01-4d731fff0d267703",
+      "voice": "Serena",
+      "label": true,
+      "variant": 1,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.79
+      ]
+    },
+    {
+      "id": "Serena-1-01-4d731fff0d267703",
+      "voice": "Serena",
+      "label": true,
+      "variant": 2,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.82
+      ]
+    },
+    {
+      "id": "Serena-1-01-4d731fff0d267703",
+      "voice": "Serena",
+      "label": true,
+      "variant": 3,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        8.03
+      ]
+    },
+    {
+      "id": "Serena-1-02-f7904218cf35f3e2",
+      "voice": "Serena",
+      "label": true,
+      "variant": 0,
+      "seconds": 6.308625,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        5.54
+      ]
+    },
+    {
+      "id": "Serena-1-02-f7904218cf35f3e2",
+      "voice": "Serena",
+      "label": true,
+      "variant": 1,
+      "seconds": 9.0,
+      "max_probability": 0.9921875,
+      "detections_seconds": []
+    },
+    {
+      "id": "Serena-1-02-f7904218cf35f3e2",
+      "voice": "Serena",
+      "label": true,
+      "variant": 2,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": []
+    },
+    {
+      "id": "Serena-1-02-f7904218cf35f3e2",
+      "voice": "Serena",
+      "label": true,
+      "variant": 3,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.94
+      ]
+    },
+    {
+      "id": "Serena-1-03-677d3a8705488ed4",
+      "voice": "Serena",
+      "label": true,
+      "variant": 0,
+      "seconds": 7.423625,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        6.29
+      ]
+    },
+    {
+      "id": "Serena-1-03-677d3a8705488ed4",
+      "voice": "Serena",
+      "label": true,
+      "variant": 1,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.67
+      ]
+    },
+    {
+      "id": "Serena-1-03-677d3a8705488ed4",
+      "voice": "Serena",
+      "label": true,
+      "variant": 2,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.55
+      ]
+    },
+    {
+      "id": "Serena-1-03-677d3a8705488ed4",
+      "voice": "Serena",
+      "label": true,
+      "variant": 3,
+      "seconds": 9.0,
+      "max_probability": 0.99609375,
+      "detections_seconds": [
+        7.73
+      ]
+    },
+    {
+      "id": "public_noise/AirConditioner_1.wav",
+      "voice": "public_recording",
+      "label": false,
+      "variant": 0,
+      "seconds": 23.448625,
+      "max_probability": 0.99609375,
+      "detections_seconds": []
+    },
+    {
+      "id": "public_noise/Babble_1.wav",
+      "voice": "public_recording",
+      "label": false,
+      "variant": 0,
+      "seconds": 61.0414375,
+      "max_probability": 0.99609375,
+      "detections_seconds": []
+    },
+    {
+      "id": "public_noise/ShuttingDoor_1.wav",
+      "voice": "public_recording",
+      "label": false,
+      "variant": 0,
+      "seconds": 23.181,
+      "max_probability": 0.99609375,
+      "detections_seconds": []
+    },
+    {
+      "id": "public_noise/Typing_1.wav",
+      "voice": "public_recording",
+      "label": false,
+      "variant": 0,
+      "seconds": 212.272625,
+      "max_probability": 0.99609375,
+      "detections_seconds": []
+    },
+    {
+      "id": "public_noise/VacuumCleaner_1.wav",
+      "voice": "public_recording",
+      "label": false,
+      "variant": 0,
+      "seconds": 34.6668125,
+      "max_probability": 0.99609375,
+      "detections_seconds": []
+    }
+  ],
+  "consecutive": 9
+}

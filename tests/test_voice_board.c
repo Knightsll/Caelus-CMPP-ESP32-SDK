@@ -5,14 +5,15 @@
 #include "voice_board.h"
 #include "voice_media.h"
 
-static cmpp_capability_ops_t ops;
+static cmpp_capability_ops_t ops, threshold_ops;
 static void *context;
-static const cmpp_capability_descriptor_t *descriptor;
+static const cmpp_capability_descriptor_t *descriptor, *threshold_descriptor;
 static int media_token, calls, failure;
-static voice_media_state_t current = {.volume = 35, .last_fault_reason = "none", .last_stop_reason = "none"};
+static voice_media_state_t current = {.volume = 35, .barge_min_rms = 1000, .last_fault_reason = "none", .last_stop_reason = "none",
+    .wake_status = "model_not_configured", .wake_word = "小白小白"};
 cmpp_status_t cmpp_runtime_register_capability(cmpp_runtime_t *r, const cmpp_capability_descriptor_t *d,
                                                const cmpp_capability_ops_t *o, void *c)
-{ (void)r; descriptor = d; ops = *o; context = c; return CMPP_OK; }
+{ (void)r; context = c; if (!strcmp(d->capability_id, "voice.channel")) {descriptor=d; ops=*o;} else {threshold_descriptor=d; threshold_ops=*o;} return CMPP_OK; }
 cmpp_status_t cmpp_runtime_unregister_capability(cmpp_runtime_t *r, const char *id)
 { (void)r; (void)id; return CMPP_OK; }
 const cmpp_value_t *cmpp_value_object_get(const cmpp_value_t *o, const char *key)
@@ -39,6 +40,15 @@ esp_err_t voice_media_set_volume(voice_media_t *m, int volume, bool dry, bool *c
     return failure;
 }
 
+esp_err_t voice_media_set_barge_threshold(voice_media_t *m, unsigned rms, bool dry, bool *changed)
+{
+    (void)m; *changed = false;
+    if (current.playing) return ESP_ERR_INVALID_STATE;
+    if (failure) return failure;
+    if (!dry) { *changed = current.barge_min_rms != rms; current.barge_min_rms = rms; }
+    return ESP_OK;
+}
+
 int main(void)
 {
     board_runtime_t *b;
@@ -63,9 +73,20 @@ int main(void)
     assert(result.data->as.object.count == 15);
     assert(!cmpp_value_object_get(result.data, "diagnostics"));
     assert(!cmpp_value_object_get(result.data, "codec_readback"));
+    assert(!cmpp_value_object_get(result.data, "wake_available"));
     cmpp_value_t state;
+    current.conversation_active = true;
+    current.followup_timeout_ms = 30000;
     assert(ops.observe(context, &state) == CMPP_OK);
-    assert(state.as.object.count == 17);
+    assert(state.as.object.count == 32);
+    assert(cmpp_value_object_get(&state, "echo_average_us")->as.integer == 0);
+    assert(!cmpp_value_object_get(&state, "stop_supported")->as.boolean);
+    assert(!cmpp_value_object_get(&state, "echo_available")->as.boolean);
+    assert(cmpp_value_object_get(&state, "conversation_active")->as.boolean);
+    assert(cmpp_value_object_get(&state, "followup_timeout_ms")->as.integer == 30000);
+    assert(!cmpp_value_object_get(&state, "wake_available")->as.boolean);
+    assert(!strcmp(cmpp_value_object_get(&state, "wake_status")->as.string, "model_not_configured"));
+    assert(!strcmp(cmpp_value_object_get(&state, "wake_word")->as.string, "小白小白"));
     const cmpp_value_t *diagnostics = cmpp_value_object_get(&state, "diagnostics");
     assert(diagnostics->as.object.count == 19);
     assert(cmpp_value_object_get(diagnostics, "upload_pcm_dropped_frames")->as.integer == 7);
@@ -110,6 +131,33 @@ int main(void)
     assert(result.outcome == CMPP_OUTCOME_FAILED && result.effect == CMPP_EFFECT_UNKNOWN);
     assert(!strcmp(result.error_code, "volume_set_failed"));
     assert(cmpp_value_object_get(result.data, "volume")->as.integer == 50);
+    assert(threshold_descriptor->command_type_count == 1);
+    assert(!strcmp(threshold_descriptor->command_types[0], "voice.channel.barge_threshold.set"));
+    assert(!strstr(descriptor->arguments_schema_json, "rms"));
+    failure = ESP_OK;
+    entry.key = "rms"; volume.as.integer = 1000;
+    request.command_type = "voice.channel.barge_threshold.set"; request.dry_run = true;
+    assert(threshold_ops.validate(context, &args) == CMPP_OK);
+    assert(threshold_ops.execute(context, &request, &result) == CMPP_OK);
+    assert(result.data->as.object.count == 1 && result.effect == CMPP_EFFECT_NO_EFFECT);
+    assert(cmpp_value_object_get(result.data, "barge_min_rms")->as.integer == 1000);
+    volume.as.integer = 450; request.dry_run = false;
+    assert(threshold_ops.execute(context, &request, &result) == CMPP_OK);
+    assert(result.effect == CMPP_EFFECT_COMMITTED && current.barge_min_rms == 450);
+    current.playing = true;
+    assert(threshold_ops.execute(context, &request, &result) == CMPP_ERR_CONFLICT);
+    assert(!strcmp(result.error_code, "voice_busy"));
+    current.playing = false;
+    for (int i=0;i<2;++i) {
+        volume.as.integer = i ? 8000 : 80;
+        assert(threshold_ops.validate(context, &args) == CMPP_OK);
+        volume.as.integer = i ? 8001 : 79;
+        assert(threshold_ops.validate(context, &args) != CMPP_OK);
+    }
+    volume.type = CMPP_VALUE_DOUBLE; volume.as.number = 80.5;
+    assert(threshold_ops.validate(context, &args) != CMPP_OK);
+    entry.key = "volume";
+    assert(threshold_ops.validate(context, &args) != CMPP_OK);
     board_runtime_destroy(b);
     puts("voice board: command shape, dry-run, result volume, preserved state and partial failure passed");
     return 0;

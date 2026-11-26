@@ -1,0 +1,145 @@
+{
+  "dataset": "Microsoft MS-SNSD",
+  "revision": "fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742",
+  "license_reference": "https://github.com/microsoft/MS-SNSD#dataset-licenses",
+  "records": [
+    {
+      "file": "validation/AirConditioner_1.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_test/AirConditioner_1.wav",
+      "sha256": "3fe55d7035d7ef2599841738f818dc4463f5ef983eb4b5fefeee153d8caa2110",
+      "upstream_git_blob": "55e799699ac13da8373c85ada7dc71af7c7b6615"
+    },
+    {
+      "file": "testing/AirConditioner_2.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_test/AirConditioner_2.wav",
+      "sha256": "82f0e0b3ff00871d5f81466478a953a1164221762779177147750cc3a99c3a7a",
+      "upstream_git_blob": "51de35b10c970ef01d609e76250ea67c4536d6f7"
+    },
+    {
+      "file": "validation/Babble_1.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_test/Babble_1.wav",
+      "sha256": "d7a64dd995a92f4790308dbff196332585eec502734ac737bfc9e2ac317dacd6",
+      "upstream_git_blob": "7d51348412f879c267b4a40614328321420ad2da"
+    },
+    {
+      "file": "testing/Babble_2.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_test/Babble_2.wav",
+      "sha256": "b7f9872b1e4aef0949672d577cdd00132273c2b53efb4a23add549ee0cbbad90",
+      "upstream_git_blob": "3c426baec1c75b4866f88e256b4e55165ae24ccb"
+    },
+    {
+      "file": "validation/ShuttingDoor_1.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_test/ShuttingDoor_1.wav",
+      "sha256": "302b35fb3bea6a4b97bbbfb21a56e9b87a04922c8dbfd41fb9bf4d7be1dcf455",
+      "upstream_git_blob": "814699f506e0e9c3f498f1ab30a11fe6c8ed9c87"
+    },
+    {
+      "file": "testing/ShuttingDoor_2.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_test/ShuttingDoor_2.wav",
+      "sha256": "20f99662d9261a61da28030e919f14e03a09eb045e8353f3cde28a6e690afb6d",
+      "upstream_git_blob": "b6bff0f558b8f7cdc44c764d822f9921946e330c"
+    },
+    {
+      "file": "validation/Typing_1.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_test/Typing_1.wav",
+      "sha256": "47980660888977fb45e5cdfd4a14d6585139e90267c0e61a01eeadb4a5891222",
+      "upstream_git_blob": "b7f9c3d54ab3baebbb2ee6a9ea77228832a2bb3d"
+    },
+    {
+      "file": "testing/Typing_2.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_test/Typing_2.wav",
+      "sha256": "d4907dea2f84cc04a440ad3f57374428c5b6b54a931017eda474b5e56bcb822c",
+      "upstream_git_blob": "8b081422b3be2d180a2816dd88125d049efc86c7"
+    },
+    {
+      "file": "validation/VacuumCleaner_1.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_test/VacuumCleaner_1.wav",
+      "sha256": "594c10d5db0f809b695f90199443b81b799fa1b06c09efcac02c1ebff62fda80",
+      "upstream_git_blob": "c8e78447f58290e637297dc0efd7d7b56bb7bf29"
+    },
+    {
+      "file": "training/AirConditioner_1.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_train/AirConditioner_1.wav",
+      "sha256": "1e0b42643b88e4fc646b5e8861bf4bc053679ba242c9d3bcbc949fc7897c40b9",
+      "upstream_git_blob": "d65dbdcf2f3cd4212f858ac2043638df49985370"
+    },
+    {
+      "file": "training/AirConditioner_2.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_train/AirConditioner_2.wav",
+      "sha256": "21e40b21c5e15df384209e22a85eac27f0c8b1d706f07330a145173056a57de2",
+      "upstream_git_blob": "0dd5afe201dfd333077649af4c5f24f104dc49a2"
+    },
+    {
+      "file": "training/Babble_1.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_train/Babble_1.wav",
+      "sha256": "b0a51acb7f1ed9410be5b8e4e3e9d3178a460de7542c9c563ff4516290e9720d",
+      "upstream_git_blob": "79522654ba8abcbb9474554fa9f7ec4bd15c96e7"
+    },
+    {
+      "file": "training/Babble_2.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_train/Babble_2.wav",
+      "sha256": "5830d9ecf44b9488c8c8fc7a1c54fad323c20fa55c9cacc9b163310987fc7df2",
+      "upstream_git_blob": "b3d90927761ba36c4d1896cc9fe35ce0f3fffa92"
+    },
+    {
+      "file": "training/ShuttingDoor_1.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_train/ShuttingDoor_1.wav",
+      "sha256": "08a9ea14ae4dd4a1e8314f4fc421841a94b20f591f67829737ea51772be59620",
+      "upstream_git_blob": "59bd28effa401bbfd36a0e043bc12c5b3e1f7c1b"
+    },
+    {
+      "file": "training/ShuttingDoor_2.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_train/ShuttingDoor_2.wav",
+      "sha256": "69aeb7ba6f6d0ad95d8b96411a7a4d08bb82d250e44f25e5e68410ac0e6363c1",
+      "upstream_git_blob": "edb2cce1814f8837de26d12ec1c870f8333895ca"
+    },
+    {
+      "file": "training/SqueakyChair_1.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_train/SqueakyChair_1.wav",
+      "sha256": "22982dc5db61920ad4be41226baf2028b5315435dfca470539325c7879c78f35",
+      "upstream_git_blob": "cc551aeb415119427387f502a4636e7a25da3acc"
+    },
+    {
+      "file": "training/SqueakyChair_2.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_train/SqueakyChair_2.wav",
+      "sha256": "ae6c21e43e762f18f056e2c51b3358463c5bc931d7ca2bbff43df0e99aabae2f",
+      "upstream_git_blob": "e0bea159424cf4765c399072ddaa8008cdd7afaf"
+    },
+    {
+      "file": "training/Typing_1.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_train/Typing_1.wav",
+      "sha256": "daea23cf2db117ec72255b44c01d65dc04493f772d91e0f82c39075f1f896234",
+      "upstream_git_blob": "596e1878bc6ae56e054ef32a36211e39316baa46"
+    },
+    {
+      "file": "training/Typing_2.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_train/Typing_2.wav",
+      "sha256": "595dff1159597a837dc5562926316119d5fbf55ee3c2ea7661506d6e34c717e0",
+      "upstream_git_blob": "e4bc0274ee9758da51c04984fae0980b877d6118"
+    },
+    {
+      "file": "training/VacuumCleaner_1.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_train/VacuumCleaner_1.wav",
+      "sha256": "ab1651d17ceba8d3c8d7e0c784b1173c4cf626eab1a5d0b257adc8c690eb551e",
+      "upstream_git_blob": "023e0a4b286e41e3e39a30e3025953a4d2f774e1"
+    },
+    {
+      "file": "training/VacuumCleaner_2.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_train/VacuumCleaner_2.wav",
+      "sha256": "8f8e90c964c9a62acb53ba69592ac9acc315b784476656764358948dfa5c35dd",
+      "upstream_git_blob": "082151ed5e469e42d5e8dc1bd6255aaf9632b505"
+    },
+    {
+      "file": "training/WasherDryer_1.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_train/WasherDryer_1.wav",
+      "sha256": "0c9db89b6b45e75bf09a057206da7a80c9ad59d0d233d82602e496cc9e26d5dc",
+      "upstream_git_blob": "62b591503f2981aa4fdb54c9ff27642b526f35fd"
+    },
+    {
+      "file": "training/WasherDryer_2.wav",
+      "source": "https://raw.githubusercontent.com/microsoft/MS-SNSD/fe61c4ba0d9ac8dd7e23d719cc79f8947e1dc742/noise_train/WasherDryer_2.wav",
+      "sha256": "aa3ffad2e049049b3b377fae1679d3c2f7cd41d3666700ab16b63ee86aaf7be7",
+      "upstream_git_blob": "29a1dfbf09ecb6d824a224c6ab1d94b04f8a54b1"
+    }
+  ]
+}

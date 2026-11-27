@@ -46,7 +46,7 @@ esp_err_t voice_audio_init(void)
     ESP_RETURN_ON_ERROR(gpio_config(&power), TAG, "Power GPIO init failed");
     ESP_RETURN_ON_ERROR(gpio_set_level(47, 1), TAG, "Analog power failed");
     gpio_config_t ptt = {
-        .pin_bit_mask = (1ULL << 1) | (1ULL << 48), .mode = GPIO_MODE_INPUT,
+        .pin_bit_mask = (1ULL << 1) | (1ULL << 17), .mode = GPIO_MODE_INPUT,
         .pull_up_en = GPIO_PULLUP_ENABLE,
     };
     ESP_RETURN_ON_ERROR(gpio_config(&ptt), TAG, "PTT GPIO init failed");
@@ -231,5 +231,6 @@ bool voice_audio_pressed(void)
 
 bool voice_audio_stop_pressed(void)
 {
-    return gpio_get_level(48) == 0;
+    /* SW1 net IO36 is physically GPIO17; long-hold recovery reads it too. */
+    return gpio_get_level(17) == 0;
 }

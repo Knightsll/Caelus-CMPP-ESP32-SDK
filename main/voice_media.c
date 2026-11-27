@@ -7,7 +7,7 @@
 #include "voice_lifecycle.h"
 #include "voice_socket.h"
 #include "voice_upload_queue.h"
-#include "voice_wake.h"
+#include "voice_wake_logic.h"
 #include "network.h"
 #include "nvs.h"
 
@@ -31,7 +31,6 @@
 #define HELLO_TIMEOUT_MS 5000
 #define HEARTBEAT_TIMEOUT_MS 30000
 #define OPEN_TIMEOUT_MS 30000
-#define WAKE_PREROLL_FRAMES 36 /* 720 ms covers onset + bounded worker backlog. */
 
 typedef voice_packet_t packet_t;
 _Static_assert(VOICE_FRAME_BYTES == VOICE_UPLOAD_PACKET_BYTES, "PCM packet size mismatch");
@@ -52,16 +51,10 @@ struct voice_media {
     char last_closed_id[33];
     voice_wire_t wire;
     voice_ptt_t ptt;
-    voice_wake_t *wake;
-    const char *wake_status;
-    bool wake_recording;
     voice_conversation_t conversation;
     unsigned barge_min_rms;
     bool barge_threshold_saved;
     int64_t stop_started_ms;
-    int64_t wake_started_ms, wake_resume_ms;
-    int16_t (*wake_preroll)[VOICE_FRAME_SAMPLES];
-    unsigned wake_preroll_next, wake_preroll_count;
     bool recording, playing, awaiting_response, output_busy, stopped_confirmed;
 };
 
@@ -78,10 +71,7 @@ static esp_err_t stop_locked(voice_media_t *b, voice_stop_reason_t reason)
     if (b->channel_id[0]) strcpy(b->last_closed_id, b->channel_id);
     b->channel_id[0] = '\0';
     b->recording = b->playing = b->awaiting_response = b->output_busy = false;
-    b->wake_recording = false;
     b->conversation = (voice_conversation_t){0};
-    b->wake_preroll_next = b->wake_preroll_count = 0;
-    b->wake_resume_ms = now_ms() + 700;
     ++b->playback_generation;
     voice_status_update(VOICE_LED_MEDIA | VOICE_LED_FAULT,
                         b->lifecycle.fault ? VOICE_LED_FAULT : 0);
@@ -211,12 +201,8 @@ static bool user_stop_locked(voice_media_t *b)
     xQueueReset(b->playback);
     voice_upload_queue_reset(b->upload);
     b->recording = b->playing = b->awaiting_response = b->output_busy = false;
-    b->wake_recording = false;
     b->conversation = (voice_conversation_t){0};
     b->ptt = (voice_ptt_t){0};
-    b->wake_resume_ms = now_ms() + 700;
-    b->wake_preroll_next = b->wake_preroll_count = 0;
-    voice_wake_step(b->wake, VOICE_WAKE_OFF, b->lifecycle.generation, NULL);
     voice_status_update(VOICE_LED_RECORDING | VOICE_LED_WAITING | VOICE_LED_PLAYING, 0);
     if (voice_audio_discard_output() != ESP_OK) return false;
     if (!b->wire.ready || !b->wire.stop_enabled)
@@ -237,7 +223,6 @@ static void capture_task(void *arg)
     int16_t previous_pcm[VOICE_FRAME_SAMPLES] = {0};
     int64_t next_heap_log_ms = 0;
     voice_ptt_t stop_key = {0};
-    voice_wake_mode_t logged_mode = VOICE_WAKE_OFF;
     unsigned max_read_us = 0, max_lock_us = 0, max_work_us = 0;
     for (;;) {
         int64_t read_started = esp_timer_get_time();
@@ -265,33 +250,11 @@ static void capture_task(void *arg)
         }
         bool blocked = stop_pressed || b->wire.awaiting_stop ||
             ((b->output_busy || b->awaiting_response) && !b->wire.interrupt_enabled);
-        voice_echo_stats_t echo = voice_echo_stats();
-        bool reply_busy = b->output_busy || b->awaiting_response;
-        if (reply_busy) b->wake_resume_ms = now_ms() + 700;
-        bool gated = b->ptt.speech_gated || (reply_busy && pressed);
-        voice_wake_mode_t wake_mode = VOICE_WAKE_OFF;
-        if (b->wire.ready && !blocked) {
-            wake_mode = voice_listen_mode(b->recording, b->wake_recording,
-                followup, reply_busy, gated, pressed, !b->output_busy || echo.ready);
-            if (wake_mode == VOICE_WAKE_FOLLOWUP && now_ms() < b->wake_resume_ms)
-                wake_mode = VOICE_WAKE_OFF;
-        }
-        if (wake_mode != logged_mode) {
-            b->wake_preroll_next = b->wake_preroll_count = 0;
-            ESP_LOGI(TAG, "Listen mode %d->%d conversation=%d record=%d output=%d waiting=%d echo=%d",
-                logged_mode, wake_mode, followup, b->recording, b->output_busy, b->awaiting_response, echo.ready);
-            logged_mode = wake_mode;
-        }
-        voice_wake_event_t wake = voice_wake_step(b->wake, wake_mode,
-            b->lifecycle.generation, err == ESP_OK ? pcm : NULL);
-        /* Bound voice turns even if recognition stalls or its queue drops PCM. */
-        if (b->recording && b->wake_recording && now_ms() - b->wake_started_ms >= 15000)
-            wake = VOICE_WAKE_END;
-        voice_ptt_event_t ptt = voice_input_step(&b->ptt, &b->wake_recording,
-            b->wire.ready, blocked, b->recording, pressed, reply_busy, wake);
+        /* SW2 owns both start and end; no speech/AEC gate or automatic onset. */
+        voice_ptt_event_t ptt = voice_ptt_step(&b->ptt, b->wire.ready,
+            blocked, b->recording, pressed);
         if (b->wire.ready && !blocked && err == ESP_OK) {
             if (ptt == VOICE_PTT_START) {
-                if (b->wake_recording) b->wake_started_ms = now_ms();
                 ++b->input_turn;
                 if (b->wire.interrupt_enabled) {
                     ++b->playback_generation;
@@ -310,20 +273,12 @@ static void capture_task(void *arg)
                     voice_conversation_step(&b->conversation, true, true, true,
                             now_ms(), CONFIG_CMPP_VOICE_FOLLOWUP_TIMEOUT_MS);
                     voice_status_update(VOICE_LED_RECORDING, VOICE_LED_RECORDING);
-                    ESP_LOGI(TAG, "%s input.start queued in_%lu", b->wake_recording ?
-                        "Followup" : (gated ? "Button+speech" : "PTT"), (unsigned long)b->input_turn);
+                    ESP_LOGI(TAG, "PTT input.start queued in_%lu", (unsigned long)b->input_turn);
                 }
-                if (b->wake_recording || gated) {
-                    /* Include speech detected while the old reply was still playing.
-                     * No input.start or upload occurs before confirmed onset. */
-                    unsigned first = (b->wake_preroll_next + WAKE_PREROLL_FRAMES - b->wake_preroll_count) % WAKE_PREROLL_FRAMES;
-                    for (unsigned i = 0; ok && i < b->wake_preroll_count; ++i)
-                        ok = upload_locked(b, false, b->wake_preroll[(first + i) % WAKE_PREROLL_FRAMES], VOICE_FRAME_BYTES, "pcm");
-                } else {
-                    /* One 20 ms pre-roll frame covers button debounce. */
-                    ok = ok && upload_locked(b, false, previous_pcm, sizeof(previous_pcm), "pcm");
-                }
+                /* One 20 ms pre-roll frame covers button debounce. */
+                ok = ok && upload_locked(b, false, previous_pcm, sizeof(previous_pcm), "pcm");
             }
+
             if (b->recording) {
                 ok = ok && upload_locked(b, false, pcm, sizeof(pcm), "pcm");
                 if (ptt == VOICE_PTT_END) {
@@ -334,9 +289,7 @@ static void capture_task(void *arg)
                     b->awaiting_response = true;
                     b->ptt.armed = false;
                     voice_status_update(VOICE_LED_RECORDING | VOICE_LED_WAITING, VOICE_LED_WAITING);
-                    if (ok) ESP_LOGI(TAG, "%s input.end queued in_%lu", b->wake_recording ? "Followup" : "PTT", (unsigned long)b->input_turn);
-                    b->wake_recording = false;
-                    b->wake_resume_ms = now_ms() + 700;
+                    if (ok) ESP_LOGI(TAG, "PTT input.end queued in_%lu", (unsigned long)b->input_turn);
                 }
             }
         } else if (b->recording && err != ESP_OK) {
@@ -356,12 +309,6 @@ static void capture_task(void *arg)
                 : dead ? VOICE_STOP_HEARTBEAT_TIMEOUT : VOICE_STOP_OPEN_TIMEOUT;
             stop_locked(b, reason);
         }
-        if (b->wake_preroll && (wake_mode == VOICE_WAKE_FOLLOWUP || wake_mode == VOICE_WAKE_BARGE) && b->wire.ready &&
-            !b->recording && err == ESP_OK) {
-            memcpy(b->wake_preroll[b->wake_preroll_next], pcm, sizeof(pcm));
-            b->wake_preroll_next = (b->wake_preroll_next + 1) % WAKE_PREROLL_FRAMES;
-            if (b->wake_preroll_count < WAKE_PREROLL_FRAMES) ++b->wake_preroll_count;
-        } else b->wake_preroll_next = b->wake_preroll_count = 0;
         unsigned read_us = read_finished - read_started;
         unsigned lock_us = lock_acquired - read_finished;
         unsigned work_us = esp_timer_get_time() - lock_acquired;
@@ -697,17 +644,7 @@ esp_err_t voice_media_create(voice_media_t **output)
     if (rms < 80 || rms > 8000) { err = ESP_ERR_INVALID_ARG; goto failed; }
     b->barge_min_rms = rms;
     ESP_LOGI(TAG, "Barge threshold RMS=%u source=%s", rms, b->barge_threshold_saved ? "nvs" : "default");
-    b->wake_status = voice_wake_create(&b->wake);
-    voice_wake_set_barge_min_rms(b->wake, rms);
-    if (b->wake) {
-        b->wake_preroll = heap_caps_malloc(WAKE_PREROLL_FRAMES * VOICE_FRAME_BYTES, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
-        if (!b->wake_preroll) {
-            voice_wake_destroy(b->wake);
-            b->wake = NULL;
-            b->wake_status = "no_memory";
-        }
-    }
-    if (!b->wake) ESP_LOGW(TAG, "VAD unavailable (%s); idle PTT works, speech-gated interruption unavailable", b->wake_status);
+    ESP_LOGI(TAG, "PTT only: SW2 starts/interrupts immediately; release submits");
     b->stopped_confirmed = true;
     ESP_LOGI(TAG, "Voice upload backlog: %u PCM frames, %u control slots, %u allocated bytes",
              VOICE_UPLOAD_PCM_FRAMES, VOICE_UPLOAD_CONTROL_SLOTS, (unsigned)sizeof(*b->upload));
@@ -721,8 +658,6 @@ esp_err_t voice_media_create(voice_media_t **output)
     return ESP_OK;
 failed:
     if (capture) vTaskDelete(capture);
-    voice_wake_destroy(b->wake);
-    free(b->wake_preroll);
     if (b->lock) vSemaphoreDelete(b->lock);
     if (b->playback) vQueueDelete(b->playback);
     free(b->upload);
@@ -793,7 +728,6 @@ esp_err_t voice_media_set_barge_threshold(voice_media_t *b, unsigned rms, bool d
         if (err == ESP_OK) {
             b->barge_min_rms = rms;
             b->barge_threshold_saved = true;
-            voice_wake_set_barge_min_rms(b->wake, rms);
             *changed = true;
         }
     }

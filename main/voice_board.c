@@ -209,7 +209,7 @@ static cmpp_status_t safe_stop(void *context)
 static const char *const THRESHOLD_COMMANDS[] = {"voice.channel.barge_threshold.set"};
 static const cmpp_capability_descriptor_t THRESHOLD_DESCRIPTOR = {
     .capability_id = "voice.barge_threshold", .display_name = "语音打断门槛",
-    .version = "1.0.0", .description = "调高可减少较轻或较远的声音打断；仅影响播放中插话，请在对话结束后调整",
+    .version = "1.0.0", .description = "历史语音打断门槛；当前纯按键模式不使用此值，保留配置兼容",
     .arguments_schema_json = "{\"type\":\"object\",\"required\":[\"rms\"],\"additionalProperties\":false,\"properties\":{\"rms\":{\"type\":\"integer\",\"minimum\":80,\"maximum\":8000}}}",
     .state_schema_json = "{\"type\":\"object\"}",
     .command_types = THRESHOLD_COMMANDS, .command_type_count = 1,

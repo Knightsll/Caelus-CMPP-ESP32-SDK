@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exercise the actual capture transition: cancellation, start, pre-roll, end."""
+"""Exercise the actual capture transition: button cancellation, start, PCM, end."""
 from pathlib import Path
 import subprocess
 import tempfile
@@ -25,10 +25,8 @@ enum { ESP_OK, VOICE_STOP_AUDIO_STOP_FAILED, VOICE_PTT_NONE, VOICE_PTT_START, VO
 #define VOICE_LED_RECORDING 4
 #define ESP_LOGI(...) ((void)0)
 typedef struct {
-    bool wake_recording, recording, playing, output_busy, awaiting_response;
-    unsigned input_turn, playback_generation, wake_preroll_next, wake_preroll_count;
-    int64_t wake_started_ms, wake_resume_ms;
-    int16_t wake_preroll[36][320];
+    bool recording, playing, output_busy, awaiting_response;
+    unsigned input_turn, playback_generation;
     struct {bool ready, interrupt_enabled;} wire;
     struct {bool armed;} ptt;
     struct {bool active;} conversation;
@@ -55,7 +53,7 @@ static bool upload_locked(board *b,bool control,const void *data,unsigned bytes,
     (void)b;assert(stage==3 && !control && bytes==640 && !strcmp(tag,"pcm"));
     samples[count++]=*(const int16_t *)data;return true;
 }
-static void step(board *b,int ptt,bool gated,int sample) {
+static void step(board *b,int ptt,int sample) {
     bool blocked=false,ok=true;
     int err=ESP_OK,input_failure=0;
     int16_t pcm[320]={sample},previous_pcm[320]={-1};
@@ -65,19 +63,18 @@ checks = r'''
 }
 int main(void) {
     board b={.wire={true,true},.playing=true,.output_busy=true,.playback_generation=7};
-    /* Ring wrapped: 34,35,0 are the three oldest-to-newest pre-roll frames. */
-    b.wake_preroll_next=1;b.wake_preroll_count=3;
-    b.wake_preroll[34][0]=11;b.wake_preroll[35][0]=12;b.wake_preroll[0][0]=13;
-    for(int i=0;i<100;i++) step(&b,VOICE_PTT_NONE,true,14);
+    for(int i=0;i<100;i++) step(&b,VOICE_PTT_NONE,14);
     assert(b.playing && b.output_busy && !discarded && !starts && !count);
-    step(&b,VOICE_PTT_START,true,14);
-    assert(discarded==1 && reset==1 && starts==1 && count==4);
-    assert(samples[0]==11 && samples[1]==12 && samples[2]==13 && samples[3]==14);
+    step(&b,VOICE_PTT_START,14);
+    assert(discarded==1 && reset==1 && starts==1 && count==2);
+    assert(samples[0]==-1 && samples[1]==14);
     assert(b.playback_generation==8 && b.recording && b.conversation.active && !b.playing);
-    step(&b,VOICE_PTT_NONE,false,15);
-    step(&b,VOICE_PTT_END,false,16);
-    assert(count==6 && samples[4]==15 && samples[5]==16 && ends==1 && starts==1);
+    step(&b,VOICE_PTT_NONE,15);
+    step(&b,VOICE_PTT_END,16);
+    assert(count==4 && samples[2]==15 && samples[3]==16 && ends==1 && starts==1);
     assert(!b.recording && b.awaiting_response);
+    for (int i=0;i<100;i++) step(&b,VOICE_PTT_NONE,17);
+    assert(starts==1 && ends==1 && count==4);
     return 0;
 }
 '''
@@ -87,4 +84,4 @@ with tempfile.TemporaryDirectory(prefix="caelus-input-transfer-") as tmp:
     subprocess.run(["cc", "-std=c11", "-Wall", "-Wextra", "-Werror", "-fsanitize=undefined",
                     str(p / "test.c"), "-o", str(p / "test")], check=True)
     subprocess.run([str(p / "test")], check=True)
-print("Input transfer: silent hold preserves playback; confirmed onset cancels once, start precedes ordered pre-roll, tail precedes end")
+print("Input transfer: no press preserves playback; press cancels once, start precedes debounce PCM, tail precedes end")

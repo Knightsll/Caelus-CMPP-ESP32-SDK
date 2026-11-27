@@ -21,8 +21,7 @@ CONFIG_SPIRAM_MEMTEST=y
 CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
 CONFIG_PARTITION_TABLE_CUSTOM=y
 CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.voice.csv"
-# SW2 starts conversations; VAD/AEC remain, keyword models are not built.
-CONFIG_CMPP_VOICE_WAKE_SILENCE_MS=1200
+# SW2 owns recording and interruption; AEC remains, no keyword/VAD task.
 CONFIG_MODEL_IN_FLASH=y
 CONFIG_SR_VADN_WEBRTC=y
 

@@ -17,12 +17,6 @@ menu "Caelus CMPP Board"
         range 1 65535
         default 8081
 
-    config CMPP_VOICE_WAKE_SILENCE_MS
-        int "Silence after speech to end voice-triggered recording (ms)"
-        depends on CMPP_VOICE_BOARD
-        range 600 3000
-        default 1200
-
     config CMPP_VOICE_FOLLOWUP_TIMEOUT_MS
         int "Quiet timeout for conversation after SW2 (ms)"
         depends on CMPP_VOICE_BOARD

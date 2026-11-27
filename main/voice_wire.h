@@ -37,7 +37,7 @@ bool voice_wire_begin_stop(voice_wire_t *state, const char *stop_id);
 void voice_wire_end_input(voice_wire_t *state);
 bool voice_wire_output_blocked(const voice_wire_t *state);
 
-typedef struct { bool armed, previous_pressed, speech_gated; } voice_ptt_t;
+typedef struct { bool armed, previous_pressed; } voice_ptt_t;
 typedef enum { VOICE_PTT_NONE, VOICE_PTT_START, VOICE_PTT_END } voice_ptt_event_t;
 voice_ptt_event_t voice_ptt_step(voice_ptt_t *state, bool ready, bool output_busy,
                                 bool recording, bool pressed);

@@ -25,14 +25,13 @@ typedef struct {
     void *wake;
 } voice_media_t;
 static int locked,writes,commits,closes,commit_failure;
-static unsigned saved,applied;
+static unsigned saved;
 static void take(voice_media_t *b) {(void)b; assert(!locked);locked=1;}
 static void give(voice_media_t *b) {(void)b; assert(locked);locked=0;}
 static int nvs_open(const char *key,int mode,int *h) {assert(!strcmp(key,"mcp_light") && mode==NVS_READWRITE);*h=1;return ESP_OK;}
 static int nvs_set_u16(int h,const char *key,uint16_t value) {assert(h==1 && !strcmp(key,"barge_rms"));++writes;saved=value;return ESP_OK;}
 static int nvs_commit(int h) {assert(h==1);++commits;return commit_failure ? ESP_FAIL : ESP_OK;}
 static void nvs_close(int h) {assert(h==1);++closes;}
-static void voice_wake_set_barge_min_rms(void *w,unsigned rms) {(void)w;applied=rms;}
 '''
 test = r'''
 int main(void) {
@@ -48,14 +47,14 @@ int main(void) {
     }
     commit_failure=1;
     assert(voice_media_set_barge_threshold(&b,1200,false,&changed)==ESP_FAIL);
-    assert(!changed && b.barge_min_rms==1000 && !applied && !locked && closes==1);
+    assert(!changed && b.barge_min_rms==1000 && !locked && closes==1);
     commit_failure=0;
     assert(voice_media_set_barge_threshold(&b,1200,false,&changed)==ESP_OK);
-    assert(changed && saved==1200 && applied==1200 && b.barge_min_rms==1200 && b.barge_threshold_saved && !locked);
+    assert(changed && saved==1200 && b.barge_min_rms==1200 && b.barge_threshold_saved && !locked);
     int count=commits;
     assert(voice_media_set_barge_threshold(&b,1200,false,&changed)==ESP_OK && !changed && commits==count);
-    assert(voice_media_set_barge_threshold(&b,8000,false,&changed)==ESP_OK && applied==8000);
-    assert(voice_media_set_barge_threshold(&b,80,false,&changed)==ESP_OK && applied==80);
+    assert(voice_media_set_barge_threshold(&b,8000,false,&changed)==ESP_OK && saved==8000);
+    assert(voice_media_set_barge_threshold(&b,80,false,&changed)==ESP_OK && saved==80);
     return 0;
 }
 '''
